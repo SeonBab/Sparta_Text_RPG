@@ -8,14 +8,14 @@ LogManager LogManager::instance;
 
 void LogManager::ShowStatus()
 {
-	// ÄÜ¼Ö È­¸é ¹öÆÛ Á¤º¸¸¦ ÀúÀåÇÒ ±¸Á¶Ã¼
+	// ì½˜ì†” í™”ë©´ ë²„í¼ ì •ë³´ë¥¼ ì €ì¥í•  êµ¬ì¡°ì²´
 	CONSOLE_SCREEN_BUFFER_INFO csbi;
 	GetConsoleScreenBufferInfo(GetStdHandle(STD_OUTPUT_HANDLE), &csbi);
 
 	MoveCursor(0, csbi.srWindow.Top + 20);
-	cout << "ÇÃ·¹ÀÌ¾î Á¤º¸" << endl;
+	cout << "í”Œë ˆì´ì–´ ì •ë³´" << endl;
 
-	//¿ø·¡ ÀÖ´ø Ä¿¼­ À§Ä¡
+	//ì›ë˜ ìˆë˜ ì»¤ì„œ ìœ„ì¹˜
 	MoveCursor(csbi.dwCursorPosition.X, csbi.dwCursorPosition.Y);
 }
 
@@ -53,7 +53,7 @@ void LogManager::Clear()
 
 void LogManager::MoveCursor(int x, int y)
 {
-	//Ä¿¼­ÀÌµ¿ÇÔ¼ö
+	//ì»¤ì„œì´ë™í•¨ìˆ˜
 	COORD Cur;
 	Cur.X = x;
 	Cur.Y = y;

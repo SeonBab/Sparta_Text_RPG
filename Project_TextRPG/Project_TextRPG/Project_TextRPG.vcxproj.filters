@@ -13,42 +13,78 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="Source Files\Character">
+      <UniqueIdentifier>{c4b1526d-89b1-48f6-b300-73591e42285e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Character">
+      <UniqueIdentifier>{408f28ea-953b-46d5-a683-332d711be726}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Monster">
+      <UniqueIdentifier>{1b047a9f-02c4-4230-90cd-56446b15c285}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Monster">
+      <UniqueIdentifier>{4cf9157a-287c-450d-851a-65ac40db0eba}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Framework">
+      <UniqueIdentifier>{be4c111a-c0e7-4f00-9f7a-a9d130e6f6c1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Framework\Manager">
+      <UniqueIdentifier>{550207f3-a2b5-4c02-b2bd-f4dc7bd029ec}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Framework">
+      <UniqueIdentifier>{ee7a8578-6f7b-4777-8e39-2bc2ac6ecee2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Framework\Manager">
+      <UniqueIdentifier>{bf55e693-4027-46a3-bc41-94594f99e9d4}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Project_TextRPG.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Framework\Framework.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Framework\Managers\BattleManager.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Framework\Managers\ShopManager.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Monster\Monster.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Item.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Framework\Managers\BattleManager.cpp">
+      <Filter>Source Files\Framework\Manager</Filter>
+    </ClCompile>
+    <ClCompile Include="Framework\Managers\LogManager.cpp">
+      <Filter>Source Files\Framework\Manager</Filter>
+    </ClCompile>
+    <ClCompile Include="Framework\Managers\ShopManager.cpp">
+      <Filter>Source Files\Framework\Manager</Filter>
+    </ClCompile>
+    <ClCompile Include="Character\Player.cpp">
+      <Filter>Source Files\Character</Filter>
+    </ClCompile>
+    <ClCompile Include="Monster\Monster.cpp">
+      <Filter>Source Files\Monster</Filter>
+    </ClCompile>
+    <ClCompile Include="Framework\Framework.cpp">
+      <Filter>Source Files\Framework</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Framework\Framework.h">
+    <ClInclude Include="Item.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Framework\Managers\BattleManager.h">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\Framework\Manager</Filter>
+    </ClInclude>
+    <ClInclude Include="Framework\Managers\LogManager.h">
+      <Filter>Header Files\Framework\Manager</Filter>
     </ClInclude>
     <ClInclude Include="Framework\Managers\ShopManager.h">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\Framework\Manager</Filter>
+    </ClInclude>
+    <ClInclude Include="Character\Player.h">
+      <Filter>Header Files\Character</Filter>
     </ClInclude>
     <ClInclude Include="Monster\Monster.h">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\Monster</Filter>
     </ClInclude>
-    <ClInclude Include="Item.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="Framework\Framework.h">
+      <Filter>Header Files\Framework</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
