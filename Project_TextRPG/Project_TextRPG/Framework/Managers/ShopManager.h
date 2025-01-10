@@ -3,15 +3,17 @@
 class ShopManager
 {
 public:
-    void PrintShopMenu();
-    void PrintShopBuy();
-    void PrintShopSell();
+    static void PrintShopMenu();
 
 private:
-    void BuyItem(int ItemsIndex);
-    void SellItem();
+    static void PrintShopBuy();
+    static void PrintShopSell();
 
-    friend class MainGame;
+    static void BuyItem(int ItemsIndex);
+    static void SellItem();
 
-    ShopManager() = default;
+    ShopManager();
+
+    ShopManager(const ShopManager&) = delete;
+    ShopManager& operator=(const ShopManager&) = delete;
 };
