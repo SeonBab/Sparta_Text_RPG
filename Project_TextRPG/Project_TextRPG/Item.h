@@ -1,4 +1,4 @@
-#pragma once
+ï»¿#pragma once
 
 #include <string>
 #include <vector>
@@ -24,26 +24,26 @@ private:
 class HealthPotion : public Item
 {
 public:
-    HealthPotion() : Item("Ã¼·Â Æ÷¼Ç", 10) { }
+    HealthPotion() : Item("ì²´ë ¥ í¬ì…˜", 10) { }
 
     virtual void Use() override
     {
         // TODO
-        // ÇÃ·¹ÀÌ¾î Ã¼·Â È¸º¹µÇ°Ô
-        // Ãâ·Â¿¡ ½ÅÈ£
+        // í”Œë ˆì´ì–´ ì²´ë ¥ íšŒë³µë˜ê²Œ
+        // ì¶œë ¥ì— ì‹ í˜¸
     }
 };
 
 class AttackBoost : public Item
 {
 public:
-    AttackBoost() : Item("°ø°İ·Â ºÎ½ºÆ®", 15) {}
+    AttackBoost() : Item("ê³µê²©ë ¥ ë¶€ìŠ¤íŠ¸", 15) {}
     
     virtual void Use() override
     {
         // TODO
-        // ÇÃ·¹ÀÌ¾î °ø°İ·ÂÀÌ ¿À¸£°Ô
-        // Ãâ·Â¿¡ ½ÅÈ£
+        // í”Œë ˆì´ì–´ ê³µê²©ë ¥ì´ ì˜¤ë¥´ê²Œ
+        // ì¶œë ¥ì— ì‹ í˜¸
     }
 };
 
