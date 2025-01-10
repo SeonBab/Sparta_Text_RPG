@@ -36,7 +36,7 @@ class Monster : public Entity
 public:
     
     // Def로 생성 로직 추가
-    Monster(const MonsterDef& Def)
+    Monster(const MonsterDef& Def) : Entity("None", 1, 1)
     {
     }
 };

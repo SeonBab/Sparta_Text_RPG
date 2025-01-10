@@ -157,6 +157,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Character\Player.cpp" />
     <ClCompile Include="Framework\Framework.cpp" />
     <ClCompile Include="Framework\Managers\BattleManager.cpp" />
     <ClCompile Include="Framework\Managers\LogManager.cpp" />
@@ -166,6 +167,7 @@
     <ClCompile Include="Project_TextRPG.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Character\Player.h" />
     <ClInclude Include="Framework\Framework.h" />
     <ClInclude Include="Framework\Managers\BattleManager.h" />
     <ClInclude Include="Framework\Managers\LogManager.h" />

@@ -25,7 +25,8 @@ public:
     void SetMaxHP(const int maxHP) { MaxHP = maxHP; }
     const int GetDamage() const { return Damage; }
     void SetDamage(const int damage) { Damage = damage; }
-    Entity::Entity(string name, int maxHP, int damage)
+
+    Entity(string name, int maxHP, int damage)
     {
         Name = name;
         MaxHP = maxHP;
