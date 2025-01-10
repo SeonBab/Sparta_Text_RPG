@@ -17,7 +17,7 @@ void MainGame::Select()
     {
         cin >> Idx;
         // Idx 1부터 시작 + Shop뒤에 붙음.
-        if(Idx < Monsters.size() + 2 && Idx <= 0)
+        if(1 <= Idx && Idx < Monsters.size() + 2)
         {
             if (Monsters.size() + 1 == Idx)
             {
