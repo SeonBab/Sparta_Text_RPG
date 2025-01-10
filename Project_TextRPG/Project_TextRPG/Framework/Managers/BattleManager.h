@@ -3,6 +3,10 @@
 class BattleManager
 {
 
+public:
+
+    
+    
 private:
     
     friend class MainGame;

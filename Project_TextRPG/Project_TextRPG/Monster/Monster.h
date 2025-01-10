@@ -24,15 +24,19 @@ public:
     void Display();
 
 private:
-    
-    float Level;
+
+    int MaxLevel;
+    int Level;
     
 };
 
 class Monster : public Entity
 {
+    
 public:
-
+    
     // Def로 생성 로직 추가
-    Monster(const MonsterDef& Def){};
+    Monster(const MonsterDef& Def)
+    {
+    }
 };

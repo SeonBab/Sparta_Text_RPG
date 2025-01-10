@@ -10,6 +10,7 @@ string Strings[(unsigned int)EMonsterType::End]
 
 MonsterDef::MonsterDef()
 {
-    Level = rand() % 10;
+    Level = min(1, rand() % (MaxLevel + 1));
     SetName(Strings[rand() % (unsigned int)EMonsterType::End]);
 }
+
