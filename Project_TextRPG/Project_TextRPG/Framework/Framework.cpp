@@ -36,7 +36,6 @@ void MainGame::Tick()
 {
     // Console Clear
     system("cls");
-    LogManager::Get().Clear();
     
     // 유저 입력 이전에 떠야함
     LogManager::Get().ShowStatus();
@@ -45,7 +44,7 @@ void MainGame::Tick()
     DisplayChoices();
     Select();
     
-    LogManager::Get().ShowLog();
+    LogManager::Get().Pause();
 
     // BattleManager->CreateMonsterFromDef
     // BattleManager->Battle
