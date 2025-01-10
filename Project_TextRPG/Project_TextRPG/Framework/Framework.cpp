@@ -3,6 +3,7 @@
 
 #include "Framework/Managers/LogManager.h"
 #include "Monster/Monster.h"
+#include "Framework/Managers/ShopManager.h"
 
 void MainGame::Init()
 {
@@ -20,7 +21,7 @@ void MainGame::Select()
         {
             if (Monsters.size() + 1 == Idx)
             {
-                m_ShopManager.PrintShopMenu();
+                ShopManager::PrintShopMenu();
             }
             break;
         }
