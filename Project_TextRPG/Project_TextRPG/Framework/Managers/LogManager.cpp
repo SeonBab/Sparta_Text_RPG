@@ -24,7 +24,10 @@ void LogManager::ShowLog()
 	for (pair<string, int> log : logVec)
 	{
 		cout << log.first << endl;
-		if (log.second > 0) Sleep(log.second * 1000);
+		ShowStatus();
+
+		if (log.second > 0) 
+			Sleep(log.second * 1000);
 	}
 
 	//system("pause");
