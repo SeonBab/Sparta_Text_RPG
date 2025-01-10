@@ -1,4 +1,4 @@
-﻿// Monster.h
+// Monster.h
 #pragma once
 
 #include "../Framework/Framework.h"

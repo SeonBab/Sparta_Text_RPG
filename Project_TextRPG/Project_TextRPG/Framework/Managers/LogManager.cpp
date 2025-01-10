@@ -19,37 +19,24 @@ void LogManager::ShowStatus()
 	MoveCursor(csbi.dwCursorPosition.X, csbi.dwCursorPosition.Y);
 }
 
-void LogManager::ShowLog()
+void LogManager::Pause()
 {
-	for (pair<string, int> log : logVec)
-	{
-		cout << log.first << endl;
-		ShowStatus();
-
-		if (log.second > 0) 
-			Sleep(log.second * 1000);
-	}
-
-	//system("pause");
-	cin.ignore();
-	cin.ignore();
+	system("pause");
 }
 
 void LogManager::Append(const string& str, float delaySecond)
 {
-	logVec.push_back({ str, delaySecond });
+	cout << str << endl;
+	ShowStatus();
+
+	if (delaySecond > 0)
+		Sleep(delaySecond * 1000);
 }
 
 void LogManager::Draw(EDraw draw)
 {
 
 }
-
-void LogManager::Clear()
-{
-	logVec.clear();
-}
-
 
 void LogManager::MoveCursor(int x, int y)
 {
