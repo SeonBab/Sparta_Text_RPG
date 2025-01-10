@@ -2,7 +2,10 @@
 #include <iostream>
 #include <windows.h>
 
+#include "Framework/Managers/LogManager.h"
+
 #include "Monster/Monster.h"
+
 
 void MainGame::Init()
 {
@@ -18,7 +21,10 @@ void MainGame::Tick()
     cout << Monsters.size() + 1 << ". " << "Shop";
     cout << "\n";
     // cout << 선택지 - 몬스터 여러 개, 상점
-    
+
+    //스탯 출력
+    LogManager::Get().ShowStatus();
+    LogManager::Get().Draw(LogManager::EDraw::Fight);
     
     // cin >> 내 선택지 ( valid할 때 까지)
     int Idx = 0;
@@ -50,8 +56,7 @@ void MainGame::Tick()
     // 선택지
     // while(bExit)
 
-    //
-    DisplayBuffer();
+    LogManager::Get().ShowLog();
     
     // Status 출력
 
@@ -89,23 +94,5 @@ void MainGame::OnGameEnded()
     else if(EndType == EEndType::Win)
     {
         cout << "You Win!!!" << "\n";
-    }
-}
-
-void MainGame::ClearBuffer()
-{
-    Buffer.clear();
-}
-
-void MainGame::AddStringToBuffer(const string& InString)
-{
-    Buffer.push_back(InString);
-}
-
-void MainGame::DisplayBuffer()
-{
-    for(auto& String : Buffer)
-    {
-        cout << String << "\n";
     }
 }

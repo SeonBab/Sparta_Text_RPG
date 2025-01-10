@@ -53,17 +53,7 @@ public:
 
     EEndType EndType = EEndType::None;
     
-    void ClearBuffer();
-    
-    void AddStringToBuffer(const string& InString);
-    
-    void DisplayBuffer();
-    
 private:
-
-    // Buffer System 쓰려면 여기다 추가 삭제만
-    vector<string> Buffer;
-    
     BattleManager m_BattleManager;
     ShopManager m_ShopManager;
 
