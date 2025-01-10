@@ -24,7 +24,7 @@ void LogManager::ShowLog()
 	for (pair<string, int> log : logVec)
 	{
 		cout << log.first << endl;
-		if (log.second > 0) Sleep(log.second);
+		if (log.second > 0) Sleep(log.second * 1000);
 	}
 
 	//system("pause");
@@ -32,9 +32,9 @@ void LogManager::ShowLog()
 	cin.ignore();
 }
 
-void LogManager::Append(const string& str, int delay)
+void LogManager::Append(const string& str, float delaySecond)
 {
-	logVec.push_back({ str, delay });
+	logVec.push_back({ str, delaySecond });
 }
 
 void LogManager::Draw(EDraw draw)

@@ -16,14 +16,14 @@ public:
 private:
 	static LogManager instance;
 
-	std::vector<std::pair<std::string, int>> logVec;
+	std::vector<std::pair<std::string, float>> logVec;
 
 public:
 	static LogManager& Get() { return instance; }
 
 	void ShowStatus();
 	void ShowLog(); 
-	void Append(const std::string& str, int delay = 0);
+	void Append(const std::string& str, float delay = .0f);
 	void Draw(EDraw draw);
 	void Clear();
 
