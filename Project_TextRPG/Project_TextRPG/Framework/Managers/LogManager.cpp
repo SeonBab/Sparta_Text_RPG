@@ -26,6 +26,10 @@ void LogManager::ShowLog()
 		cout << log.first << endl;
 		if (log.second > 0) Sleep(log.second);
 	}
+
+	//system("pause");
+	cin.ignore();
+	cin.ignore();
 }
 
 void LogManager::Append(const string& str, int delay)
@@ -36,6 +40,11 @@ void LogManager::Append(const string& str, int delay)
 void LogManager::Draw(EDraw draw)
 {
 
+}
+
+void LogManager::Clear()
+{
+	logVec.clear();
 }
 
 

@@ -1,6 +1,7 @@
 ﻿#include "Framework.h"
 #include <iostream>
 
+#include "Framework/Managers/LogManager.h"
 #include "Monster/Monster.h"
 
 void MainGame::Init()
@@ -30,11 +31,17 @@ void MainGame::Tick()
 {
     // Console Clear
     system("cls");
+    LogManager::Get().Clear();
     
+    // 유저 입력 이전에 떠야함
+    LogManager::Get().ShowStatus();
+
     GenerateMonsterDefs();
     DisplayChoices();
     Select();
     
+    LogManager::Get().ShowLog();
+
     // BattleManager->CreateMonsterFromDef
     // BattleManager->Battle
     // 분기 1. Battle()
@@ -48,8 +55,6 @@ void MainGame::Tick()
     // 분기 2. Shop()
     // 선택지
     // while(bExit)
-    
-    // DisplayBuffer();
     
     // Status 출력
 
@@ -89,26 +94,6 @@ void MainGame::OnGameEnded()
     else if(EndType == EEndType::Win)
     {
         cout << "You Win!!!" << "\n";
-    }
-}
-
-void MainGame::ClearBuffer()
-{
-    Buffer.clear();
-}
-
-void MainGame::AddStringToBuffer(const string& InString)
-{
-    Buffer.push_back(InString);
-}
-
-void MainGame::DisplayBuffer(bool bClear)
-{
-    system("cls");
-    
-    for(auto& String : Buffer)
-    {
-        cout << String << "\n";
     }
 }
 

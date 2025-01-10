@@ -25,6 +25,7 @@ public:
 	void ShowLog(); 
 	void Append(const std::string& str, int delay = 0);
 	void Draw(EDraw draw);
+	void Clear();
 
 private:
 	void MoveCursor(int x, int y);
