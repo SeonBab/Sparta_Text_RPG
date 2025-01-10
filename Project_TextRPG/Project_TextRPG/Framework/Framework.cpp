@@ -1,32 +1,15 @@
 ﻿#include "Framework.h"
 #include <iostream>
-#include <windows.h>
-
-#include "Framework/Managers/LogManager.h"
 
 #include "Monster/Monster.h"
-
 
 void MainGame::Init()
 {
     srand((unsigned int)time(NULL));
 }
 
-void MainGame::Tick()
+void MainGame::Select()
 {
-    // Console Clear
-    system("cls");
-    
-    GenerateMonster();
-    cout << Monsters.size() + 1 << ". " << "Shop";
-    cout << "\n";
-    // cout << 선택지 - 몬스터 여러 개, 상점
-
-    //스탯 출력
-    LogManager::Get().ShowStatus();
-    LogManager::Get().Draw(LogManager::EDraw::Fight);
-    
-    // cin >> 내 선택지 ( valid할 때 까지)
     int Idx = 0;
     while(true)
     {
@@ -41,6 +24,16 @@ void MainGame::Tick()
             cout << "Not Valid" << "\n";
         }
     }
+}
+
+void MainGame::Tick()
+{
+    // Console Clear
+    system("cls");
+    
+    GenerateMonsterDefs();
+    DisplayChoices();
+    Select();
     
     // BattleManager->CreateMonsterFromDef
     // BattleManager->Battle
@@ -55,8 +48,8 @@ void MainGame::Tick()
     // 분기 2. Shop()
     // 선택지
     // while(bExit)
-
-    LogManager::Get().ShowLog();
+    
+    // DisplayBuffer();
     
     // Status 출력
 
@@ -73,11 +66,13 @@ MainGame& MainGame::Get()
     return Game;
 }
 
-void MainGame::GenerateMonster()
+
+void MainGame::GenerateMonsterDefs()
 {
     Monsters.clear();
-    
-    Monsters.resize(rand() % MonsterNum);
+
+    int ClampedNum = min(MaxMonsterNum, max(rand() % (MaxMonsterNum + 1), MinMonsterNum));
+    Monsters.resize(ClampedNum);
     for(int i = 0 ; i < Monsters.size(); ++i)
     {
         Monsters[i] = make_unique<MonsterDef>();
@@ -95,4 +90,35 @@ void MainGame::OnGameEnded()
     {
         cout << "You Win!!!" << "\n";
     }
+}
+
+void MainGame::ClearBuffer()
+{
+    Buffer.clear();
+}
+
+void MainGame::AddStringToBuffer(const string& InString)
+{
+    Buffer.push_back(InString);
+}
+
+void MainGame::DisplayBuffer(bool bClear)
+{
+    system("cls");
+    
+    for(auto& String : Buffer)
+    {
+        cout << String << "\n";
+    }
+}
+
+void MainGame::DisplayChoices()
+{
+    for(int i = 0 ; i < Monsters.size(); ++i)
+    {
+        cout << i + 1 << "." << Monsters[i].get()->GetName() << "  ";
+    }
+
+    cout << Monsters.size() + 1 << ". " << "Shop";
+    cout << "\n";
 }

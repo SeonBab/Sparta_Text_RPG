@@ -3,9 +3,6 @@
 #include <vector>
 #include <string>
 
-#include "Framework/Managers/BattleManager.h"
-#include "Framework/Managers/ShopManager.h"
-
 using namespace std;
 
 enum class EEndType
@@ -41,7 +38,7 @@ public:
 
     static MainGame& Get();
 
-    void GenerateMonster();
+    void GenerateMonsterDefs();
 
     void SetGameEnded(bool InIsGameEnded){bIsGameEnded = InIsGameEnded;}
     
@@ -53,11 +50,23 @@ public:
 
     EEndType EndType = EEndType::None;
     
-private:
-    BattleManager m_BattleManager;
-    ShopManager m_ShopManager;
+    void ClearBuffer();
+    
+    void AddStringToBuffer(const string& InString);
+    
+    void DisplayBuffer(bool bClear = false);
 
-    unsigned int MonsterNum = 4;
+    void DisplayChoices();
+
+    void Select();
+    
+private:
+
+    // Buffer System 쓰려면 여기다 추가 삭제만
+    vector<string> Buffer;
+
+    unsigned int MaxMonsterNum = 5;
+    unsigned int MinMonsterNum = 2;
 
     bool bIsGameEnded = false;
 
