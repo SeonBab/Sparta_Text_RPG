@@ -4,7 +4,7 @@
 #include <string>
 
 using namespace std;
-
+class Monster;
 enum class EEndType
 {
     Win,
@@ -54,7 +54,7 @@ public:
 
     static MainGame& Get();
 
-    void GenerateMonsterDefs();
+    void CreateMonster();
 
     void SetGameEnded(bool InIsGameEnded){bIsGameEnded = InIsGameEnded;}
     
@@ -62,7 +62,7 @@ public:
     
     void OnGameEnded();
 
-    vector<unique_ptr<Entity>> Monsters;
+    vector<unique_ptr<Monster>> Monsters;
 
     EEndType EndType = EEndType::None;
     
@@ -70,11 +70,23 @@ public:
 
     void Select();
     
+    int RandRange(int Start, int End);
 private:
-    unsigned int MaxMonsterNum = 5;
-    unsigned int MinMonsterNum = 2;
+
+    // Monster //
+    const unsigned int MaxMonsterNum = 5;
+
+    const unsigned int MinMonsterNum = 2;
+
+    const unsigned int MaxMonsterTypeRange = 3; // Monster 클래스에 보스를 제외하고 슬라임 고블린 오크 3가지 존재
+
+    const unsigned int MaxPlayerLevel = 10; // 10 레벨 달성시 Boss 몬스터와 전투
 
     bool bIsGameEnded = false;
+
+    int PlayerChoice = 0;
+    
+    
 
     MainGame() = default;
 };
