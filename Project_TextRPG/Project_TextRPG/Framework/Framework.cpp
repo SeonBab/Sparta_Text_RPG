@@ -45,7 +45,14 @@ void MainGame::Tick()
     if (MaxPlayerLevel == Player::GetInstance()->GetLevel())
     {
         unique_ptr<Monster> BossMonster = make_unique<Monster>(10, 4);
-        BattleManager::Get().Battle(BossMonster.get(), Player::GetInstance());
+        if (BattleManager::Get().Battle(BossMonster.get(), Player::GetInstance()))
+        {
+            EndType = EEndType::Win;
+        }
+        else
+        {
+            EndType = EEndType::Lose;
+        }
     }
 
     CreateMonster();
@@ -54,7 +61,10 @@ void MainGame::Tick()
     
     LogManager::Get().Pause();
 
-    BattleManager::Get().Battle(Monsters[PlayerChoice].get(), Player::GetInstance());
+    if (!BattleManager::Get().Battle(Monsters[PlayerChoice].get(), Player::GetInstance()))
+    {
+        EndType = EEndType::Lose;
+    }
     
 
     // system.pause(), delay()
