@@ -1,10 +1,10 @@
 ﻿#include "Framework.h"
 #include <iostream>
 #include <random>
-#include "Framework/Managers/LogManager.h"
-#include "Monster/Monster.h"
-#include "Framework/Managers/ShopManager.h"
-#include "Framework/Managers/BattleManager.h"
+#include "../Framework/Managers/LogManager.h"
+#include "../Monster/Monster.h"
+#include "../Framework/Managers/ShopManager.h"
+#include "../Framework/Managers/BattleManager.h"
 
 void MainGame::Init()
 {
@@ -98,6 +98,7 @@ void MainGame::CreateMonster()
     Monsters.clear();
     //int ClampedNum = min(MaxMonsterNum, max(rand() % (MaxMonsterNum + 1), MinMonsterNum));
 
+    // 2~5마리의 몬스터 배열 생성
     const int RandMonstersArrSize = RandRange(MinMonsterNum, MaxMonsterNum);
     Monsters.resize(RandMonstersArrSize);
 
@@ -105,7 +106,11 @@ void MainGame::CreateMonster()
     {
         // 슬라임 고블린 오크중 무작위 생성
         const int RandMonsterType = RandRange(0, MaxMonsterTypeRange);
-        Monsters[i] = make_unique<Monster>(Player::GetInstance()->GetLevel(), RandMonsterType);
+
+        // 몬스터 정보 계산
+        MonsterInfo info = Monster::createMonsterInfo(Player::GetInstance()->GetLevel(), RandMonsterType);
+
+        Monsters[i] = make_unique<Monster>(info.name, info.hp, info.damage, RandMonsterType);
     }
 }
 
