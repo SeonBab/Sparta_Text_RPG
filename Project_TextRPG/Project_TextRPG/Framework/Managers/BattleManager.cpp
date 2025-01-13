@@ -29,7 +29,11 @@ bool BattleManager::Battle(Monster* SelectedMonster, Player* Player)
     // 클리어 보상 //  
     int Gold = 10;
     int Exp = 50;
-
+    // 전투 시작전 30% 확률로 아이템 사용
+    if (RandRange(1, 100) <= 30)
+    {
+        // Player->UseItem();
+    }
     while (true)
     {
         if (PlayerHP)
@@ -56,12 +60,6 @@ bool BattleManager::Battle(Monster* SelectedMonster, Player* Player)
             break;
         }
 
-        // 30% 확률로 아이템 사용
-        if (RandRange(1, 100) <= 30)
-        {
-            // UseItem(Player->GetInventory());
-        }
-
         std::cout << "몬스터 " << MonsterName << " 등장! 체력:" << MonsterHP << ", 공격력: " << MonsterDamage << '\n';
 
         // 플레이어 선공
@@ -81,20 +79,4 @@ int BattleManager::RandRange(int start, int end)
     std::mt19937 gen(rd());
     std::uniform_int_distribution<int> dis(start, end);
     return dis(gen);
-}
-
-// Player쪽(지훈님)하고 Item쪽(선국님)에서 인벤토리 타입이 아직 통일되지 않음
-// ItemList에서는 vector<std::shared_ptr<Item>으로 사용하는거 같은데 Player쪽에서는 unordered_map<string, int>로 되어있어서 구현 보류함
-//void BattleManager::UseItem(std::vector<Item*>& Inventory)
-//{
-//    if (!Inventory.empty())
-//    {
-//
-//
-//    }
-//}
-
-bool BattleManager::IsPlayerMaxLevel(int PlayerLevel)
-{
-    return MaxPlayerLevel == PlayerLevel;
 }
