@@ -45,13 +45,16 @@ void MainGame::Tick()
         MonsterInfo info = Monster::CreateMonsterInfo(Player::GetInstance()->GetLevel(), 4);
 
         unique_ptr<Monster> BossMonster = make_unique<Monster>(info.name, info.hp, info.damage, 4);
+        // 보스 몬스터에게 이기거나 플레이어가 죽은 경우 이후 게임 로직을 더이상 처리하지 않고 게임을 종료
         if (BattleManager::Get().Battle(BossMonster.get(), Player::GetInstance()))
         {
             EndType = EEndType::Win;
+            OnGameEnded();
         }
         else
         {
             EndType = EEndType::Lose;
+            OnGameEnded();
         }
     }
 
@@ -63,7 +66,9 @@ void MainGame::Tick()
 
     if (!BattleManager::Get().Battle(Monsters[PlayerChoice].get(), Player::GetInstance()))
     {
+        //플레이어가 죽은 경우 이후 게임 로직을 더이상 처리하지 않고 게임을 종료
         EndType = EEndType::Lose;
+        OnGameEnded();
     }
     
 
@@ -78,12 +83,6 @@ void MainGame::Tick()
     // while(bExit)
     
     // Status 출력
-
-    // Game 출력
-    if(bIsGameEnded)
-    {
-        OnGameEnded();
-    }
 }
 
 MainGame& MainGame::Get()
