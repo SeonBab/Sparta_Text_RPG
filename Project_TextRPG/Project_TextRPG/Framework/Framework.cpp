@@ -9,6 +9,7 @@
 void MainGame::Init()
 {
     srand((unsigned int)time(NULL));
+    LogManager::Get().RunStatusThread();
 }
 
 void MainGame::Select()
@@ -36,11 +37,8 @@ void MainGame::Select()
 void MainGame::Tick()
 {
     // Console Clear
-    system("cls");
+    LogManager::Get().Clear();
     
-    // 유저 입력 이전에 떠야함
-    LogManager::Get().ShowStatus();
-
     // 10레벨 달성시 보스 몬스터와 강제 전투이므로 DisplayChoices() 함수 앞에 와야함
     if (MaxPlayerLevel == Player::GetInstance()->GetLevel())
     {
@@ -119,6 +117,8 @@ void MainGame::OnGameEnded()
     {
         cout << "You Win!!!" << "\n";
     }
+
+    LogManager::Get().StopStatusThread();
 }
 
 void MainGame::DisplayChoices()
