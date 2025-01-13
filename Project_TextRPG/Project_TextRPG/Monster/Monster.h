@@ -16,7 +16,7 @@ public:
     Monster(string name, int maxHP, int damage, int difficulty);
 
     // 몬스터 이름, HP, Damage 값을 생성하는 함수
-    static MonsterInfo createMonsterInfo(int player_level, int difficulty);
+    static MonsterInfo CreateMonsterInfo(int player_level, int difficulty);
 
     // 데미지 처리 함수 : 입력값 만큼 몬스터 체력 차감
     void TakeDamage(int Damage);

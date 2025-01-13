@@ -9,7 +9,7 @@ Monster::Monster(std::string name, int maxHP, int damage, int difficulty)
 }
 
 // 몬스터 이름, HP, Damage 값을 생성하는 함수
-MonsterInfo Monster::createMonsterInfo(int player_level, int difficulty) {
+MonsterInfo Monster::CreateMonsterInfo(int player_level, int difficulty) {
     MonsterInfo info;
 
     if (difficulty == 4) { // 보스 몬스터

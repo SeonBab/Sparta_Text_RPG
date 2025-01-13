@@ -106,7 +106,7 @@ void MainGame::CreateMonster()
         const int RandMonsterType = RandRange(0, MaxMonsterTypeRange);
 
         // 몬스터 정보 계산
-        MonsterInfo info = Monster::createMonsterInfo(Player::GetInstance()->GetLevel(), RandMonsterType);
+        MonsterInfo info = Monster::CreateMonsterInfo(Player::GetInstance()->GetLevel(), RandMonsterType);
 
         Monsters[i] = make_unique<Monster>(info.name, info.hp, info.damage, RandMonsterType);
     }
