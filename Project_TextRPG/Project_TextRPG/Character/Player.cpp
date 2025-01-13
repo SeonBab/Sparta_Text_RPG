@@ -1,5 +1,8 @@
 #include "Player.h"
 
+Player* Player::instance;
+
+
 Player::Player(string name) : Entity(name, 200, 30)
 {
     Level = 1;

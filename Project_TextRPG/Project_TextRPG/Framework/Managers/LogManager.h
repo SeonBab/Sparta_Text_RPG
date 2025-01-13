@@ -19,7 +19,7 @@ public:
 private:
 	static LogManager instance;
 
-	int statusShowLine = -1;
+	int statusShowLine = 0;		//갱신될 라인의 넘버
 	std::thread statusThread;
 
 public:
@@ -40,6 +40,7 @@ private:
 	void DisableInput();
 	void MoveCursor(int x, int y);
 	void ShowCursor(bool value);
+	void ReadBMP(const std::string& filename);
 
 	LogManager() = default;
 };
