@@ -2,39 +2,40 @@
 #include "Monster.h"
 #include <iostream>
 
-// Entity 생성자 필요시 작성 필
+// Entity의 생성자를 호출하는 Monster 생성자
+Monster::Monster(std::string name, int maxHP, int damage, int difficulty)
+    : Entity(name, maxHP, damage), difficulty(difficulty) {
+    std::cout << "몬스터 이름: " << Name << ", 체력: " << HP << ", 공격력: " << Damage << ", 난이도: " << difficulty << std::endl;
+}
 
-Monster::Monster(int player_level, int difficulty) {
+// 몬스터 이름, HP, Damage 값을 생성하는 함수
+MonsterInfo Monster::createMonsterInfo(int player_level, int difficulty) {
+    MonsterInfo info;
 
-    this->difficulty = difficulty;  // 전달받은 난이도 값을 멤버 변수에 저장
-
-    if (difficulty == 4) // 보스 몬스터
-    {
-        Name = "Boss Monster";
-        HP = (rand() % 16 + 30) * player_level;  // (30~45) * 플레이어 레벨
-        Damage = (rand() % 6 + 8) * player_level;    // (8~13) * 플레이어 레벨
+    if (difficulty == 4) { // 보스 몬스터
+        info.name = "Boss";
+        info.hp = (rand() % 16 + 30) * player_level;  // (30~45) * 플레이어 레벨
+        info.damage = (rand() % 6 + 8) * player_level;    // (8~13) * 플레이어 레벨
     }
-    else // 일반 몬스터
-    {
-        // 난이도에 따른 몬스터 체력과 공격력 설정
+    else { // 일반 몬스터
         if (difficulty == 1) { // 쉬움
-            Name = "Slime";
-            HP = (rand() % 11 + 20) * player_level;  // (20~30) * 플레이어 레벨
-            Damage = (rand() % 6 + 5) * player_level;    // (5~10) * 플레이어 레벨
+            info.name = "Slime";
+            info.hp = (rand() % 11 + 20) * player_level;  // (20~30) * 플레이어 레벨
+            info.damage = (rand() % 6 + 5) * player_level;    // (5~10) * 플레이어 레벨
         }
         else if (difficulty == 2) { // 보통
-            Name = "Goblin";
-            HP = (rand() % 11 + 22) * player_level;  // (22~32) * 플레이어 레벨
-            Damage = (rand() % 6 + 6) * player_level;    // (6~11) * 플레이어 레벨
+            info.name = "Goblin";
+            info.hp = (rand() % 11 + 22) * player_level;  // (22~32) * 플레이어 레벨
+            info.damage = (rand() % 6 + 6) * player_level;    // (6~11) * 플레이어 레벨
         }
         else if (difficulty == 3) { // 어려움
-            Name = "Oak";
-            HP = (rand() % 11 + 25) * player_level;  // (25~35) * 플레이어 레벨
-            Damage = (rand() % 6 + 7) * player_level;    // (7~12) * 플레이어 레벨
+            info.name = "Oak";
+            info.hp = (rand() % 11 + 25) * player_level;  // (25~35) * 플레이어 레벨
+            info.damage = (rand() % 6 + 7) * player_level;    // (7~12) * 플레이어 레벨
         }
     }
 
-    cout << "몬스터 이름: " << Name << ", 체력: " << HP << ", 공격력: " << Damage << endl;
+    return info; // 계산된 몬스터 정보 반환
 }
 
 // 몬스터 데미지 처리 함수
