@@ -42,7 +42,9 @@ void MainGame::Tick()
     // 10레벨 달성시 보스 몬스터와 강제 전투이므로 DisplayChoices() 함수 앞에 와야함
     if (MaxPlayerLevel == Player::GetInstance()->GetLevel())
     {
-        unique_ptr<Monster> BossMonster = make_unique<Monster>(10, 4);
+        MonsterInfo info = Monster::CreateMonsterInfo(Player::GetInstance()->GetLevel(), 4);
+
+        unique_ptr<Monster> BossMonster = make_unique<Monster>(info.name, info.hp, info.damage, 4);
         if (BattleManager::Get().Battle(BossMonster.get(), Player::GetInstance()))
         {
             EndType = EEndType::Win;
