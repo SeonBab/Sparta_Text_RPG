@@ -1,0 +1,150 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;c++;cppm;ixx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;h++;hm;inl;inc;ipp;xsd</Extensions>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="Interface Files">
+      <UniqueIdentifier>{fca98dc8-c994-46ba-841b-2b1947f55bed}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Monster Header Files">
+      <UniqueIdentifier>{faca23d4-dab5-4162-ab6c-6c84a86201ea}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Monster CPP Files">
+      <UniqueIdentifier>{8d0d52f7-b036-464d-9e3c-1c0f17410ed5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Item Header Files">
+      <UniqueIdentifier>{0f7b4159-8381-406d-b9ab-7949d5ed65c5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Item CPP Files">
+      <UniqueIdentifier>{c9e8c397-e6b4-4a87-9e1c-2da65abe5f81}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="FrameWorks">
+      <UniqueIdentifier>{a07aecee-33ad-40e2-ac44-b2c8351daeee}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="FrameWorks\Managers">
+      <UniqueIdentifier>{d3c3b6d1-aac4-477f-975d-26e12e5ed4b6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Stage Files">
+      <UniqueIdentifier>{a143833c-0288-4a4c-be36-72f0c185c86e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Selectable File">
+      <UniqueIdentifier>{bd10ffe9-b422-45ea-9d89-9605a0939efa}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="main.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Shop.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Character.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="BossMonster.cpp">
+      <Filter>Source Files\Monster CPP Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Goblin.cpp">
+      <Filter>Source Files\Monster CPP Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Orc.cpp">
+      <Filter>Source Files\Monster CPP Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Troll.cpp">
+      <Filter>Source Files\Monster CPP Files</Filter>
+    </ClCompile>
+    <ClCompile Include="HealthPotion.cpp">
+      <Filter>Source Files\Item CPP Files</Filter>
+    </ClCompile>
+    <ClCompile Include="AttackBoost.cpp">
+      <Filter>Source Files\Item CPP Files</Filter>
+    </ClCompile>
+    <ClCompile Include="FrameWorks.cpp">
+      <Filter>FrameWorks</Filter>
+    </ClCompile>
+    <ClCompile Include="StageManager.cpp">
+      <Filter>FrameWorks\Managers</Filter>
+    </ClCompile>
+    <ClCompile Include="EventManager.cpp">
+      <Filter>FrameWorks\Managers</Filter>
+    </ClCompile>
+    <ClCompile Include="Stage.cpp">
+      <Filter>Stage Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Stage_Start.cpp">
+      <Filter>Stage Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Selectable.cpp">
+      <Filter>Selectable File</Filter>
+    </ClCompile>
+    <ClCompile Include="Selectable_Start.cpp">
+      <Filter>Selectable File</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Shop.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="GameManager.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Character.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="IItem.h">
+      <Filter>Interface Files</Filter>
+    </ClInclude>
+    <ClInclude Include="IMonster.h">
+      <Filter>Interface Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Goblin.h">
+      <Filter>Header Files\Monster Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Orc.h">
+      <Filter>Header Files\Monster Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Troll.h">
+      <Filter>Header Files\Monster Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="BossMonster.h">
+      <Filter>Header Files\Monster Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="AttackBoost.h">
+      <Filter>Header Files\Item Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="HealthPotion.h">
+      <Filter>Header Files\Item Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="FrameWorks.h">
+      <Filter>FrameWorks</Filter>
+    </ClInclude>
+    <ClInclude Include="StageManager.h">
+      <Filter>FrameWorks\Managers</Filter>
+    </ClInclude>
+    <ClInclude Include="EventManager.h">
+      <Filter>FrameWorks\Managers</Filter>
+    </ClInclude>
+    <ClInclude Include="Stage.h">
+      <Filter>Stage Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Stage_Start.h">
+      <Filter>Stage Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Selectable.h">
+      <Filter>Selectable File</Filter>
+    </ClInclude>
+    <ClInclude Include="Selectable_Start.h">
+      <Filter>Selectable File</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>
