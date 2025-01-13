@@ -43,6 +43,14 @@ public:
 
     void SellItem(string itemName, int itemPrice, int count);
 
+    int GetGold();
+
+    void SetGold(int Gold);
+
+    int GetLevel();
+
+    int GetExp();
+
 };
 
 
