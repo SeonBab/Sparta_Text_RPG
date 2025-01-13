@@ -3,8 +3,8 @@
 #include <iostream>
 
 // Entity의 생성자를 호출하는 Monster 생성자
-Monster::Monster(std::string name, int maxHP, int damage, int difficulty)
-    : Entity(name, maxHP, damage), difficulty(difficulty) {
+Monster::Monster(std::string name, int HP, int damage, int difficulty)
+    : Entity(name, HP, damage), difficulty(difficulty) {
     std::cout << "몬스터 이름: " << Name << ", 체력: " << HP << ", 공격력: " << Damage << ", 난이도: " << difficulty << std::endl;
 }
 
