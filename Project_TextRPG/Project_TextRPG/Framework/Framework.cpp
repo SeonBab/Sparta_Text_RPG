@@ -61,7 +61,7 @@ void MainGame::Tick()
     
     LogManager::Get().Pause();
 
-    if (!BattleManager::Get().Battle(Monsters[PlayerChoice].get(), Player::GetInstance()))
+    if (!BattleManager::Get().Battle(Monsters[PlayerChoice - 1].get(), Player::GetInstance()))
     {
         EndType = EEndType::Lose;
     }
