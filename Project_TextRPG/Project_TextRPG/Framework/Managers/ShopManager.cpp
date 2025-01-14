@@ -181,7 +181,7 @@ void ShopManager::PrintShopSell()
 	std::vector<std::string> InvItems;
 	for (pair<string, int> e : CurInv)
 	{
-		std::cout << InvItems.size() + 1 << "번 " << e.first << "의 가격: " << CurList.GetItem(e.first)->GetGoldCost() << std::endl;
+		std::cout << InvItems.size() + 1 << "번 " << e.first << " 현재 " << e.second << "개 있습니다. " << "1개당 가격: " << CurList.GetItem(e.first)->GetGoldCost() << std::endl;
 		InvItems.push_back(e.first);
 	}
 

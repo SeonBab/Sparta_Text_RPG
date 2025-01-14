@@ -77,7 +77,7 @@ public:
 private:
     ItemList()
     {
-        Items.push_back(std::make_unique<HealthPotion>());
-        Items.push_back(std::make_unique<AttackBoost>());
+        Items.push_back(std::make_shared<HealthPotion>());
+        Items.push_back(std::make_shared<AttackBoost>());
     }
 };
