@@ -13,9 +13,6 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
-    <Filter Include="Source Files\Character">
-      <UniqueIdentifier>{c4b1526d-89b1-48f6-b300-73591e42285e}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Header Files\Monster">
       <UniqueIdentifier>{1b047a9f-02c4-4230-90cd-56446b15c285}</UniqueIdentifier>
     </Filter>
@@ -37,6 +34,9 @@
     <Filter Include="Header Files\Player">
       <UniqueIdentifier>{408f28ea-953b-46d5-a683-332d711be726}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Player">
+      <UniqueIdentifier>{c4b1526d-89b1-48f6-b300-73591e42285e}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Project_TextRPG.cpp">
@@ -54,14 +54,14 @@
     <ClCompile Include="Framework\Managers\ShopManager.cpp">
       <Filter>Source Files\Framework\Manager</Filter>
     </ClCompile>
-    <ClCompile Include="Character\Player.cpp">
-      <Filter>Source Files\Character</Filter>
-    </ClCompile>
     <ClCompile Include="Monster\Monster.cpp">
       <Filter>Source Files\Monster</Filter>
     </ClCompile>
     <ClCompile Include="Framework\Framework.cpp">
       <Filter>Source Files\Framework</Filter>
+    </ClCompile>
+    <ClCompile Include="Player\Player.cpp">
+      <Filter>Source Files\Player</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -77,14 +77,14 @@
     <ClInclude Include="Framework\Managers\ShopManager.h">
       <Filter>Header Files\Framework\Manager</Filter>
     </ClInclude>
-    <ClInclude Include="Character\Player.h">
-      <Filter>Header Files\Player</Filter>
-    </ClInclude>
     <ClInclude Include="Monster\Monster.h">
       <Filter>Header Files\Monster</Filter>
     </ClInclude>
     <ClInclude Include="Framework\Framework.h">
       <Filter>Header Files\Framework</Filter>
+    </ClInclude>
+    <ClInclude Include="Player\Player.h">
+      <Filter>Header Files\Player</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
