@@ -33,12 +33,19 @@ bool BattleManager::Battle(Monster* SelectedMonster, Player* Player)
     // 전투 시작전 30% 확률로 아이템 사용
     if (ItemUseProb >= RandRange(1, 100))
     {
+        // 플레이어 클래스의 인벤토리에 직접 접근하는 것으로 변경됨
         auto Items = ItemList::GetInstance().GetItems();
+        <<<<<< < Updated upstream
 
-        // ItemList에서 랜덤으로 하나 사용
-        const int RandItemIdx = RandRange(0, Items.size());
-        Items[RandItemIdx]->Use(); // [지훈] 이렇게 하면 인벤토리 목록에 상관없이 아이템이 사용되는 것 같습니다.
-		                           // [지훈] 아이템 사용시 인벤토리에 재고가 있는 아이템 중 랜덤하게 사용하도록 하면 될 것 같습니다.
+            // ItemList에서 랜덤으로 하나 사용
+            const int RandItemIdx = RandRange(0, Items.size());
+        Items[RandItemIdx]->Use();
+        ====== =
+            // Items 클래스에 있는 종류중에 한가지 사용
+            int ItemType = RandRange(0, Items.size() - 1);
+        Player->UseItem(Items[ItemType].get()->GetName());
+
+        >>>>>> > Stashed changes
     }
     while (true)
     {
@@ -60,24 +67,20 @@ bool BattleManager::Battle(Monster* SelectedMonster, Player* Player)
 
             Player->UpdateExp(Exp);
 
-            // [지훈] 아이템 드랍은 AddItem으로 단순하게 사용하시면 됩니다.
             if (ItemDropProb >= RandRange(0, 100)) // Drop Item
             {
                 const int RandItemIdx = RandRange(0, 1); // 지금은 아이템 2개. 아이템 타입 종류가 총 몇개인지 Item클래스에서 건네받는게 좋아보임
                 switch (RandItemIdx)
                 {
                 case 0: // HealthPortion
-                                                // Item 클래스를 넘기지 않기로 회의함.
-                                                //std::shared_ptr<Item> Item = std::make_unique<HealthPotion>();
-                                                //std::cout << Item->GetName() << " 아이템 획득! \n";
                     std::cout << "HealthPotion 아이템 획득! \n";
                     Player->AddItem("HealthPotion", 1);
                     break;
 
                 case 1: // AttackBoost
-                    // AttackBoost는 바로 사용되게끔 설정
+                    // AttackBoost는 바로 사용되게끔 설정 -> AddItem하면 그쪽에서 바로 사용되게끔 변경됨
                     std::cout << "AttackBoost 아이템 획득! \n";
-                    Player->UseItem("AttackBoost");
+                    Player->AddItem("AttackBoost", 1);
                     break;
 
                 default:
