@@ -62,6 +62,8 @@ public:
 
     int GetExp();
 
+    unordered_map<string, int> GetInventory();
+
 };
 
 
