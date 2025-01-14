@@ -23,6 +23,8 @@ public:
 
     const int GetGoldCost() const { return GoldCost; }
 
+    const EItemUsageType GetUsageType() const { return UsageType; }
+
 private:
     std::string Name;
     int GoldCost;
