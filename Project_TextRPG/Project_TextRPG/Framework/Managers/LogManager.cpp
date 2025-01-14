@@ -3,7 +3,6 @@
 #include <windows.h>
 #include <mutex>
 #include <fstream>
-#include <vector>
 
 using namespace std;
 
@@ -36,6 +35,16 @@ LogManager& LogManager::Get()
 	return instance;
 }
 
+void LogManager::Append(const std::string& str, float delay)
+{
+	DeleteStatusLog();
+	cout << str << endl;
+	UpdateStatusLog();
+
+	if (delay > .0f)
+		Sleep(delay);
+}
+
 void LogManager::Pause()
 {
 	system("pause");
@@ -48,123 +57,45 @@ void LogManager::Clear()
 
 void LogManager::Draw(EDraw draw)
 {
-	CONSOLE_FONT_INFOEX cfi;
-	auto handle = GetStdHandle(STD_OUTPUT_HANDLE);
-
-	cfi.cbSize = sizeof(CONSOLE_FONT_INFOEX);
-	GetCurrentConsoleFontEx(handle, FALSE, &cfi);
-
-	COORD preFontSize = cfi.dwFontSize;
-
-	cfi.dwFontSize.X *= 0.7f;
-	cfi.dwFontSize.Y *= 0.7f;
-
-	//폰트 사이즈 조정
-	SetCurrentConsoleFontEx(handle, FALSE, &cfi);
-
-	//그림
-	{
-		if (draw == EDraw::Player)
-			ReadBMP("Character");
-	}
-
-	//이전 크기로 되돌림
-	cfi.dwFontSize = preFontSize;
-	SetCurrentConsoleFontEx(handle, FALSE, &cfi);
+	if (draw == EDraw::Player)
+		ReadBMP("Character.bmp");
 }
 
-void LogManager::RunStatusThread()
+void LogManager::DeleteStatusLog()
 {
-	statusThread = thread(&LogManager::ShowStatus, this);
-}
-
-void LogManager::StopStatusThread()
-{
-	statusThread.join();
-}
-
-
-void LogManager::EnableInput() {
-	HANDLE hInput = GetStdHandle(STD_INPUT_HANDLE);
-	DWORD mode = ENABLE_PROCESSED_INPUT | ENABLE_LINE_INPUT | ENABLE_ECHO_INPUT;
-	SetConsoleMode(hInput, mode);  // 기본 입력 모드로 복원
-}
-
-void LogManager::DisableInput() {
-	HANDLE hInput = GetStdHandle(STD_INPUT_HANDLE);
-	SetConsoleMode(hInput, 0);  // 모든 입력을 비활성화
-}
-
-
-void LogManager::ShowStatus()
-{
-	static mutex m;
-
 	// 콘솔 화면 버퍼 정보를 저장할 구조체
-	CONSOLE_SCREEN_BUFFER_INFO preCsbi;
-	GetConsoleScreenBufferInfo(GetStdHandle(STD_OUTPUT_HANDLE), &preCsbi);
+	CONSOLE_SCREEN_BUFFER_INFO csbi;
+	GetConsoleScreenBufferInfo(GetStdHandle(STD_OUTPUT_HANDLE), &csbi);
 
-	int width = preCsbi.srWindow.Right - preCsbi.srWindow.Left + 1;
+	COORD preCursorPos = csbi.dwCursorPosition;
+	int width = csbi.srWindow.Right - csbi.srWindow.Left + 1;
 	string clearLine(width, ' ');
 
-	while (true)
-	{
-		lock_guard<mutex> lock(m);
-
-		// 콘솔 화면 버퍼 정보를 저장할 구조체
-		CONSOLE_SCREEN_BUFFER_INFO csbi;
-		GetConsoleScreenBufferInfo(GetStdHandle(STD_OUTPUT_HANDLE), &csbi);
-
-		if (csbi.srWindow.Bottom < statusShowLine)
-		{
-			Sleep(10);
-			continue;
-		}
-
-		DisableInput();
-		COORD preCursorPos = csbi.dwCursorPosition;
-
-		//콘솔창 아랫쪽에 Log를 남기는 방식. 
-		/*
-		{
-			//기존 위치에 있던 로그 삭제
-			if (statusShowLine >= 0)
-			{
-				MoveCursor(0, statusShowLine);
-				cout << "                     " << endl;
-			}
-
-			//기본적으로 스탯창이 위치할 목표 위치
-			statusShowLine = csbi.srWindow.Bottom - 1;
-
-			//화면 내에 로그가 원래 뜨는 위치보다 길어지면 밑에 추가
-			if (statusShowLine <= csbi.dwCursorPosition.Y)
-				statusShowLine = csbi.dwCursorPosition.Y + 3;
-
-			MoveCursor(0, statusShowLine);
-			cout << "  플레이어 정보" << endl;
-		}
-		*/
-
-		//아래쪽에 추가로 Log를 붙여주는 방식
-		{
-			MoveCursor(0, statusShowLine);
-			for (int i = 0; i < 2; i++)
-				cout << clearLine << endl;
-
-			statusShowLine = csbi.dwCursorPosition.Y + 3;
-			MoveCursor(0, statusShowLine);
-			cout << "------------------------" << endl;
-			cout << "플레이어 정보";
-		}
-
-		//원래 있던 커서 위치
-		MoveCursor(preCursorPos.X, preCursorPos.Y);
-		EnableInput();
-
-		Sleep(10);
-	}
+	MoveCursor(0, statusShowLine);
+	cout << clearLine << endl;
+	cout << clearLine << endl;
+	MoveCursor(preCursorPos.X, preCursorPos.Y);
 }
+
+void LogManager::UpdateStatusLog()
+{
+	// 콘솔 화면 버퍼 정보를 저장할 구조체
+	CONSOLE_SCREEN_BUFFER_INFO csbi;
+	GetConsoleScreenBufferInfo(GetStdHandle(STD_OUTPUT_HANDLE), &csbi);
+
+	COORD preCursorPos = csbi.dwCursorPosition;
+
+	//Status가 출력될 줄
+	statusShowLine = csbi.dwCursorPosition.Y + 3;
+
+	MoveCursor(0, statusShowLine);
+	cout << "------------------------" << endl;
+	cout << "플레이어 정보";
+
+	//원래 있던 커서 위치
+	MoveCursor(preCursorPos.X, preCursorPos.Y);
+}
+
 
 void LogManager::MoveCursor(int x, int y)
 {

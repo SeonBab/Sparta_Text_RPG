@@ -9,7 +9,6 @@
 void MainGame::Init()
 {
     srand((unsigned int)time(NULL));
-    LogManager::Get().RunStatusThread();
 }
 
 void MainGame::Select()
@@ -58,7 +57,7 @@ void MainGame::Tick()
     CreateMonster();
     DisplayChoices();
     Select();
-    
+
     LogManager::Get().Pause();
 
     if (!BattleManager::Get().Battle(Monsters[PlayerChoice].get(), Player::GetInstance()))
@@ -125,7 +124,6 @@ void MainGame::OnGameEnded()
         cout << "You Win!!!" << "\n";
     }
 
-    LogManager::Get().StopStatusThread();
 }
 
 void MainGame::DisplayChoices()
