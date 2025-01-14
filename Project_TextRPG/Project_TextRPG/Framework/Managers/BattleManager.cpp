@@ -1,6 +1,7 @@
 ﻿#include "BattleManager.h"
 #include "Player/Player.h"
 #include "Monster/Monster.h"
+#include "Item.h"
 #include <random>
 #include <string>
 #include <vector>
@@ -29,7 +30,15 @@ bool BattleManager::Battle(Monster* SelectedMonster, Player* Player)
     // 클리어 보상 //  
     int Gold = 10;
     int Exp = 50;
+    // 전투 시작전 30% 확률로 아이템 사용
+    if (ItemUseProb >= RandRange(1, 100))
+    {
+        auto Items = ItemList::GetInstance().GetItems();
 
+        // ItemList에서 랜덤으로 하나 사용
+        const int RandItemIdx = RandRange(0, Items.size());
+        Items[RandItemIdx]->Use();
+    }
     while (true)
     {
         if (PlayerHP)
@@ -50,16 +59,34 @@ bool BattleManager::Battle(Monster* SelectedMonster, Player* Player)
 
             Player->UpdateExp(Exp);
 
+            if (ItemDropProb >= RandRange(0, 100)) // Drop Item
+            {
+                const int RandItemIdx = RandRange(0, 1); // 지금은 아이템 2개. 아이템 타입 종류가 총 몇개인지 Item클래스에서 건네받는게 좋아보임
+                switch (RandItemIdx)
+                {
+                case 0: // HealthPortion
+                                                // Item 클래스를 넘기지 않기로 회의함.
+                                                //std::shared_ptr<Item> Item = std::make_unique<HealthPotion>();
+                                                //std::cout << Item->GetName() << " 아이템 획득! \n";
+                    std::cout << "HealthPotion 아이템 획득! \n";
+                    Player->AddItem("HealthPotion", 1);
+                    break;
+
+                case 1: // AttackBoost
+                    // AttackBoost는 바로 사용되게끔 설정
+                    std::cout << "AttackBoost 아이템 획득! \n";
+                    Player->UseItem("AttackBoost");
+                    break;
+
+                default:
+                    break;
+                }
+            }
+
             std::cout << "플레이어가 " << Exp << " Exp와 " << Gold << " 골드를 획득했습니다. 현재 EXP:" << Player->GetExp() << '/100' <<
                 ", 골드: " << Player->GetGold() << '\n';
             bIsPlayerWon = true;
             break;
-        }
-
-        // 30% 확률로 아이템 사용
-        if (RandRange(1, 100) <= 30)
-        {
-            // UseItem(Player->GetInventory());
         }
 
         std::cout << "몬스터 " << MonsterName << " 등장! 체력:" << MonsterHP << ", 공격력: " << MonsterDamage << '\n';
@@ -81,20 +108,4 @@ int BattleManager::RandRange(int start, int end)
     std::mt19937 gen(rd());
     std::uniform_int_distribution<int> dis(start, end);
     return dis(gen);
-}
-
-// Player쪽(지훈님)하고 Item쪽(선국님)에서 인벤토리 타입이 아직 통일되지 않음
-// ItemList에서는 vector<std::shared_ptr<Item>으로 사용하는거 같은데 Player쪽에서는 unordered_map<string, int>로 되어있어서 구현 보류함
-//void BattleManager::UseItem(std::vector<Item*>& Inventory)
-//{
-//    if (!Inventory.empty())
-//    {
-//
-//
-//    }
-//}
-
-bool BattleManager::IsPlayerMaxLevel(int PlayerLevel)
-{
-    return MaxPlayerLevel == PlayerLevel;
 }
