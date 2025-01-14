@@ -2,13 +2,47 @@
 #include <iostream>
 #include <windows.h>
 #include <mutex>
+#include <fstream>
 
 using namespace std;
+
+// 구조체 패딩 방지
+// 이거 안하면 BMP 헤더 사이즈 안맞아서 해줘야함
+#pragma pack(push, 1) 
+struct BMPHeader
+{
+	USHORT fileType;    // 파일 타입 ("BM")
+	UINT fileSize;      // 전체 파일 크기
+	USHORT reserved1;   // 예약
+	USHORT reserved2;   // 예약
+	UINT offsetData;	// 픽셀 데이터의 시작 위치
+};
+
+struct BMPInfoHeader
+{
+	UINT size;			//헤더 크기
+	int width;          // 이미지의 가로 픽셀 수
+	int height;         // 이미지의 세로 픽셀 수
+	USHORT planes;      // 컬러 플레인 수 (항상 1)
+	USHORT bitCount;    // 비트 수 (24비트 BMP는 24)
+};
+#pragma pack(pop)
+
 
 LogManager& LogManager::Get()
 {
 	static LogManager instance;
 	return instance;
+}
+
+void LogManager::Append(const std::string& str, float delay)
+{
+	DeleteStatusLog();
+	cout << str << endl;
+	UpdateStatusLog();
+
+	if (delay > .0f)
+		Sleep(delay);
 }
 
 void LogManager::Pause()
@@ -23,89 +57,45 @@ void LogManager::Clear()
 
 void LogManager::Draw(EDraw draw)
 {
-
+	if (draw == EDraw::Player)
+		ReadBMP("Character.bmp");
 }
 
-void LogManager::RunStatusThread()
+void LogManager::DeleteStatusLog()
 {
-	statusThread = thread(&LogManager::ShowStatus, this);
+	// 콘솔 화면 버퍼 정보를 저장할 구조체
+	CONSOLE_SCREEN_BUFFER_INFO csbi;
+	GetConsoleScreenBufferInfo(GetStdHandle(STD_OUTPUT_HANDLE), &csbi);
+
+	COORD preCursorPos = csbi.dwCursorPosition;
+	int width = csbi.srWindow.Right - csbi.srWindow.Left + 1;
+	string clearLine(width, ' ');
+
+	MoveCursor(0, statusShowLine);
+	cout << clearLine << endl;
+	cout << clearLine << endl;
+	MoveCursor(preCursorPos.X, preCursorPos.Y);
 }
 
-void LogManager::StopStatusThread()
+void LogManager::UpdateStatusLog()
 {
-	statusThread.join();
+	// 콘솔 화면 버퍼 정보를 저장할 구조체
+	CONSOLE_SCREEN_BUFFER_INFO csbi;
+	GetConsoleScreenBufferInfo(GetStdHandle(STD_OUTPUT_HANDLE), &csbi);
+
+	COORD preCursorPos = csbi.dwCursorPosition;
+
+	//Status가 출력될 줄
+	statusShowLine = csbi.dwCursorPosition.Y + 3;
+
+	MoveCursor(0, statusShowLine);
+	cout << "------------------------" << endl;
+	cout << "플레이어 정보";
+
+	//원래 있던 커서 위치
+	MoveCursor(preCursorPos.X, preCursorPos.Y);
 }
 
-
-void LogManager::EnableInput() {
-	HANDLE hInput = GetStdHandle(STD_INPUT_HANDLE);
-	DWORD mode = ENABLE_PROCESSED_INPUT | ENABLE_LINE_INPUT | ENABLE_ECHO_INPUT;
-	SetConsoleMode(hInput, mode);  // 기본 입력 모드로 복원
-}
-
-void LogManager::DisableInput() {
-	HANDLE hInput = GetStdHandle(STD_INPUT_HANDLE);
-	SetConsoleMode(hInput, 0);  // 모든 입력을 비활성화
-}
-
-
-void LogManager::ShowStatus()
-{
-	static mutex m;
-
-	while (true)
-	{
-		lock_guard<mutex> lock(m);
-		DisableInput();
-
-		// 콘솔 화면 버퍼 정보를 저장할 구조체
-		CONSOLE_SCREEN_BUFFER_INFO csbi;
-		GetConsoleScreenBufferInfo(GetStdHandle(STD_OUTPUT_HANDLE), &csbi);
-
-		COORD preCursorPos = csbi.dwCursorPosition;
-
-		//콘솔창 아랫쪽에 Log를 남기는 방식.
-		/*
-		{
-			//기존 위치에 있던 로그 삭제
-			if (statusShowLine >= 0)
-			{
-				MoveCursor(0, statusShowLine);
-				cout << "                     " << endl;
-			}
-
-			//기본적으로 스탯창이 위치할 목표 위치
-			statusShowLine = csbi.srWindow.Bottom - 1;
-
-			//화면 내에 로그가 원래 뜨는 위치보다 길어지면 밑에 추가
-			if (statusShowLine <= csbi.dwCursorPosition.Y)
-				statusShowLine = csbi.dwCursorPosition.Y + 3;
-
-			MoveCursor(0, statusShowLine);
-			cout << "  플레이어 정보" << endl;
-		}
-		*/
-
-		//아래쪽에 추가로 Log를 붙여주는 방식
-		{
-			if (statusShowLine >= 0)
-			{
-				MoveCursor(0, statusShowLine);
-				cout << "                     " << endl;
-			}
-
-			statusShowLine = csbi.dwCursorPosition.Y + 3;
-			MoveCursor(0, statusShowLine);
-			cout << "플레이어 정보";
-		}
-
-		//원래 있던 커서 위치
-		MoveCursor(preCursorPos.X, preCursorPos.Y);
-		EnableInput();
-
-		Sleep(10);
-	}
-}
 
 void LogManager::MoveCursor(int x, int y)
 {
@@ -127,4 +117,65 @@ void LogManager::ShowCursor(bool value)
 	ConsoleCursor.dwSize = 1;
 
 	SetConsoleCursorInfo(hConsole, &ConsoleCursor);
+}
+
+void LogManager::ReadBMP(const std::string& filename)
+{
+	ifstream file(filename, ios::binary);
+	if (!file)
+	{
+		cerr << "Failed to open file: " << filename << endl;
+		return;
+	}
+
+	BMPHeader header;
+	BMPInfoHeader infoHeader;
+
+	// 헤더 읽기
+	file.read(reinterpret_cast<char*>(&header), sizeof(header));
+	file.read(reinterpret_cast<char*>(&infoHeader), sizeof(infoHeader));
+
+	if (header.fileType != 0x4D42)
+	{
+		std::cerr << "Not a BMP file." << std::endl;
+		return;
+	}
+
+	int rowSize = (infoHeader.bitCount * infoHeader.width + 31) / 32 * 4;
+	vector<UCHAR> row(rowSize);
+
+	// 픽셀 데이터 출력 (단순화된 출력)
+	file.seekg(header.offsetData, ios::beg);
+	cout << infoHeader.width << " " << infoHeader.height << endl;
+
+	bool** dot = new bool* [infoHeader.height];
+	for (int y = infoHeader.height - 1; y >= 0; y--)
+	{
+		dot[y] = new bool[infoHeader.width];
+
+		file.read(reinterpret_cast<char*>(row.data()), rowSize);
+		for (int x = 0; x < infoHeader.width; ++x)
+		{
+			UCHAR blue = row[x * 3];
+			//UCHAR green = row[x * 3 + 1];
+			//UCHAR red = row[x * 3 + 2];
+
+			//BMP는 그림이 아래부터 기록되있기 때문에 뒤집어 주기 위해서 배열에 넣어줌
+			dot[y][x] = blue != 255;
+		}
+	}
+
+	for (int y = 0; y < infoHeader.height; y++)
+	{
+		for (int x = 0; x < infoHeader.width; x++)
+			if (dot[y][x])
+				cout << "■";
+			else
+				cout << "□";
+
+		cout << endl;
+	}
+
+	file.close();
+
 }

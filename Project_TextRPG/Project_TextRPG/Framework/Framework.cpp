@@ -9,7 +9,6 @@
 void MainGame::Init()
 {
     srand((unsigned int)time(NULL));
-    LogManager::Get().RunStatusThread();
 }
 
 void MainGame::Select()
@@ -62,8 +61,6 @@ void MainGame::Tick()
     DisplayChoices();
     Select();
     
-    LogManager::Get().Pause();
-
     // 상점을 선택한 경우를 제외
     if (Monsters.size() >= PlayerChoice)
     {
@@ -73,6 +70,8 @@ void MainGame::Tick()
             OnGameEnded();
         }
     }
+
+    LogManager::Get().Pause();
 
     // system.pause(), delay()
     // Item 사용 - 알아서 하자.
@@ -128,7 +127,6 @@ void MainGame::OnGameEnded()
         bIsGameEnded = false;
     }
 
-    LogManager::Get().StopStatusThread();
 }
 
 void MainGame::DisplayChoices()
