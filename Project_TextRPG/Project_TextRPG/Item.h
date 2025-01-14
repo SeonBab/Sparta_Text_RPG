@@ -4,11 +4,18 @@
 #include <vector>
 #include <memory>
 
+enum class EItemUsageType
+{
+    Immediately,
+    Battle,
+    NONE,
+};
+
 class Item
 {
 public:
     Item() = delete;
-    Item(std::string Name, int GoldCost) : Name(Name), GoldCost(GoldCost) {}
+    Item(std::string ItemName, int ItemGoldCost, EItemUsageType ItemUsageType) : Name(ItemName), GoldCost(ItemGoldCost), UsageType(ItemUsageType) {}
 
     virtual void Use() = 0;
 
@@ -16,35 +23,28 @@ public:
 
     const int GetGoldCost() const { return GoldCost; }
 
+    const EItemUsageType GetUsageType() const { return UsageType; }
+
 private:
     std::string Name;
     int GoldCost;
+    EItemUsageType UsageType;
 };
 
 class HealthPotion : public Item
 {
 public:
-    HealthPotion() : Item("체력 포션", 10) { }
+    HealthPotion() : Item("체력 포션", 10, EItemUsageType::Battle) { }
 
-    virtual void Use() override
-    {
-        // TODO
-        // 플레이어 체력 회복되게
-        // 출력에 신호
-    }
+    virtual void Use() override;
 };
 
 class AttackBoost : public Item
 {
 public:
-    AttackBoost() : Item("공격력 부스트", 15) {}
+    AttackBoost() : Item("공격력 부스트", 15, EItemUsageType::Immediately) {}
     
-    virtual void Use() override
-    {
-        // TODO
-        // 플레이어 공격력이 오르게
-        // 출력에 신호
-    }
+    virtual void Use() override;
 };
 
 class ItemList
