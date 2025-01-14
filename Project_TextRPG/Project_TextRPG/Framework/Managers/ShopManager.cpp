@@ -235,8 +235,12 @@ void ShopManager::PrintShopSell()
 					return;
 				}
 
+				// 판매 가격을 구매 가격의 60%로
+				int SellPrice = CurList.GetItem(InvItems[ItemsIndex - 1])->GetGoldCost();
+				SellPrice *= 0.6;
+
 				// ItemsIndex를 1크게 입력 받으므로 1감소해서 접근
-				CurPlayer->SellItem(InvItems[ItemsIndex - 1], CurList.GetItem(InvItems[ItemsIndex - 1])->GetGoldCost(), ItemCount);
+				CurPlayer->SellItem(InvItems[ItemsIndex - 1], SellPrice, ItemCount);
 
 				LogManager::Get().Pause();
 

@@ -1,5 +1,4 @@
 ﻿#include "Player.h"
-#include "Player.h"
 #include "Item.h"
 
 Player* Player::instance;
@@ -35,9 +34,11 @@ void Player::UpdateExp(int expAmount)
 }
 
 void Player::LevelUp()
-{
-	Level++;
-	Exp -= 100;
+{ 
+    Level++;
+    HP = MaxHP;
+    std::cout << "플레이어 레벨업! 현재 레벨: " << Level << '\n';
+    Exp -= 100;
 }
 
 void Player::BuyItem(string itemName, int itemPrice, int count)

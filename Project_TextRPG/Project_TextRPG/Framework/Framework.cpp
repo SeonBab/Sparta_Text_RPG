@@ -28,13 +28,14 @@ void MainGame::Select()
 		{
 			if (Monsters.size() + 1 == PlayerChoice)
 			{
+				bBlockRegenerateMonster = true;
 				ShopManager::PrintShopMenu();
 			}
 			break;
 		}
 		else
 		{
-			cout << "Not Valid" << "\n";
+			LogManager::Get() << "Not Valid" << "\n";
 		}
 	}
 }
@@ -64,19 +65,27 @@ void MainGame::Tick()
 		}
 	}
 
-	CreateMonster();
-	DisplayChoices();
-	Select();
-
-	// 상점을 선택한 경우를 제외
-	if (Monsters.size() >= PlayerChoice)
-	{
-		if (!BattleManager::Get().Battle(Monsters[PlayerChoice - 1].get(), Player::GetInstance()))
-		{
-			EndType = EEndType::Lose;
-			OnGameEnded();
-		}
-	}
+    if (!bBlockRegenerateMonster) // 꼼수 방지. 상점 갔다 나온다고 몬스터가 다시 생성되면 안됨
+    {
+        CreateMonster();
+        bBlockRegenerateMonster = false;
+    }
+    DisplayChoices();
+    Select();
+    
+    // 상점을 선택한 경우를 제외
+    if (Monsters.size() >= PlayerChoice)
+    {
+        if (!BattleManager::Get().Battle(Monsters[PlayerChoice - 1].get(), Player::GetInstance()))
+        {
+            EndType = EEndType::Lose;
+            OnGameEnded();
+        }
+        else // 정상 전투
+        {
+            bBlockRegenerateMonster = false;
+        }
+    }
 
 	LogManager::Get().Pause();
 
@@ -123,14 +132,16 @@ void MainGame::CreateMonster()
 
 void MainGame::OnGameEnded()
 {
-	if (EndType == EEndType::Lose)
-	{
+    if(EndType == EEndType::Lose)
+    {
 		LogManager::Get() << "You Lose..." << "\n";
-	}
-	else if (EndType == EEndType::Win)
-	{
+        bIsGameEnded = true;
+    }
+    else if(EndType == EEndType::Win)
+    {
 		LogManager::Get() << "You Win!!!" << "\n";
-	}
+        bIsGameEnded = false;
+    }
 
 }
 
