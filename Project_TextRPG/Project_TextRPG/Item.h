@@ -53,7 +53,7 @@ private:
     std::vector<std::shared_ptr<Item>> Items;
 
 public:
-    static const ItemList& GetInatance()
+    static const ItemList& GetInstance()
     {
         static ItemList Instance;
         return Instance;
