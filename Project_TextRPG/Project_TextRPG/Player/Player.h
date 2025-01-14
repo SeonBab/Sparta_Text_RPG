@@ -4,6 +4,7 @@
 #include "iostream"
 #include "unordered_map"
 #include "mutex"
+#include <Framework/Managers/LogManager.h>
 
 class Player : public Entity
 {
@@ -29,17 +30,11 @@ public:
 
     static Player* GetInstance()
     {
-        if(instance == nullptr)
-        {
-            std::lock_guard<std::mutex> lock(mtx);
-            string name;
-            cout << "이름을 입력하세요: ";
-            cin >> name;
-            instance = new Player(name);
-        }
         return instance;
     }
 
+    void SetPlayer();
+    
     void TakeDamage(int damage);
 
     void UpdateExp(int expAmount);

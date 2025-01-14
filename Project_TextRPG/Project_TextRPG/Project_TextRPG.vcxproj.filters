@@ -84,6 +84,12 @@
       <Filter>Header Files\Framework</Filter>
     </ClInclude>
     <ClInclude Include="Player\Player.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Player\Player.h">
+      <Filter>Header Files\Player</Filter>
+    </ClInclude>
+    <ClInclude Include="Player\Player.h">
       <Filter>Header Files\Player</Filter>
     </ClInclude>
   </ItemGroup>
