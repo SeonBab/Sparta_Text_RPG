@@ -1,10 +1,10 @@
 ﻿#include "Framework.h"
 #include <iostream>
 #include <random>
-#include "../Framework/Managers/LogManager.h"
-#include "../Monster/Monster.h"
-#include "../Framework/Managers/ShopManager.h"
-#include "../Framework/Managers/BattleManager.h"
+#include "Framework/Managers/LogManager.h"
+#include "Monster/Monster.h"
+#include "Framework/Managers/ShopManager.h"
+#include "Framework/Managers/BattleManager.h"
 
 void MainGame::Init()
 {
