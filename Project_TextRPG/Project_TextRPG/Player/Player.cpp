@@ -1,4 +1,4 @@
-#include "Player.h"
+﻿#include "Player.h"
 
 Player* Player::instance;
 std::mutex Player::mtx;
@@ -35,7 +35,7 @@ void Player::BuyItem(string itemName, int itemPrice, int count)
     if (Gold > totalPrice)
     {
         Gold -= totalPrice;
-        Inventory[itemName] += count;
+		Player::AddItem(itemName, count);
 		cout << itemName << "을(를) " << count << "개 구매했습니다." << endl;
     }
     else
@@ -66,9 +66,9 @@ void Player::UseItem(string itemName)
     }
 }
 
-void Player::AddItem(string itemName)
+void Player::AddItem(string itemName, int count)
 {
-	Inventory[itemName]++;
+	Inventory[itemName] += count;
 }
 
 int Player::GetGold()
