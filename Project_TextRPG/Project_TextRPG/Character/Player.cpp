@@ -1,5 +1,8 @@
 #include "Player.h"
 
+Player* Player::instance;
+std::mutex Player::mtx;
+
 Player::Player(string name) : Entity(name, 200, 30)
 {
     Level = 1;
@@ -33,10 +36,11 @@ void Player::BuyItem(string itemName, int itemPrice, int count)
     {
         Gold -= totalPrice;
         Inventory[itemName] += count;
+		cout << itemName << "을(를) " << count << "개 구매했습니다." << endl;
     }
     else
     {
-
+		cout << "골드가 부족합니다." << endl;
     }
 }
 
@@ -47,7 +51,24 @@ void Player::SellItem(string itemName, int itemPrice, int count)
         int totalPrice = itemPrice * count;
         Inventory[itemName] -= count;
         Gold += totalPrice;
+		cout << itemName << "을(를) " << count << "개 판매했습니다." << endl;
     }
+    else {
+		cout << "아이템이 부족합니다." << endl;
+    }
+}
+
+void Player::UseItem(string itemName)
+{
+    if (Inventory[itemName] > 0)
+    {
+        Inventory[itemName]--;
+    }
+}
+
+void Player::AddItem(string itemName)
+{
+	Inventory[itemName]++;
 }
 
 int Player::GetGold()
