@@ -21,6 +21,7 @@ void MainGame::Select()
         {
             if (Monsters.size() + 1 == PlayerChoice)
             {
+                bBlockRegenerateMonster = true;
                 ShopManager::PrintShopMenu();
             }
             break;
@@ -36,7 +37,7 @@ void MainGame::Select()
 void MainGame::Tick()
 {
     // Console Clear
-    LogManager::Get().Clear();
+    //LogManager::Get().Clear();
     
     // 10레벨 달성시 보스 몬스터와 강제 전투이므로 DisplayChoices() 함수 앞에 와야함
     if (MaxPlayerLevel == Player::GetInstance()->GetLevel())
@@ -57,7 +58,11 @@ void MainGame::Tick()
         }
     }
 
-    CreateMonster();
+    if (!bBlockRegenerateMonster) // 꼼수 방지. 상점 갔다 나온다고 몬스터가 다시 생성되면 안됨
+    {
+        CreateMonster();
+        bBlockRegenerateMonster = false;
+    }
     DisplayChoices();
     Select();
     
@@ -69,9 +74,13 @@ void MainGame::Tick()
             EndType = EEndType::Lose;
             OnGameEnded();
         }
+        else // 정상 전투
+        {
+            bBlockRegenerateMonster = false;
+        }
     }
 
-    LogManager::Get().Pause();
+    //LogManager::Get().Pause();
 
     // system.pause(), delay()
     // Item 사용 - 알아서 하자.
@@ -119,10 +128,12 @@ void MainGame::OnGameEnded()
     if(EndType == EEndType::Lose)
     {
         cout << "You Lose..." << "\n";
+        bIsGameEnded = true;
     }
     else if(EndType == EEndType::Win)
     {
         cout << "You Win!!!" << "\n";
+        bIsGameEnded = false;
     }
 
 }
