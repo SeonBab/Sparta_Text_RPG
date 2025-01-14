@@ -30,11 +30,12 @@ bool BattleManager::Battle(Monster* SelectedMonster, Player* Player)
     // 클리어 보상 //  
     int Gold = 10;
     int Exp = 50;
+
+    auto Items = ItemList::GetInstance().GetItems();
     // 전투 시작전 30% 확률로 아이템 사용
     if (ItemUseProb >= RandRange(1, 100))
     {
         // 플레이어 클래스의 인벤토리에 직접 접근하는 것으로 변경됨
-        auto Items = ItemList::GetInstance().GetItems();
         // ItemList 클래스에 있는 종류중에 한가지 사용
         int ItemType = RandRange(0, Items.size() - 1);
         Player->UseItem(Items[ItemType].get()->GetName());
@@ -60,27 +61,12 @@ bool BattleManager::Battle(Monster* SelectedMonster, Player* Player)
 
             if (ItemDropProb >= RandRange(0, 100)) // Drop Item
             {
-                const int RandItemIdx = RandRange(0, 1); // 지금은 아이템 2개. 아이템 타입 종류가 총 몇개인지 Item클래스에서 건네받는게 좋아보임
-                switch (RandItemIdx)
-                {
-                case 0: // HealthPortion
-                    std::cout << "HealthPotion 아이템 획득! \n";
-                    Player->AddItem("HealthPotion", 1);
-                    break;
-
-                case 1: // AttackBoost
-                    // AttackBoost는 바로 사용되게끔 설정 -> AddItem하면 그쪽에서 바로 사용되게끔 변경됨
-                    std::cout << "AttackBoost 아이템 획득! \n";
-                    Player->AddItem("AttackBoost", 1);
-                    break;
-
-                default:
-                    break;
-                }
+                const int RandItemIdx = RandRange(0, Items.size() - 1);
+                std::cout << Items[RandItemIdx].get()->GetName() << " 아이템 획득!\n";
+                Player->AddItem(Items[RandItemIdx].get()->GetName(), 1);
             }
 
-            std::cout << "플레이어가 " << Exp << " Exp와 " << Gold << " 골드를 획득했습니다. 현재 EXP:" << Player->GetExp() << "/100" <<
-                ", 골드: " << Player->GetGold() << '\n';
+            std::cout << "플레이어가 " << Exp << " Exp와 " << Gold << " 골드를 획득했습니다. EXP : " << Player->GetExp() << " / 100" << ", 골드: " << Player->GetGold() << '\n';
             bIsPlayerWon = true;
             break;
         }
