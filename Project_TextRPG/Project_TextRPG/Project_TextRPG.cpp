@@ -4,7 +4,6 @@ int main()
 {
     MainGame& Game = MainGame::Get(); 
     Game.Init();
-    // Character Init
 
     while (!Game.IsGameEnded())
     {

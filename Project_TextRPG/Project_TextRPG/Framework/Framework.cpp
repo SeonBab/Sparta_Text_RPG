@@ -1,10 +1,10 @@
 ﻿#include "Framework.h"
 #include <iostream>
 #include <random>
-#include "../Framework/Managers/LogManager.h"
-#include "../Monster/Monster.h"
-#include "../Framework/Managers/ShopManager.h"
-#include "../Framework/Managers/BattleManager.h"
+#include "Framework/Managers/LogManager.h"
+#include "Monster/Monster.h"
+#include "Framework/Managers/ShopManager.h"
+#include "Framework/Managers/BattleManager.h"
 
 void MainGame::Init()
 {
@@ -64,7 +64,7 @@ void MainGame::Tick()
     
     LogManager::Get().Pause();
 
-    if (!BattleManager::Get().Battle(Monsters[PlayerChoice].get(), Player::GetInstance()))
+    if (!BattleManager::Get().Battle(Monsters[PlayerChoice - 1].get(), Player::GetInstance()))
     {
         //플레이어가 죽은 경우 이후 게임 로직을 더이상 처리하지 않고 게임을 종료
         EndType = EEndType::Lose;

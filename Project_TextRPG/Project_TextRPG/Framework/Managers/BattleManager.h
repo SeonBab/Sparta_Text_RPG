@@ -2,7 +2,7 @@
 #include <vector>
 #include <string>
 #include <memory>
-#include "Character/Player.h"
+#include "Player/Player.h"
 class Monster;
 class Item;
 class Entity;
@@ -20,7 +20,9 @@ private:
     const int MaxPlayerLevel = 10;
     unsigned int MonsterSuffleIndex[4];
 
-    bool Battle(Monster* Monster, Player* Character);
+    bool IsPlayerMaxLevel(int PlayerLevel);
+
+    bool Battle(Monster* Monster, Player* Player);
 
     int RandRange(int start, int end);
 

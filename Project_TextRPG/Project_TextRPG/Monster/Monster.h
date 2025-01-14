@@ -1,7 +1,7 @@
 // Monster.h
 #pragma once
 
-#include "../Framework/Framework.h"
+#include "Framework/Framework.h"
 
 // 몬스터 정보를 담을 구조체
 struct MonsterInfo {
