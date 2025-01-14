@@ -1,4 +1,5 @@
 ﻿#include "Player.h"
+#include "Item.h"
 
 Player* Player::instance;
 std::mutex Player::mtx;
@@ -32,11 +33,11 @@ void Player::LevelUp()
 void Player::BuyItem(string itemName, int itemPrice, int count)
 {
     int totalPrice = itemPrice * count;
-    if (Gold > totalPrice)
+    if (Gold >= totalPrice)
     {
         Gold -= totalPrice;
-		Player::AddItem(itemName, count);
 		cout << itemName << "을(를) " << count << "개 구매했습니다." << endl;
+        Player::AddItem(itemName, count);
     }
     else
     {
@@ -62,13 +63,40 @@ void Player::UseItem(string itemName)
 {
     if (Inventory[itemName] > 0)
     {
-        Inventory[itemName]--;
+        // 배틀 아이템 사용
+        ItemList itemList = ItemList::GetInstance();
+        std::shared_ptr<Item> item = itemList.GetItem(itemName);
+
+        if (item != nullptr)
+        {
+            item->Use();
+            Inventory[itemName]--;
+        }
+        else
+            cout << "잘못된 아이템 접근입니다" << endl;
     }
 }
 
 void Player::AddItem(string itemName, int count)
 {
-	Inventory[itemName] += count;
+    ItemList itemList = ItemList::GetInstance();
+    std::shared_ptr<Item> item = itemList.GetItem(itemName);
+
+    if (item != nullptr) 
+    {
+		if (item->GetUsageType() == EItemUsageType::Immediately)
+		{
+            // Count 만큼 아이템 즉시 사용
+			for (int i = 0; i < count; i++)
+                item->Use();
+		}
+		else if (item->GetUsageType() == EItemUsageType::Battle)
+		{
+			Inventory[itemName] += count;
+		}
+    }
+    else
+        cout << "잘못된 아이템 접근입니다" << endl;
 }
 
 int Player::GetGold()

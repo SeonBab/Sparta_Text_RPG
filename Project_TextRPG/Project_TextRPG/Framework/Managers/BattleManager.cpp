@@ -37,7 +37,8 @@ bool BattleManager::Battle(Monster* SelectedMonster, Player* Player)
 
         // ItemList에서 랜덤으로 하나 사용
         const int RandItemIdx = RandRange(0, Items.size());
-        Items[RandItemIdx]->Use();
+        Items[RandItemIdx]->Use(); // [지훈] 이렇게 하면 인벤토리 목록에 상관없이 아이템이 사용되는 것 같습니다.
+		                           // [지훈] 아이템 사용시 인벤토리에 재고가 있는 아이템 중 랜덤하게 사용하도록 하면 될 것 같습니다.
     }
     while (true)
     {
@@ -59,6 +60,7 @@ bool BattleManager::Battle(Monster* SelectedMonster, Player* Player)
 
             Player->UpdateExp(Exp);
 
+            // [지훈] 아이템 드랍은 AddItem으로 단순하게 사용하시면 됩니다.
             if (ItemDropProb >= RandRange(0, 100)) // Drop Item
             {
                 const int RandItemIdx = RandRange(0, 1); // 지금은 아이템 2개. 아이템 타입 종류가 총 몇개인지 Item클래스에서 건네받는게 좋아보임
