@@ -52,7 +52,7 @@ public:
 
 	void UseItem(string itemName);
 
-	void AddItem(string itemName);
+	void AddItem(string itemName, int count);
 
     int GetGold();
 
