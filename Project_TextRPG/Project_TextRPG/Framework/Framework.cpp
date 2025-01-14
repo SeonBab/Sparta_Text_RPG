@@ -104,7 +104,7 @@ void MainGame::CreateMonster()
     for(int i = 0 ; i < Monsters.size(); ++i)
     {
         // 슬라임 고블린 오크중 무작위 생성
-        const int RandMonsterType = RandRange(0, MaxMonsterTypeRange);
+        const int RandMonsterType = RandRange(1, MaxMonsterTypeRange);
 
         // 몬스터 정보 계산
         MonsterInfo info = Monster::CreateMonsterInfo(Player::GetInstance()->GetLevel(), RandMonsterType);
