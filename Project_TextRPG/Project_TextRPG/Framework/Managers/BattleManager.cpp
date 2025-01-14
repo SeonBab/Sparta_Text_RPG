@@ -35,9 +35,6 @@ bool BattleManager::Battle(Monster* SelectedMonster, Player* Player)
     {
         // 플레이어 클래스의 인벤토리에 직접 접근하는 것으로 변경됨
         auto Items = ItemList::GetInstance().GetItems();
-        // ItemList에서 랜덤으로 하나 사용
-        const int RandItemIdx = RandRange(0, Items.size());
-        Items[RandItemIdx]->Use();
         // Items 클래스에 있는 종류중에 한가지 사용
         int ItemType = RandRange(0, Items.size() - 1);
         Player->UseItem(Items[ItemType].get()->GetName());
