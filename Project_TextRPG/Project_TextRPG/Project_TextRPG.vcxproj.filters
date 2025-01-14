@@ -16,9 +16,6 @@
     <Filter Include="Source Files\Character">
       <UniqueIdentifier>{c4b1526d-89b1-48f6-b300-73591e42285e}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Files\Character">
-      <UniqueIdentifier>{408f28ea-953b-46d5-a683-332d711be726}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Header Files\Monster">
       <UniqueIdentifier>{1b047a9f-02c4-4230-90cd-56446b15c285}</UniqueIdentifier>
     </Filter>
@@ -36,6 +33,9 @@
     </Filter>
     <Filter Include="Source Files\Framework\Manager">
       <UniqueIdentifier>{bf55e693-4027-46a3-bc41-94594f99e9d4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Player">
+      <UniqueIdentifier>{408f28ea-953b-46d5-a683-332d711be726}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -78,7 +78,7 @@
       <Filter>Header Files\Framework\Manager</Filter>
     </ClInclude>
     <ClInclude Include="Character\Player.h">
-      <Filter>Header Files\Character</Filter>
+      <Filter>Header Files\Player</Filter>
     </ClInclude>
     <ClInclude Include="Monster\Monster.h">
       <Filter>Header Files\Monster</Filter>
