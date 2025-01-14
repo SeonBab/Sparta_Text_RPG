@@ -15,18 +15,6 @@ bool BattleManager::Battle(Monster* SelectedMonster, Player* Player)
     // true - 플레이어 승리, false - 몬스터 승리
     bool bIsPlayerWon = false;
 
-    // 몬스터 //
-    string MonsterName = SelectedMonster->GetName();
-    int MonsterHP = SelectedMonster->GetHP();
-    int MonsterDamage = SelectedMonster->GetDamage();
-    int MonsterDifficulty = SelectedMonster->GetDifficulty();
-
-    // 캐릭터 //
-    string PlayerName = Player->GetName();
-    int PlayerHP = Player->GetHP();
-    int PlayerDamage = Player->GetDamage();
-    int PlayerLevel = Player->GetLevel();
-
     // 클리어 보상 //  
     int Gold = 10;
     int Exp = 50;
@@ -40,18 +28,23 @@ bool BattleManager::Battle(Monster* SelectedMonster, Player* Player)
         int ItemType = RandRange(0, Items.size() - 1);
         Player->UseItem(Items[ItemType].get()->GetName());
     }
+    std::cout << "몬스터 " << SelectedMonster->GetName() << " 등장! 체력:" << SelectedMonster->GetHP() << ", 공격력: " << SelectedMonster->GetDamage() << '\n';
+
     while (true)
     {
-        std::cout << "몬스터 " << MonsterName << " 등장! 체력:" << MonsterHP << ", 공격력: " << MonsterDamage << '\n';
-
         // 플레이어 선공
-        std::cout << "플레이어가 몬스터를 공격합니다! " << MonsterName << " 체력: " << MonsterHP << '\n';
-        SelectedMonster->TakeDamage(PlayerDamage);
-        MonsterHP = SelectedMonster->GetHP();
-        if (MonsterHP <= 0)
+        SelectedMonster->TakeDamage(Player->GetDamage());
+        std::cout << "플레이어가 몬스터를 공격합니다! ";
+        if (SelectedMonster->GetHP() > 0)
         {
+            std::cout << SelectedMonster->GetName() << " 몬스터의 남은 체력: " << SelectedMonster->GetHP() << '\n';
+        }
+        else
+        {
+            std::cout << '\n';
+            std::cout << SelectedMonster->GetName() << " 가 죽었습니다!\n";
             // 몬스터에서 부스트 드랍되면 바로 사용되도록
-            Gold = 10 * MonsterDifficulty; // 필수 구현 조건에서 골드 10~20으로 되어있음 -> 난이도에 따른 골드 비례 보상
+            Gold = 10 * SelectedMonster->GetDifficulty(); // 필수 구현 조건에서 골드 10~20으로 되어있음 -> 난이도에 따른 골드 비례 보상
             //Exp = Exp * MonsterDifficultLevel; // 필수 구현조건에서 경험치는 고정되어있음
 
             // 몬스터 난이도에 따라 다른 획득 보상
@@ -70,11 +63,10 @@ bool BattleManager::Battle(Monster* SelectedMonster, Player* Player)
             bIsPlayerWon = true;
             break;
         }
+        Player->TakeDamage(SelectedMonster->GetDamage());
+        std::cout << "몬스터가 플레이어를 공격합니다. 플레이어의 남은 체력: " << Player->GetHP() << '\n';
 
-        std::cout << "몬스터가 플레이어를 공격합니다. 몬스터가 입힌 데미지: " << MonsterDamage << '\n';
-        Player->TakeDamage(MonsterDamage);
-        PlayerHP = Player->GetHP();
-        if (PlayerHP <= 0)
+        if (Player->GetHP() <= 0)
         {
             std::cout << "플레이어가 사망했습니다. \n";
             bIsPlayerWon = false;
