@@ -4,6 +4,12 @@
 #include <vector>
 #include <memory>
 
+enum class EItemType
+{
+    HealthPotion,
+    AttackBoost,
+};
+
 class Item
 {
 public:

@@ -29,46 +29,75 @@ void Player::LevelUp()
     Exp -= 100;
 }
 
-void Player::BuyItem(string itemName, int itemPrice, int count)
+//void Player::BuyItem(string itemName, int itemPrice, int count)
+//{
+//    int totalPrice = itemPrice * count;
+//    if (Gold > totalPrice)
+//    {
+//        Gold -= totalPrice;
+//        Inventory[itemName] += count;
+//		cout << itemName << "을(를) " << count << "개 구매했습니다." << endl;
+//    }
+//    else
+//    {
+//		cout << "골드가 부족합니다." << endl;
+//    }
+//}
+//
+//void Player::SellItem(string itemName, int itemPrice, int count)
+//{
+//    if (Inventory[itemName] >= count)
+//    {
+//        int totalPrice = itemPrice * count;
+//        Inventory[itemName] -= count;
+//        Gold += totalPrice;
+//		cout << itemName << "을(를) " << count << "개 판매했습니다." << endl;
+//    }
+//    else {
+//		cout << "아이템이 부족합니다." << endl;
+//    }
+//}
+
+void Player::UseItem(EItemType ItemType)
 {
-    int totalPrice = itemPrice * count;
-    if (Gold > totalPrice)
+    //if (Inventory[itemName] > 0)
+    //{
+    //    Inventory[itemName]--;
+    //}
+
+    int ItemIdx = static_cast<int>(ItemType);
+    if (EItemType::HealthPotion == ItemType)
     {
-        Gold -= totalPrice;
-        Inventory[itemName] += count;
-		cout << itemName << "을(를) " << count << "개 구매했습니다." << endl;
-    }
-    else
-    {
-		cout << "골드가 부족합니다." << endl;
+        if (Inventory[ItemIdx])
+        {
+            std::cout << "아이템 " << Inventory[ItemIdx]->GetName() << "을 사용합니다. 체력을 회복합니다.\n";
+
+            // Item 클래스에서 구현중으로 보임. Player 클래스 체력은 Player 클래스에서 올리는게 맞지 않나 싶음
+            Inventory[ItemIdx]->Use();
+            //if (MaxHP + PortionAmount > 100)
+            //{
+            //    HP = MaxHP;
+            //}
+            //else
+            //{
+            //    HP += PortionAmount;
+            //}
+        }
     }
 }
 
-void Player::SellItem(string itemName, int itemPrice, int count)
+void Player::AddItem(EItemType ItemType)
 {
-    if (Inventory[itemName] >= count)
+    int ItemIdx = static_cast<int>(ItemType);
+    switch (ItemType)
     {
-        int totalPrice = itemPrice * count;
-        Inventory[itemName] -= count;
-        Gold += totalPrice;
-		cout << itemName << "을(를) " << count << "개 판매했습니다." << endl;
+    case EItemType::HealthPotion:
+        ++Inventory[ItemIdx];
+        break;
+        // 아이템 종류 추가 되면 삽입
+    default:
+        break;
     }
-    else {
-		cout << "아이템이 부족합니다." << endl;
-    }
-}
-
-void Player::UseItem(string itemName)
-{
-    if (Inventory[itemName] > 0)
-    {
-        Inventory[itemName]--;
-    }
-}
-
-void Player::AddItem(string itemName)
-{
-	Inventory[itemName]++;
 }
 
 int Player::GetGold()
@@ -89,9 +118,4 @@ int Player::GetLevel()
 int Player::GetExp()
 {
     return Exp;
-}
-
-unordered_map<string, int> Player::GetInventory()
-{
-	return Inventory;
 }
