@@ -25,8 +25,10 @@ void Player::UpdateExp(int expAmount)
 }
 
 void Player::LevelUp()
-{
+{ 
     Level++;
+    HP = MaxHP;
+    std::cout << "플레이어 레벨업! 현재 레벨: " << Level << '\n';
     Exp -= 100;
 }
 

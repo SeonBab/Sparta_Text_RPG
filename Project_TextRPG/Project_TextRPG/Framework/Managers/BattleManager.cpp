@@ -44,8 +44,8 @@ bool BattleManager::Battle(Monster* SelectedMonster, Player* Player)
             std::cout << '\n';
             std::cout << SelectedMonster->GetName() << " 가 죽었습니다!\n";
             // 몬스터에서 부스트 드랍되면 바로 사용되도록
-            Gold = 10 * SelectedMonster->GetDifficulty(); // 필수 구현 조건에서 골드 10~20으로 되어있음 -> 난이도에 따른 골드 비례 보상
-            //Exp = Exp * MonsterDifficultLevel; // 필수 구현조건에서 경험치는 고정되어있음
+            Gold = 10 * SelectedMonster->GetDifficulty();
+            Exp = Exp * SelectedMonster->GetDifficulty() * 0.5;
 
             // 몬스터 난이도에 따라 다른 획득 보상
             Player->SetGold(Gold);
@@ -64,9 +64,12 @@ bool BattleManager::Battle(Monster* SelectedMonster, Player* Player)
             break;
         }
         Player->TakeDamage(SelectedMonster->GetDamage());
-        std::cout << "몬스터가 플레이어를 공격합니다. 플레이어의 남은 체력: " << Player->GetHP() << '\n';
-
-        if (Player->GetHP() <= 0)
+        std::cout << "몬스터가 플레이어를 공격합니다. ";
+        if (Player->GetHP() > 0)
+        {
+            std::cout << "플레이어의 남은 체력 : " << Player->GetHP() << '\n';
+        }
+        else
         {
             std::cout << "플레이어가 사망했습니다. \n";
             bIsPlayerWon = false;

@@ -85,6 +85,8 @@ private:
 
     bool bIsGameEnded = false;
 
+    bool bBlockRegenerateMonster = false; // 상점 이동 후 몬스터 재생성 방지
+
     int PlayerChoice = 0;
     
     
