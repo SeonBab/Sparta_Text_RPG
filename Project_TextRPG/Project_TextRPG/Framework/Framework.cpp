@@ -120,10 +120,12 @@ void MainGame::OnGameEnded()
     if(EndType == EEndType::Lose)
     {
         cout << "You Lose..." << "\n";
+        bIsGameEnded = true;
     }
     else if(EndType == EEndType::Win)
     {
         cout << "You Win!!!" << "\n";
+        bIsGameEnded = false;
     }
 
     LogManager::Get().StopStatusThread();
