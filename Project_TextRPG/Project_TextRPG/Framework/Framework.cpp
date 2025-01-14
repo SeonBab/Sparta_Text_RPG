@@ -61,11 +61,14 @@ void MainGame::Tick()
     
     LogManager::Get().Pause();
 
-    if (!BattleManager::Get().Battle(Monsters[PlayerChoice - 1].get(), Player::GetInstance()))
+    // 상점을 선택한 경우를 제외
+    if (Monsters.size() >= PlayerChoice)
     {
-        EndType = EEndType::Lose;
+        if (!BattleManager::Get().Battle(Monsters[PlayerChoice - 1].get(), Player::GetInstance()))
+        {
+            EndType = EEndType::Lose;
+        }
     }
-    
 
     // system.pause(), delay()
     // Item 사용 - 알아서 하자.
