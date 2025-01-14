@@ -1,5 +1,5 @@
 ﻿#include "BattleManager.h"
-#include "Character/Player.h"
+#include "Player/Player.h"
 #include "Monster/Monster.h"
 #include <random>
 #include <string>

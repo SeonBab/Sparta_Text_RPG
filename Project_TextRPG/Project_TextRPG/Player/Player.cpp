@@ -90,3 +90,8 @@ int Player::GetExp()
 {
     return Exp;
 }
+
+unordered_map<string, int> Player::GetInventory()
+{
+	return Inventory;
+}
