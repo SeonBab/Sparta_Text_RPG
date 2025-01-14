@@ -1,14 +1,15 @@
 ﻿#include "Framework.h"
 #include <iostream>
 #include <random>
-#include "../Framework/Managers/LogManager.h"
-#include "../Monster/Monster.h"
-#include "../Framework/Managers/ShopManager.h"
-#include "../Framework/Managers/BattleManager.h"
+#include "Framework/Managers/LogManager.h"
+#include "Monster/Monster.h"
+#include "Framework/Managers/ShopManager.h"
+#include "Framework/Managers/BattleManager.h"
 
 void MainGame::Init()
 {
     srand((unsigned int)time(NULL));
+    LogManager::Get().RunStatusThread();
 }
 
 void MainGame::Select()
@@ -41,30 +42,36 @@ void MainGame::Tick()
     // 10레벨 달성시 보스 몬스터와 강제 전투이므로 DisplayChoices() 함수 앞에 와야함
     if (MaxPlayerLevel == Player::GetInstance()->GetLevel())
     {
-        unique_ptr<Monster> BossMonster = make_unique<Monster>("none", 10, 4, 1);
+        MonsterInfo info = Monster::CreateMonsterInfo(Player::GetInstance()->GetLevel(), 4);
+
+        unique_ptr<Monster> BossMonster = make_unique<Monster>(info.name, info.hp, info.damage, 4);
+        // 보스 몬스터에게 이기거나 플레이어가 죽은 경우 이후 게임 로직을 더이상 처리하지 않고 게임을 종료
         if (BattleManager::Get().Battle(BossMonster.get(), Player::GetInstance()))
         {
             EndType = EEndType::Win;
+            OnGameEnded();
         }
         else
         {
             EndType = EEndType::Lose;
+            OnGameEnded();
         }
     }
-
-    LogManager::Get().Draw(LogManager::EDraw::Player);
 
     CreateMonster();
     DisplayChoices();
     Select();
-
+    
     LogManager::Get().Pause();
 
-    if (!BattleManager::Get().Battle(Monsters[PlayerChoice].get(), Player::GetInstance()))
+    // 상점을 선택한 경우를 제외
+    if (Monsters.size() >= PlayerChoice)
     {
-        EndType = EEndType::Lose;
+        if (!BattleManager::Get().Battle(Monsters[PlayerChoice - 1].get(), Player::GetInstance()))
+        {
+            EndType = EEndType::Lose;
+        }
     }
-    
 
     // system.pause(), delay()
     // Item 사용 - 알아서 하자.
@@ -77,12 +84,6 @@ void MainGame::Tick()
     // while(bExit)
     
     // Status 출력
-
-    // Game 출력
-    if(bIsGameEnded)
-    {
-        OnGameEnded();
-    }
 }
 
 MainGame& MainGame::Get()
@@ -104,7 +105,7 @@ void MainGame::CreateMonster()
     for(int i = 0 ; i < Monsters.size(); ++i)
     {
         // 슬라임 고블린 오크중 무작위 생성
-        const int RandMonsterType = RandRange(0, MaxMonsterTypeRange);
+        const int RandMonsterType = RandRange(1, MaxMonsterTypeRange);
 
         // 몬스터 정보 계산
         MonsterInfo info = Monster::CreateMonsterInfo(Player::GetInstance()->GetLevel(), RandMonsterType);
@@ -124,6 +125,7 @@ void MainGame::OnGameEnded()
         cout << "You Win!!!" << "\n";
     }
 
+    LogManager::Get().StopStatusThread();
 }
 
 void MainGame::DisplayChoices()

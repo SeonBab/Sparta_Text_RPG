@@ -2,10 +2,8 @@
 #include <vector>
 #include <string>
 #include <memory>
-#include "Character/Player.h"
+#include "Player/Player.h"
 class Monster;
-class Item;
-class Entity;
 
 class BattleManager
 {
@@ -14,18 +12,22 @@ public:
 private:
 
     static BattleManager Instance;
+
     friend class MainGame;
 
     const int RoomSize = 3;
+
     const int MaxPlayerLevel = 10;
-    unsigned int MonsterSuffleIndex[4];
 
-    bool IsPlayerMaxLevel(int PlayerLevel);
+    const int ItemUseProb = 30;
 
-    bool Battle(Monster* Monster, Player* Character);
+    const int ItemDropProb = 10; 
+    
+    const int RangeItemType = 1; // AttackBoost는 즉시 사용되도록
+
+    bool Battle(Monster* Monster, Player* Player);
 
     int RandRange(int start, int end);
 
-    //void UseItem(vector<Item*>& Inventory);
 
 };

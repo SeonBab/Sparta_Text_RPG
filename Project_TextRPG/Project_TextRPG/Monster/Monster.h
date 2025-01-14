@@ -1,7 +1,7 @@
 // Monster.h
 #pragma once
 
-#include "../Framework/Framework.h"
+#include "Framework/Framework.h"
 
 // 몬스터 정보를 담을 구조체
 struct MonsterInfo {
@@ -13,7 +13,7 @@ struct MonsterInfo {
 class Monster : public Entity {
 public:
     // Entity의 생성자를 호출하는 Monster 생성자
-    Monster(string name, int maxHP, int damage, int difficulty);
+    Monster(string name, int HP, int damage, int difficulty);
 
     // 몬스터 이름, HP, Damage 값을 생성하는 함수
     static MonsterInfo CreateMonsterInfo(int player_level, int difficulty);
