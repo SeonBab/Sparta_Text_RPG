@@ -35,22 +35,20 @@ bool BattleManager::Battle(Monster* SelectedMonster, Player* Player)
     {
         // 플레이어 클래스의 인벤토리에 직접 접근하는 것으로 변경됨
         auto Items = ItemList::GetInstance().GetItems();
-        // Items 클래스에 있는 종류중에 한가지 사용
+        // ItemList 클래스에 있는 종류중에 한가지 사용
         int ItemType = RandRange(0, Items.size() - 1);
         Player->UseItem(Items[ItemType].get()->GetName());
-
     }
     while (true)
     {
-        if (PlayerHP)
+        std::cout << "몬스터 " << MonsterName << " 등장! 체력:" << MonsterHP << ", 공격력: " << MonsterDamage << '\n';
+
+        // 플레이어 선공
+        std::cout << "플레이어가 몬스터를 공격합니다! " << MonsterName << " 체력: " << MonsterHP << '\n';
+        SelectedMonster->TakeDamage(PlayerDamage);
+        MonsterHP = SelectedMonster->GetHP();
+        if (MonsterHP <= 0)
         {
-            std::cout << "플레이어가 사망했습니다. \n";
-            bIsPlayerWon = false;
-            break;
-        }
-        if (MonsterHP)
-        {
-            std::cout << "몬스터가 처치되었습니다. \n";
             // 몬스터에서 부스트 드랍되면 바로 사용되도록
             Gold = 10 * MonsterDifficulty; // 필수 구현 조건에서 골드 10~20으로 되어있음 -> 난이도에 따른 골드 비례 보상
             //Exp = Exp * MonsterDifficultLevel; // 필수 구현조건에서 경험치는 고정되어있음
@@ -81,21 +79,21 @@ bool BattleManager::Battle(Monster* SelectedMonster, Player* Player)
                 }
             }
 
-            std::cout << "플레이어가 " << Exp << " Exp와 " << Gold << " 골드를 획득했습니다. 현재 EXP:" << Player->GetExp() << '/100' <<
+            std::cout << "플레이어가 " << Exp << " Exp와 " << Gold << " 골드를 획득했습니다. 현재 EXP:" << Player->GetExp() << "/100" <<
                 ", 골드: " << Player->GetGold() << '\n';
             bIsPlayerWon = true;
             break;
         }
 
-        std::cout << "몬스터 " << MonsterName << " 등장! 체력:" << MonsterHP << ", 공격력: " << MonsterDamage << '\n';
-
-        // 플레이어 선공
-        std::cout << "플레이어가 몬스터를 공격합니다!" << MonsterName << " 체력: " << MonsterHP << '\n';
-        SelectedMonster->TakeDamage(PlayerDamage);
-
         std::cout << "몬스터가 플레이어를 공격합니다. 몬스터가 입힌 데미지: " << MonsterDamage << '\n';
         Player->TakeDamage(MonsterDamage);
-
+        PlayerHP = Player->GetHP();
+        if (PlayerHP <= 0)
+        {
+            std::cout << "플레이어가 사망했습니다. \n";
+            bIsPlayerWon = false;
+            break;
+        }
     }
     return bIsPlayerWon;
 }
