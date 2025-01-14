@@ -65,7 +65,7 @@ void ShopManager::PrintShopMenu()
 
 void ShopManager::PrintShopBuy()
 {
-	ItemList CurList = ItemList::GetInatance();
+	ItemList CurList = ItemList::GetInstance();
 	const std::vector<std::shared_ptr<Item>>& Items = CurList.GetItems();
 
 	// 로그 초기화
@@ -165,7 +165,7 @@ void ShopManager::PrintShopSell()
 	// 로그 초기화
 	LogManager::Get().Clear();
 
-	ItemList CurList = ItemList::GetInatance();
+	ItemList CurList = ItemList::GetInstance();
 	const std::vector<std::shared_ptr<Item>>& Items = CurList.GetItems();
 
 	Player* CurPlayer = Player::GetInstance();
