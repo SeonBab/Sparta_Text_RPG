@@ -5,7 +5,8 @@
 // Entity의 생성자를 호출하는 Monster 생성자
 Monster::Monster(std::string name, int HP, int damage, int difficulty)
     : Entity(name, HP, damage), difficulty(difficulty) {
-    std::cout << "몬스터 이름: " << Name << ", 체력: " << HP << ", 공격력: " << Damage << ", 난이도: " << difficulty << std::endl;
+    // 생성할때 보여주지 않고 DisplayChoices에서 몬스터 정보 제공
+    //std::cout << "몬스터 이름: " << Name << ", 체력: " << HP << ", 공격력: " << Damage << ", 난이도: " << difficulty << std::endl;
 }
 
 // 몬스터 이름, HP, Damage 값을 생성하는 함수
@@ -42,12 +43,4 @@ MonsterInfo Monster::CreateMonsterInfo(int player_level, int difficulty) {
 void Monster::TakeDamage(int Damage) {
     HP -= Damage;  // 입력값 만큼 체력 차감
 
-    // 체력이 0 이하로 떨어지면 "죽음" 처리
-    if (HP <= 0) {
-        HP = 0;  // 체력은 음수가 될 수 없으므로 0으로 고정
-        std::cout << Name << "가 죽었습니다!" << std::endl;
-    }
-    else {
-        std::cout << Name << "의 남은 체력: " << HP << std::endl;
-    }
 }
