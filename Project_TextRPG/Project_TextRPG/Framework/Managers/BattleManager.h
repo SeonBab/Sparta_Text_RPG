@@ -21,8 +21,6 @@ private:
 
     const int ItemProb = 30;
 
-    unsigned int MonsterSuffleIndex[4];
-
     bool Battle(Monster* Monster, Player* Player);
 
     int RandRange(int start, int end);

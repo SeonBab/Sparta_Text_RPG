@@ -1,7 +1,6 @@
 ﻿#include "BattleManager.h"
 #include "Player/Player.h"
 #include "Monster/Monster.h"
-#include "Item.h"
 #include <random>
 #include <string>
 #include <vector>
@@ -33,19 +32,7 @@ bool BattleManager::Battle(Monster* SelectedMonster, Player* Player)
     // 전투 시작전 30% 확률로 아이템 사용
     if (RandRange(1, 100) <= ItemProb)
     {
-        // AttackBoost는 구입 즉시 스테이터스가 증가하도록 설정했으므로 현재는 HealthPortion만 사용가능
-        // 다른 아이템 추가할꺼면 아이템 타입도 랜덤 값으로 받아와야함
-        const int MaxItemType = 1;
-        EItemType ItemType = static_cast<EItemType>(RandRange(0, MaxItemType));
-        switch (ItemType)
-        {
-        case EItemType::HealthPotion:
-            Player->UseItem(ItemType);
-            break;
-            // 아이템 종류 늘어나면 추가
-        default:
-            break;
-        }
+        
     }
     while (true)
     {

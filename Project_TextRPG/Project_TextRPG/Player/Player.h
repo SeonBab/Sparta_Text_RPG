@@ -3,7 +3,6 @@
 #include "Framework/Framework.h"
 #include "iostream"
 #include "unordered_map"
-#include "Item.h"
 #include "mutex"
 
 class Player : public Entity
@@ -15,8 +14,7 @@ private:
     int Level;
     int Exp;
     int Gold;
-    //unordered_map<string, int> Inventory;
-    vector<Item*> Inventory; // Item 클래스 구현되었으니 사용하는게?
+    unordered_map<string, int> Inventory;
 
     Player(string name);
     ~Player()
@@ -48,9 +46,13 @@ public:
 
     void LevelUp();
 
-	void UseItem(EItemType ItemType);
+    void BuyItem(string itemName, int itemPrice, int count);
 
-	void AddItem(EItemType ItemType);
+    void SellItem(string itemName, int itemPrice, int count);
+
+	void UseItem(string itemName);
+
+	void AddItem(string itemName, int count);
 
     int GetGold();
 
@@ -59,6 +61,8 @@ public:
     int GetLevel();
 
     int GetExp();
+
+    unordered_map<string, int> GetInventory();
 
 };
 
