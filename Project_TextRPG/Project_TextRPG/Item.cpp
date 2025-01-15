@@ -20,7 +20,7 @@ void HealthPotion::Use()
 
     CurPlayer->SetHP(CurHP);
 
-    std::cout << GetName() << "을(를) 사용하여 " << "체력이 " << CurHP << "이(가) 됐습니다." << std::endl;
+    LogManager::Get() << GetName() << "을(를) 사용하여 " << "체력이 " << CurHP << "이(가) 됐습니다." << "\n";
 }
 
 void AttackBoost::Use()
@@ -39,5 +39,5 @@ void AttackBoost::Use()
 
     CurPlayer->SetDamage(DamageUp);
 
-    std::cout << GetName() << "을(를) 사용하여 " << "공격력이 " << DamageUp << "이(가) 됐습니다." << std::endl;
+    LogManager::Get() << GetName() << "을(를) 사용하여 " << "공격력이 " << DamageUp << "이(가) 됐습니다." << "\n";
 }
