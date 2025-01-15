@@ -7,6 +7,7 @@
 
 void ShopManager::PrintShopMenu()
 {
+	LogManager::Get().Clear();
 	LogManager::Get().Draw(EDraw::Shop);
 
 	std::string InputVal;

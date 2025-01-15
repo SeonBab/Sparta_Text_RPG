@@ -106,42 +106,41 @@ void Layout::SetOutputText()
 //자체적으로 그림
 void DrawLayout::Draw(EDraw Draw, int x, int y)
 {
+	//x만 2자리 먹어서 x2 해줌
+	LogManager::Get().MoveCursor(rect.left + x * 2, rect.up + y);
+
+	switch (Draw)
+	{
+	case EDraw::Player: DrawBMP("Character.bmp"); break;
+	case EDraw::Shop:	DrawBMP("Shop.bmp"); break;
+	case EDraw::Stage:	DrawBMP("Stage.bmp"); break;
+	case EDraw::Potion: DrawBMP("health_potion_pixel.bmp"); break;
+	case EDraw::AttackBoost:	DrawBMP("attack_boost_pixel.bmp"); break;
+	case EDraw::Goblin: DrawBMP("Goblin.bmp");  break;
+	case EDraw::Oak:	DrawBMP("Oak.bmp"); break;
+	case EDraw::Slime:	DrawBMP("Slime.bmp"); break;
+	case EDraw::Boss:	DrawBMP("Boss.bmp"); break;
+	case EDraw::Fight:	DrawBMP("Fight.bmp"); break;
+	case EDraw::HealthBoost:	DrawBMP("health_boost_pixel.bmp"); break;
+	case EDraw::HelthElixir:	DrawBMP("helth_elixir_pixel.bmp"); break;
+	case EDraw::MoneyBag:		DrawBMP("moneybag_pixel.bmp"); break;
+
+	default:
+		break;
+	}
+}
+
+void DrawLayout::Clear(bool ClearBuffer)
+{
 	//지움
 	for (int i = 0; i < rect.height; i++)
 	{
 		LogManager::Get().MoveCursor(rect.left, rect.up + i);
 		for (int j = 0; j < rect.width / 2; j++)
-			cout << "■";
-	}
-
-	LogManager::Get().MoveCursor(rect.left + x, rect.up + y);
-
-	switch (Draw)
-	{
-	case EDraw::Player:
-		DrawBMP("Character.bmp");
-		break;
-
-	case EDraw::Shop:
-		DrawBMP("Shop.bmp");
-		break;
-
-	case EDraw::Stage:
-		DrawBMP("Stage.bmp");
-		break; 
-
-	case EDraw::Potion:
-		DrawBMP("health_potion_pixel.bmp");
-		break;
-
-	case EDraw::AttackBoost:
-		DrawBMP("attack_boost_pixel.bmp");
-		break;
-
-	default:
-			break;
+			cout << "\033[38;2;255;255;255m" << "■" << "\033[0m";
 	}
 }
+
 
 void DrawLayout::DrawBMP(const std::string& Filename)
 {
@@ -269,15 +268,12 @@ LogManager& LogManager::Get()
 
 void LogManager::Initialize()
 {
-	layouts = new Layout[3]
-	{
-		//그림
-		DrawLayout({ 1, 1, 101, 39 }),
-		//스텟
-		PlayerStatLayout({ 105, 2, 50, 6 }),
-		//로그
-		LogLayout(Layout::FRect(105, 9, 50, 30)),
-	};
+	//그림
+	layoutVec.push_back(make_unique<DrawLayout>(Layout::FRect({ 1, 1, 101, 39 })));
+	//스텟
+	layoutVec.push_back(make_unique<PlayerStatLayout>(Layout::FRect({ 105, 2, 50, 6 })));
+	//로그
+	layoutVec.push_back(make_unique<LogLayout>(Layout::FRect(105, 9, 50, 30)));
 
 	width = 158;
 	height = 42;
@@ -303,6 +299,10 @@ void LogManager::Initialize()
 	windowSize.Bottom = height - 1;
 	SetConsoleWindowInfo(handle, TRUE, &windowSize);
 
+	//폰트 변경
+
+
+
 	//외곽선 세팅
 	{
 		//외곽선
@@ -325,19 +325,25 @@ void LogManager::Initialize()
 
 		//가로선
 		for (int i = 0; i <= (int)ELayout::Log; i++)
-			for (int x = 0; x <= layouts[i].rect.width; x++)
+		{
+			Layout* layout = layoutVec[i].get();
+			for (int x = 0; x <= layout->rect.width; x++)
 			{
-				outline[layouts[i].rect.up - 1][layouts[i].rect.left + x] = '-';
-				outline[layouts[i].rect.up + layouts[i].rect.height][layouts[i].rect.left + x] = '-';
+				outline[layout->rect.up - 1][layout->rect.left + x] = '-';
+				outline[layout->rect.up + layout->rect.height][layout->rect.left + x] = '-';
 			}
+		}
 
 		//세로선
 		for (int i = 0; i <= (int)ELayout::Log; i++)
-			for (int y = 0; y < layouts[i].rect.height; y++)
+		{
+			Layout* layout = layoutVec[i].get();
+			for (int y = 0; y < layout->rect.height; y++)
 			{
-				outline[layouts[i].rect.up + y][layouts[i].rect.left - 1] = 'l';
-				outline[layouts[i].rect.up + y][layouts[i].rect.left + layouts[i].rect.width + 1] = 'l';
+				outline[layout->rect.up + y][layout->rect.left - 1] = 'l';
+				outline[layout->rect.up + y][layout->rect.left + layout->rect.width + 1] = 'l';
 			}
+		}
 	}
 
 }
@@ -358,10 +364,10 @@ void LogManager::Append(char Ch)
 
 void LogManager::Append(const string& Str, float Delay)
 {
-	static_cast<LogLayout*>(&layouts[2])->Append(Str, Delay);
+	static_cast<LogLayout*>(layoutVec[2].get())->Append(Str, Delay);
 	auto prePos = GetCursorPosition();
 
-	static_cast<PlayerStatLayout*>(&layouts[1])->Update();
+	static_cast<PlayerStatLayout*>(layoutVec[1].get())->Update();
 	MoveCursor(prePos.first, prePos.second);
 }
 
@@ -373,7 +379,7 @@ void LogManager::Delay(float Delay)
 
 void LogManager::Draw(EDraw Draw, int x, int y)
 {
-	static_cast<DrawLayout*>(&layouts[0])->Draw(Draw, x, y);
+	static_cast<DrawLayout*>(layoutVec[0].get())->Draw(Draw, x, y);
 }
 
 void LogManager::Pause()
@@ -384,7 +390,7 @@ void LogManager::Pause()
 void LogManager::Clear()
 {
 	for (int i = 0; i < (int)ELayout::Log; i++)
-		layouts[i].Clear(true);
+		layoutVec[i].get()->Clear(true);
 }
 
 pair<int, int> LogManager::GetCursorPosition()

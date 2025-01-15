@@ -1,6 +1,7 @@
 #pragma once
 #include <string>
 #include <vector>
+#include <memory>
 
 
 enum class EDraw
@@ -9,7 +10,15 @@ enum class EDraw
 	Shop,
 	Stage,
 	Potion,
-	AttackBoost
+	AttackBoost,
+	Goblin,
+	Oak,
+	Slime,
+	Boss,
+	Fight,
+	HealthBoost,
+	HelthElixir,
+	MoneyBag,
 };
 
 enum class ELayout
@@ -45,7 +54,7 @@ public:
 public:
 	Layout(FRect Rect) : rect(Rect) {}
 
-	void Clear(bool ClearBuffer = false);
+	virtual void Clear(bool ClearBuffer = false);
 
 protected:
 	void Output();
@@ -60,6 +69,7 @@ class DrawLayout : public Layout
 public:
 	DrawLayout(Layout::FRect Rect) : Layout(Rect) {};
 	void Draw(EDraw Draw, int x = 0, int y = 0);
+	virtual void Clear(bool ClearBuffer = false) override;
 
 private:
 	void DrawBMP(const std::string& Filename);
@@ -89,7 +99,7 @@ public:
 class LogManager
 {
 private:
-	Layout* layouts;
+	std::vector<std::unique_ptr<Layout>> layoutVec;
 	int width, height;
 	std::string* outline;
 
@@ -109,7 +119,7 @@ public:
 	std::pair<int, int> GetCursorPosition();
 	void MoveCursor(int X, int Y);
 
-	Layout& GetLayout(ELayout Layout) { return layouts[(int)Layout]; }
+	Layout& GetLayout(ELayout Layout) { return *layoutVec[(int)Layout].get(); }
 
 	LogManager& operator<<(const std::string& Message);
 	LogManager& operator<<(char Value);

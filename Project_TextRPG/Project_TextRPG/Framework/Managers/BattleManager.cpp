@@ -12,6 +12,22 @@ BattleManager BattleManager::Instance;
 
 bool BattleManager::Battle(Monster* SelectedMonster, Player* Player)
 {
+    LogManager::Get().Clear();
+    LogManager::Get().Draw(EDraw::Fight);
+
+    //근데 이럴꺼면 걍 이름 검사하지 그랬냐?
+    pair<int, int> pos;
+    switch (SelectedMonster->GetDraw())
+    {
+    case EDraw::Slime: pos = { 31, 23 }; break;
+    case EDraw::Oak: pos = { 14, 8 }; break;
+    default:
+        break;
+    }
+
+    LogManager::Get().Draw(SelectedMonster->GetDraw(), pos.first, pos.second);
+    LogManager::Get().Draw(EDraw::Player, 0, 16);
+
     // true - 플레이어 승리, false - 몬스터 승리
     bool bIsPlayerWon = false;
 
