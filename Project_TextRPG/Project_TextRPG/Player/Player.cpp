@@ -2,12 +2,10 @@
 #include "Item.h"
 #include "Framework/Managers/LogManager.h"
 
-Player* Player::instance;
+Player* Player::Instance;
 
 Player::Player(string name) : Entity(name, 200, 30)
 {
-	instance = nullptr;
-
 	Level = 1;
 	Exp = 0;
 	Gold = 0;
@@ -21,14 +19,14 @@ void Player::SetPlayerName()
 	Name = name;
 }
 
-void Player::TakeDamage(int damage)
+void Player::TakeDamage(int Damage)
 {
-	HP -= damage;
+	HP -= Damage;
 }
 
-void Player::UpdateExp(int expAmount)
+void Player::UpdateExp(int ExpAmount)
 {
-	Exp += expAmount;
+	Exp += ExpAmount;
 	if (Exp >= 100)
 		LevelUp();
 }
@@ -44,14 +42,14 @@ void Player::LevelUp()
     Exp -= 100;
 }
 
-void Player::BuyItem(string itemName, int itemPrice, int count)
+void Player::BuyItem(string ItemName, int ItemPrice, int Count)
 {
-	int totalPrice = itemPrice * count;
-	if (Gold >= totalPrice)
+	int TotalPrice = ItemPrice * Count;
+	if (Gold >= TotalPrice)
 	{
-		Gold -= totalPrice;
-		LogManager::Get().Append(itemName + "을(를) " + std::to_string(count) + "개 구매했습니다.\n");
-		Player::AddItem(itemName, count);
+		Gold -= TotalPrice;
+		LogManager::Get().Append(ItemName + "을(를) " + std::to_string(Count) + "개 구매했습니다.\n");
+		Player::AddItem(ItemName, Count);
 	}
 	else
 	{
@@ -59,81 +57,77 @@ void Player::BuyItem(string itemName, int itemPrice, int count)
 	}
 }
 
-void Player::SellItem(string itemName, int itemPrice, int count)
+void Player::SellItem(string ItemName, int ItemPrice, int Count)
 {
-	if (Inventory[itemName] >= count)
+	if (Inventory[ItemName] >= Count)
 	{
-		int totalPrice = itemPrice * count;
-		Inventory[itemName] -= count;
-		Gold += totalPrice;
-		LogManager::Get().Append(itemName + "을(를) " + std::to_string(count) + "개 판매했습니다.\n");
+		int TotalPrice = ItemPrice * Count;
+		Inventory[ItemName] -= Count;
+		Gold += TotalPrice;
+		LogManager::Get().Append(ItemName + "을(를) " + std::to_string(Count) + "개 판매했습니다.\n");
 	}
-	else {
+	else 
+	{
 		LogManager::Get().Append("아이템이 부족합니다.\n");
 	}
 }
 
-void Player::UseItem(string itemName)
+void Player::UseItem(string ItemName)
 {
-	if (Inventory[itemName] > 0)
+	if (Inventory[ItemName] > 0)
 	{
 		// 배틀 아이템 사용
 		ItemList itemList = ItemList::GetInstance();
-		std::shared_ptr<Item> item = itemList.GetItem(itemName);
+		std::shared_ptr<Item> item = itemList.GetItem(ItemName);
 
 		if (item != nullptr)
 		{
 			item->Use();
-			Inventory[itemName]--;
+			Inventory[ItemName]--;
 		}
-		else
+		else 
+		{
 			LogManager::Get().Append("잘못된 아이템 접근입니다\n");
+		}
 	}
 }
 
-void Player::AddItem(string itemName, int count)
+void Player::UseRandomItemOfInventory() {
+	vector<string> ValidItems;
+	for (auto& Item : Inventory)
+	{
+		if (Item.second > 0) {
+			ValidItems.push_back(Item.first);
+		}
+	}
+	if (ValidItems.size() != 0)
+	{
+		int RandomIndex = rand() % ValidItems.size();
+		string RandomItem = ValidItems[RandomIndex];
+		UseItem(RandomItem);
+	}
+}
+
+void Player::AddItem(string ItemName, int Count)
 {
 	ItemList itemList = ItemList::GetInstance();
-	std::shared_ptr<Item> item = itemList.GetItem(itemName);
+	std::shared_ptr<Item> Item = itemList.GetItem(ItemName);
 
-	if (item != nullptr)
+	if (Item != nullptr)
 	{
-		if (item->GetUsageType() == EItemUsageType::Immediately)
+		if (Item->GetUsageType() == EItemUsageType::Immediately)
 		{
 			// Count 만큼 아이템 즉시 사용
-			for (int i = 0; i < count; i++)
-				item->Use();
+			for (int i = 0; i < Count; i++)
+				Item->Use();
 		}
-		else if (item->GetUsageType() == EItemUsageType::Battle)
+		else if (Item->GetUsageType() == EItemUsageType::Battle)
 		{
-			Inventory[itemName] += count;
+			Inventory[ItemName] += Count;
 		}
 	}
-	else
+	else {
 		LogManager::Get().Append("잘못된 아이템 접근입니다\n");
+	}
 }
 
-int Player::GetGold()
-{
-	return Gold;
-}
-
-void Player::SetGold(int Gold)
-{
-	this->Gold = Gold;
-}
-
-int Player::GetLevel()
-{
-	return Level;
-}
-
-int Player::GetExp()
-{
-	return Exp;
-}
-
-unordered_map<string, int> Player::GetInventory()
-{
-	return Inventory;
-}

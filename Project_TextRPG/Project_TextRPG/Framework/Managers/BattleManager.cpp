@@ -41,14 +41,6 @@ bool BattleManager::Battle(Monster* SelectedMonster, Player* Player)
 
     auto Items = ItemList::GetInstance().GetItems();
 
-    // 전투 시작전 30% 확률로 아이템 사용
-    if (ItemUseProb >= RandRange(1, 100))
-    {
-        // ItemList 클래스에 있는 종류중에 한가지 사용
-        int ItemType = RandRange(0, Items.size() - 1);
-        Player->UseItem(Items[ItemType].get()->GetName());
-    }
-
     LogManager::Get() << "몬스터 " << SelectedMonster->GetName() << " 등장! 체력:" << SelectedMonster->GetHP() << ", 공격력: " << SelectedMonster->GetDamage() << '\n';
     LogManager::Get().Delay(DelayTime);
 
@@ -63,6 +55,12 @@ bool BattleManager::Battle(Monster* SelectedMonster, Player* Player)
         {
             LogManager::Get() << '\n' << SelectedMonster->GetName() << "의 남은 체력: " << SelectedMonster->GetHP() << '\n';
             LogManager::Get().Delay(DelayTime);
+
+            // 전투 턴이 끝날 때마다 아이템 사용(플레이어 턴 끝)
+            if (ItemUseProb >= RandRange(1, 100))
+            {
+                Player->UseRandomItemOfInventory();
+            }
         }
         else
         {
@@ -97,6 +95,12 @@ bool BattleManager::Battle(Monster* SelectedMonster, Player* Player)
             LogManager::Get() << "\n플레이어의 남은 체력 : " << Player->GetHP() << '\n';
             LogManager::Get().Delay(DelayTime);
 
+
+            // 전투 턴이 끝날 때마다 아이템 사용(몬스터 턴 끝)
+            if (ItemUseProb >= RandRange(1, 100))
+            {
+                Player->UseRandomItemOfInventory();
+            }
         }
         else
         {
