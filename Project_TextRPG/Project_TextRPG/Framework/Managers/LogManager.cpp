@@ -46,9 +46,9 @@ struct Rgb
 //==========================================================
 
 
-void Layout::Clear(bool clearBuffer)
+void Layout::Clear(bool ClearBuffer)
 {
-	if (clearBuffer)
+	if (ClearBuffer)
 	{
 		text.clear();
 		outputTextVec.clear();
@@ -104,7 +104,7 @@ void Layout::SetOutputText()
 
 
 //자체적으로 그림
-void DrawLayout::Draw(EDraw draw)
+void DrawLayout::Draw(EDraw Draw)
 {
 	//지움
 	for (int i = 0; i < rect.height; i++)
@@ -114,7 +114,7 @@ void DrawLayout::Draw(EDraw draw)
 			cout << "■";
 	}
 
-	switch (draw)
+	switch (Draw)
 	{
 	case EDraw::Player:
 		LogManager::Get().MoveCursor(rect.left, rect.up);
@@ -123,23 +123,25 @@ void DrawLayout::Draw(EDraw draw)
 
 	case EDraw::Shop:
 		LogManager::Get().MoveCursor(rect.left, rect.up);
-		DrawBMP("Test.bmp");
+		DrawBMP("health_potion_pixel.bmp");
 		break;
 
 	case EDraw::Fight:
 
-		break;
+		break; 
+	default:
+			break;
 	}
 }
 
-void DrawLayout::DrawBMP(const std::string& filename)
+void DrawLayout::DrawBMP(const std::string& Filename)
 {
 	//BMP 읽어오기
 
-	ifstream file(filename, ios::binary);
+	ifstream file(Filename, ios::binary);
 	if (!file)
 	{
-		cerr << "Failed to open file: " << filename << endl;
+		cerr << "Failed to open file: " << Filename << endl;
 		return;
 	}
 
@@ -233,15 +235,14 @@ void PlayerStatLayout::Update()
 
 
 
-void LogLayout::Append(const std::string& str, float delay)
+void LogLayout::Append(const std::string& Str, float Delay)
 {
-	text += str;
+	text += Str;
 
 	Clear();
 	Output();
 
-	if (delay > .0f)
-		Sleep(delay * 1000);
+	LogManager::Get().Delay(Delay);
 }
 
 
@@ -341,23 +342,29 @@ void LogManager::DrawOutline()
 		cout << outline[i] << endl;
 }
 
-void LogManager::Append(char ch)
+void LogManager::Append(char Ch)
 {
-	Append(string(1, ch));
+	Append(string(1, Ch));
 }
 
-void LogManager::Append(const string& str, float delay)
+void LogManager::Append(const string& Str, float Delay)
 {
-	static_cast<LogLayout*>(&layouts[2])->Append(str, delay);
+	static_cast<LogLayout*>(&layouts[2])->Append(Str, Delay);
 	auto prePos = GetCursorPosition();
 
 	static_cast<PlayerStatLayout*>(&layouts[1])->Update();
 	MoveCursor(prePos.first, prePos.second);
 }
 
-void LogManager::Draw(EDraw draw)
+void LogManager::Delay(float Delay)
 {
-	static_cast<DrawLayout*>(&layouts[0])->Draw(draw);
+	if (Delay > .0f)
+		Sleep(Delay * 1000);
+}
+
+void LogManager::Draw(EDraw Draw)
+{
+	static_cast<DrawLayout*>(&layouts[0])->Draw(Draw);
 }
 
 void LogManager::Pause()
@@ -379,42 +386,42 @@ pair<int, int> LogManager::GetCursorPosition()
 	return { csbi.dwCursorPosition.X, csbi.dwCursorPosition.Y };
 }
 
-void LogManager::MoveCursor(int x, int y)
+void LogManager::MoveCursor(int X, int Y)
 {
 	//커서이동함수
 	COORD Cur;
-	Cur.X = x;
-	Cur.Y = y;
+	Cur.X = X;
+	Cur.Y = Y;
 	SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), Cur);
 }
 
-LogManager& LogManager::operator<<(const std::string& message)
+LogManager& LogManager::operator<<(const std::string& Message)
 {
-	Append(message);
+	Append(Message);
 	return *this;
 }
 
-LogManager& LogManager::operator<<(char value)
+LogManager& LogManager::operator<<(char Value)
 {
-	Append(value);
+	Append(Value);
 	return *this;
 }
 
-LogManager& LogManager::operator<<(int value)
+LogManager& LogManager::operator<<(int Value)
 {
-	*this << to_string(value);
+	*this << to_string(Value);
 	return *this;
 }
 
-LogManager& LogManager::operator<<(float value)
+LogManager& LogManager::operator<<(float Value)
 {
-	*this << to_string(value);
+	*this << to_string(Value);
 	return *this;
 }
 
-LogManager& LogManager::operator<<(size_t value)
+LogManager& LogManager::operator<<(size_t Value)
 {
-	*this << to_string(value);
+	*this << to_string(Value);
 	return *this;
 }
 

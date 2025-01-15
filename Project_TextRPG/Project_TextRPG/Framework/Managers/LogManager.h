@@ -31,8 +31,8 @@ public:
 		int width, height;
 
 	public:
-		Rect(int left, int up, int width, int height) 
-			: left(left), up(up), width(width), height(height) {}
+		Rect(int Left, int Up, int Width, int Height) 
+			: left(Left), up(Up), width(Width), height(Height) {}
 	};
 
 public:
@@ -41,9 +41,9 @@ public:
 	std::vector<std::string> outputTextVec;
 
 public:
-	Layout(Rect rect) : rect(rect) {}
+	Layout(Rect Rect) : rect(Rect) {}
 
-	void Clear(bool clearBuffer = false);
+	void Clear(bool ClearBuffer = false);
 
 protected:
 	void Output();
@@ -56,18 +56,18 @@ private:
 class DrawLayout : public Layout
 {
 public:
-	DrawLayout(Layout::Rect rect) : Layout(rect) {};
-	void Draw(EDraw draw);
+	DrawLayout(Layout::Rect Rect) : Layout(Rect) {};
+	void Draw(EDraw Draw);
 
 private:
-	void DrawBMP(const std::string& filename);
+	void DrawBMP(const std::string& Filename);
 };
 
 
 class PlayerStatLayout : public Layout
 {
 public:
-	PlayerStatLayout(Layout::Rect rect) : Layout(rect) {};
+	PlayerStatLayout(Layout::Rect Rect) : Layout(Rect) {};
 	void Update();
 };
 
@@ -75,8 +75,8 @@ public:
 class LogLayout : public Layout
 {
 public:
-	LogLayout(Layout::Rect rect) : Layout(rect) {}
-	void Append(const std::string& str, float delay = .0f);
+	LogLayout(Layout::Rect Rect) : Layout(Rect) {}
+	void Append(const std::string& Str, float Delay = .0f);
 };
 
 //============================================================================
@@ -96,23 +96,24 @@ public:
 
 	void Initialize();
 	void DrawOutline();
-	void Append(char ch);
-	void Append(const std::string& str, float delay = .0f);
-	void Draw(EDraw draw);
+	void Append(char Ch);
+	void Append(const std::string& Str, float Delay = .0f);
+	void Delay(float Delay);
+	void Draw(EDraw Draw);
 	void Pause();
 	//전체 레이아웃의 buffer까지 전부 삭제함
 	void Clear();
 
 	std::pair<int, int> GetCursorPosition();
-	void MoveCursor(int x, int y);
+	void MoveCursor(int X, int Y);
 
-	Layout& GetLayout(ELayout layout) { return layouts[(int)layout]; }
+	Layout& GetLayout(ELayout Layout) { return layouts[(int)Layout]; }
 
-	LogManager& operator<<(const std::string& message);
-	LogManager& operator<<(char value);
-	LogManager& operator<<(int value);
-	LogManager& operator<<(float value);
-	LogManager& operator<<(size_t value);
+	LogManager& operator<<(const std::string& Message);
+	LogManager& operator<<(char Value);
+	LogManager& operator<<(int Value);
+	LogManager& operator<<(float Value);
+	LogManager& operator<<(size_t Value);
 
 private:
 	LogManager() = default;
