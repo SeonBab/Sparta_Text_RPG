@@ -45,9 +45,7 @@ void MainGame::Tick()
 {
 	// Console Clear
 	LogManager::Get().Clear();
-	// 매번 아웃라인을 갱신해 문제없게 보이게 할 수는 있지만
-	// 로그를 잘못 남겼을 시 남아서 눈에 보이게 하는 게 더 좋다 생각함
-	//LogManager::Get().DrawOutline();
+	LogManager::Get().DrawOutline();
 
 	// 10레벨 달성시 보스 몬스터와 강제 전투이므로 DisplayChoices() 함수 앞에 와야함
 	if (MaxPlayerLevel == Player::GetInstance()->GetLevel())

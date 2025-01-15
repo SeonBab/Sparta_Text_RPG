@@ -60,7 +60,7 @@ public:
 	void Draw(EDraw draw);
 
 private:
-	std::string ReadBMP(const std::string& filename);
+	void DrawBMP(const std::string& filename);
 };
 
 

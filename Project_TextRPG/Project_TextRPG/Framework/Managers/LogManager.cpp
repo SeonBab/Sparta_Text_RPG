@@ -34,6 +34,12 @@ struct BMPInfoHeader
 };
 #pragma pack(pop)
 
+struct Rgb
+{
+	BYTE red;
+	BYTE green;
+	BYTE blue;
+};
 
 //==========================================================
 //Layout
@@ -97,37 +103,44 @@ void Layout::SetOutputText()
 
 
 
-
+//자체적으로 그림
 void DrawLayout::Draw(EDraw draw)
 {
+	//지움
+	for (int i = 0; i < rect.height; i++)
+	{
+		LogManager::Get().MoveCursor(rect.left, rect.up + i);
+		for (int j = 0; j < rect.width / 2; j++)
+			cout << "■";
+	}
+
 	switch (draw)
 	{
 	case EDraw::Player:
 		LogManager::Get().MoveCursor(rect.left, rect.up);
-		text = ReadBMP("Character.bmp");
+		DrawBMP("Character.bmp");
 		break;
 
 	case EDraw::Shop:
 		LogManager::Get().MoveCursor(rect.left, rect.up);
-		text = ReadBMP("Test.bmp");
+		DrawBMP("Test.bmp");
 		break;
 
 	case EDraw::Fight:
 
 		break;
 	}
-
-	Clear();
-	Output();
 }
 
-string DrawLayout::ReadBMP(const std::string& filename)
+void DrawLayout::DrawBMP(const std::string& filename)
 {
+	//BMP 읽어오기
+
 	ifstream file(filename, ios::binary);
 	if (!file)
 	{
 		cerr << "Failed to open file: " << filename << endl;
-		return string();
+		return;
 	}
 
 	BMPHeader header;
@@ -140,7 +153,7 @@ string DrawLayout::ReadBMP(const std::string& filename)
 	if (header.fileType != 0x4D42)
 	{
 		std::cerr << "Not a BMP file." << std::endl;
-		return string();
+		return;
 	}
 
 	int rowSize = (infoHeader.bitCount * infoHeader.width + 31) / 32 * 4;
@@ -149,42 +162,38 @@ string DrawLayout::ReadBMP(const std::string& filename)
 	// 픽셀 데이터 출력 (단순화된 출력)
 	file.seekg(header.offsetData, ios::beg);
 
-	bool** dot = new bool* [infoHeader.height];
+	vector<Rgb> pixelVec(infoHeader.width * infoHeader.height);
 	for (int y = infoHeader.height - 1; y >= 0; y--)
 	{
-		dot[y] = new bool[infoHeader.width];
-
 		file.read(reinterpret_cast<char*>(row.data()), rowSize);
 		for (int x = 0; x < infoHeader.width; ++x)
 		{
 			UCHAR blue = row[x * 3];
-			//UCHAR green = row[x * 3 + 1];
-			//UCHAR red = row[x * 3 + 2];
+			UCHAR green = row[x * 3 + 1];
+			UCHAR red = row[x * 3 + 2];
 
 			//BMP는 그림이 아래부터 기록되있기 때문에 뒤집어 주기 위해서 배열에 넣어줌
-			dot[y][x] = blue != 255;
+			pixelVec[x + y * infoHeader.width] = { red, green, blue };
 		}
 	}
 
-	string result;
+	//출력
+	auto prePos = LogManager::Get().GetCursorPosition();
+
 	for (int y = 0; y < infoHeader.height; y++)
 	{
 		for (int x = 0; x < infoHeader.width; x++)
-			result += dot[y][x] ? "■" : "□";
-		
-		result.push_back('\n');
+		{
+			LogManager::Get().MoveCursor(prePos.first + x * 2, prePos.second + y);
+
+			auto& pixel = pixelVec[x + y * infoHeader.width];
+			if (!(pixel.red == 255 && pixel.green == 255 && pixel.blue == 255))
+				//색 입혀서 출력, 하얀색(=투명)은 무시
+				cout << "\033[38;2;" << (int)pixel.red << ";" << (int)pixel.green << ";" << (int)pixel.blue << "m" << "■" << "\033[0m";
+		}
 	}
 
-	//막줄은 빼야됨
-	result.pop_back();
-
 	file.close();
-
-	for (int i = 0; i < infoHeader.height; i++)
-		delete[] dot[i];
-
-	delete[] dot;
-	return result;
 }
 
 
@@ -259,11 +268,16 @@ void LogManager::Initialize()
 		//로그
 		LogLayout(Layout::Rect(105, 9, 50, 30)),
 	};
-	
+
 	width = 158;
 	height = 42;
 
 	HANDLE handle = GetStdHandle(STD_OUTPUT_HANDLE);
+
+	DWORD dwMode = 0;
+	GetConsoleMode(handle, &dwMode);
+	dwMode |= ENABLE_VIRTUAL_TERMINAL_PROCESSING;
+	SetConsoleMode(handle, dwMode);
 
 	// 버퍼 크기 설정
 	COORD bufferSize;
