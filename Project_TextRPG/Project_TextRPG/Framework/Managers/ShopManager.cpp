@@ -201,7 +201,10 @@ void ShopManager::PrintShopSell()
 
 		for (pair<string, int> e : CurInv)
 		{
-			if (0 == e.second) continue;
+			if (0 == e.second)
+			{
+				continue;
+			}
 
 			LogManager::Get() << InvItems.size() + 1 << "번 " << e.first << " 현재 " << e.second << "개 있습니다. " << "1개당 가격." << CurList.GetItem(e.first)->GetGoldCost() << "\n";
 			InvItems.push_back(e.first);

@@ -22,12 +22,14 @@ private:
     const int ItemUseProb = 30;
 
     const int ItemDropProb = 50; 
+
+    const float DelayTime = 0.95f;
     
     const int RangeItemType = 1; // AttackBoost는 즉시 사용되도록
 
     bool Battle(Monster* Monster, Player* Player);
 
-    int RandRange(int start, int end);
+    int RandRange(int Start, int End);
 
 
 };

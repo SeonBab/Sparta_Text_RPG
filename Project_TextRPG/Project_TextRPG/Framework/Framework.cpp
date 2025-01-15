@@ -52,9 +52,9 @@ void MainGame::Tick()
 	// 10레벨 달성시 보스 몬스터와 강제 전투이므로 DisplayChoices() 함수 앞에 와야함
 	if (MaxPlayerLevel == Player::GetInstance()->GetLevel())
 	{
-		MonsterInfo info = Monster::CreateMonsterInfo(Player::GetInstance()->GetLevel(), 4);
+		FMonsterInfo BossMonsterInfo = Monster::CreateMonsterInfo(Player::GetInstance()->GetLevel(), 4);
 
-		unique_ptr<Monster> BossMonster = make_unique<Monster>(info.name, info.hp, info.damage, 4);
+		unique_ptr<Monster> BossMonster = make_unique<Monster>(BossMonsterInfo.MonsterName, BossMonsterInfo.MonsterHp, BossMonsterInfo.MonsterDamage, 4);
 		// 보스 몬스터에게 이기거나 플레이어가 죽은 경우 이후 게임 로직을 더이상 처리하지 않고 게임을 종료
 		if (BattleManager::Get().Battle(BossMonster.get(), Player::GetInstance()))
 		{
@@ -134,9 +134,9 @@ void MainGame::CreateMonster()
 		const int RandMonsterType = RandRange(1, MaxMonsterTypeRange);
 
 		// 몬스터 정보 계산
-		MonsterInfo info = Monster::CreateMonsterInfo(Player::GetInstance()->GetLevel(), RandMonsterType);
+		FMonsterInfo MonsterInfo = Monster::CreateMonsterInfo(Player::GetInstance()->GetLevel(), RandMonsterType);
 
-		Monsters[i] = make_unique<Monster>(info.name, info.hp, info.damage, RandMonsterType);
+		Monsters[i] = make_unique<Monster>(MonsterInfo.MonsterName, MonsterInfo.MonsterHp, MonsterInfo.MonsterDamage, RandMonsterType);
 	}
 }
 

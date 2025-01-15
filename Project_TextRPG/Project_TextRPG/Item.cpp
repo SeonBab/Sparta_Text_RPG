@@ -4,7 +4,7 @@
 void HealthPotion::Use()
 {
     // 체력 회복 물약이 회복시킬 값
-    int HPRecovery = 5;
+    int HPRecovery = 50;
 
     // 플레이어 가져오기
     Player* CurPlayer = Player::GetInstance();
