@@ -100,10 +100,21 @@ void Layout::SetOutputText()
 
 void DrawLayout::Draw(EDraw draw)
 {
-	if (draw == EDraw::Player)
+	switch (draw)
 	{
+	case EDraw::Player:
 		LogManager::Get().MoveCursor(rect.left, rect.up);
 		text = ReadBMP("Character.bmp");
+		break;
+
+	case EDraw::Shop:
+		LogManager::Get().MoveCursor(rect.left, rect.up);
+		text = ReadBMP("Test.bmp");
+		break;
+
+	case EDraw::Fight:
+
+		break;
 	}
 
 	Clear();
@@ -160,9 +171,12 @@ string DrawLayout::ReadBMP(const std::string& filename)
 	{
 		for (int x = 0; x < infoHeader.width; x++)
 			result += dot[y][x] ? "■" : "□";
-
+		
 		result.push_back('\n');
 	}
+
+	//막줄은 빼야됨
+	result.pop_back();
 
 	file.close();
 
@@ -239,14 +253,14 @@ void LogManager::Initialize()
 	layouts = new Layout[3]
 	{
 		//그림
-		DrawLayout({ 1, 1, 70, 39 }),
+		DrawLayout({ 1, 1, 101, 39 }),
 		//스텟
-		PlayerStatLayout({ 74, 2, 50, 6 }),
+		PlayerStatLayout({ 105, 2, 50, 6 }),
 		//로그
-		LogLayout(Layout::Rect(74, 9, 50, 30)),
+		LogLayout(Layout::Rect(105, 9, 50, 30)),
 	};
-
-	width = 127;
+	
+	width = 158;
 	height = 42;
 
 	HANDLE handle = GetStdHandle(STD_OUTPUT_HANDLE);
