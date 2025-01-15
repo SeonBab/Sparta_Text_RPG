@@ -9,7 +9,7 @@ class Player : public Entity
 {
 private:
 
-    static Player* instance;
+    static Player* Instance;
     int Level;
     int Exp;
     int Gold;
@@ -18,8 +18,8 @@ private:
     Player(string name);
     ~Player()
     {
-		delete instance;
-		instance = nullptr;
+		delete Instance;
+		Instance = nullptr;
     }
     Player(const Player&) = delete;
     Player& operator=(const Player&) = delete;
@@ -28,39 +28,41 @@ public:
 
     static Player* GetInstance()
     {
-        if (instance == nullptr)
+        if (Instance == nullptr)
         {
             string name = "";
-            instance = new Player(name);
+            Instance = new Player(name);
         }
-		return instance;
+		return Instance;
     }
+
+    int GetGold() const { return Gold; }
+
+    void SetGold(const int Gold) { this->Gold = Gold; }
+
+    int GetLevel() const { return Level; }
+
+    int GetExp() const { return Exp; }
+
+    unordered_map<string, int> GetInventory() const { return Inventory; }
 
     void SetPlayerName();
     
-    void TakeDamage(int damage);
+    void TakeDamage(int Damage);
 
-    void UpdateExp(int expAmount);
+    void UpdateExp(int ExpAmount);
 
     void LevelUp();
 
-    void BuyItem(string itemName, int itemPrice, int count);
+    void BuyItem(string ItemName, int ItemPrice, int Count);
 
-    void SellItem(string itemName, int itemPrice, int count);
+    void SellItem(string ItemName, int ItemPrice, int Count);
 
-	void UseItem(string itemName);
+	void UseItem(string ItemName);
 
-	void AddItem(string itemName, int count);
+    void UseRandomItemOfInventory();
 
-    int GetGold();
-
-    void SetGold(int Gold);
-
-    int GetLevel();
-
-    int GetExp();
-
-    unordered_map<string, int> GetInventory();
+	void AddItem(string ItemName, int Count);
 
 };
 

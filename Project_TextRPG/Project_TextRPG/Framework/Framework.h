@@ -18,20 +18,27 @@ class Entity
 public:
     
     const string& GetName() const { return Name; }
-    void SetName(const string& name) { Name = name; }
-    const int GetHP() const { return HP; }
-    void SetHP(const int hp) { HP = hp; }
-    const int GetMaxHP() const { return MaxHP; }
-    void SetMaxHP(const int maxHP) { MaxHP = maxHP; }
-    const int GetDamage() const { return Damage; }
-    void SetDamage(const int damage) { Damage = damage; }
 
-    Entity(string name, int maxHP, int damage)
+    void SetName(const string& Name) { this->Name = Name; }
+
+    const int GetHP() const { return HP; }
+
+    void SetHP(const int HP) { this->HP = HP; }
+
+    const int GetMaxHP() const { return MaxHP; }
+
+    void SetMaxHP(const int MaxHP) { this->MaxHP = MaxHP; }
+
+    const int GetDamage() const { return Damage; }
+
+    void SetDamage(const int Damage) { this->Damage = Damage; }
+
+    Entity(string Name, int MaxHP, int Damage)
     {
-        Name = name;
-        MaxHP = maxHP;
-        HP = MaxHP; // 태어날 땐 최대 체력이 현재 체력과 같음
-        Damage = damage;
+        this->Name = Name;
+        this->MaxHP = MaxHP;
+        this->HP = MaxHP; // 태어날 땐 최대 체력이 현재 체력과 같음
+        this->Damage = Damage;
     }
     
 protected:
