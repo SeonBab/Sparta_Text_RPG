@@ -15,7 +15,7 @@ void MainGame::Init()
 	LogManager::Get().Initialize();
 	LogManager::Get().DrawOutline();
 
-	Player::GetInstance()->SetPlayer();
+	Player::GetInstance()->SetPlayerName();
 }
 
 void MainGame::Select()
@@ -58,14 +58,21 @@ void MainGame::Tick()
 		// 보스 몬스터에게 이기거나 플레이어가 죽은 경우 이후 게임 로직을 더이상 처리하지 않고 게임을 종료
 		if (BattleManager::Get().Battle(BossMonster.get(), Player::GetInstance()))
 		{
-			EndType = EEndType::Win;
-			OnGameEnded();
+			LogManager::Get() << "축하합니다! 보스를 처치하고 게임 엔딩을 보셨습니다!" << "\n";
+			
+			//EndType = EEndType::Win;
+			//OnGameEnded();
 		}
 		else
 		{
-			EndType = EEndType::Lose;
-			OnGameEnded();
+			LogManager::Get() << "아쉽게도 보스한테 패배하셨습니다." << "\n";
+
+			//EndType = EEndType::Lose;
+			//OnGameEnded();
 		}
+
+		// 밑에 로직 실행하지 않고 프로그램 강제 종료
+		exit(0);
 	}
 
     if (!bBlockRegenerateMonster) // 꼼수 방지. 상점 갔다 나온다고 몬스터가 다시 생성되면 안됨
@@ -133,19 +140,20 @@ void MainGame::CreateMonster()
 	}
 }
 
+// 현재 일반 몬스터에게 죽었을때만 실행됨
 void MainGame::OnGameEnded()
 {
     if(EndType == EEndType::Lose)
     {
 		LogManager::Get() << "You Lose..." << "\n";
-        bIsGameEnded = true;
     }
     else if(EndType == EEndType::Win)
     {
 		LogManager::Get() << "You Win!!!" << "\n";
-        bIsGameEnded = false;
     }
 
+	// 승패에 관계없이 무조건 게임 종료
+	bIsGameEnded = true;
 }
 
 void MainGame::DisplayChoices()
