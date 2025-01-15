@@ -36,22 +36,25 @@ bool BattleManager::Battle(Monster* SelectedMonster, Player* Player)
     int Exp = 50;
 
     auto Items = ItemList::GetInstance().GetItems();
+
     // 전투 시작전 30% 확률로 아이템 사용
     if (ItemUseProb >= RandRange(1, 100))
     {
-        // 플레이어 클래스의 인벤토리에 직접 접근하는 것으로 변경됨
         // ItemList 클래스에 있는 종류중에 한가지 사용
         int ItemType = RandRange(0, Items.size() - 1);
         Player->UseItem(Items[ItemType].get()->GetName());
     }
+
     LogManager::Get() << "몬스터 " << SelectedMonster->GetName() << " 등장! 체력:" << SelectedMonster->GetHP() << ", 공격력: " << SelectedMonster->GetDamage() << '\n';
     LogManager::Get().Delay(DelayTime);
+
     while (true)
     {
         // 플레이어 선공
         SelectedMonster->TakeDamage(Player->GetDamage());
         LogManager::Get() << "플레이어가 몬스터를 공격합니다! ";
         LogManager::Get().Delay(DelayTime);
+
         if (SelectedMonster->GetHP() > 0)
         {
             LogManager::Get() << '\n' << SelectedMonster->GetName() << "의 남은 체력: " << SelectedMonster->GetHP() << '\n';
@@ -67,8 +70,8 @@ bool BattleManager::Battle(Monster* SelectedMonster, Player* Player)
 
             // 몬스터 난이도에 따라 다른 획득 보상
             Player->SetGold(Player->GetGold() + Gold);
-
             Player->UpdateExp(Exp);
+
             if (ItemDropProb >= RandRange(0, 100)) // Drop Item
             {
                 const int RandItemIdx = RandRange(0, Items.size() - 1);
@@ -81,8 +84,10 @@ bool BattleManager::Battle(Monster* SelectedMonster, Player* Player)
             bIsPlayerWon = true;
             break;
         }
+
         Player->TakeDamage(SelectedMonster->GetDamage());
         LogManager::Get() << "몬스터가 플레이어를 공격합니다. ";
+
         if (Player->GetHP() > 0)
         {
             LogManager::Get() << "\n플레이어의 남은 체력 : " << Player->GetHP() << '\n';
