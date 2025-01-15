@@ -76,10 +76,10 @@ bool BattleManager::Battle(Monster* SelectedMonster, Player* Player)
     return bIsPlayerWon;
 }
 
-int BattleManager::RandRange(int start, int end)
+int BattleManager::RandRange(int Start, int End)
 {
-    std::random_device rd;
-    std::mt19937 gen(rd());
-    std::uniform_int_distribution<int> dis(start, end);
-    return dis(gen);
+    std::random_device Rd;
+    std::mt19937 Gen(Rd());
+    std::uniform_int_distribution<int> Dis(Start, End);
+    return Dis(Gen);
 }
