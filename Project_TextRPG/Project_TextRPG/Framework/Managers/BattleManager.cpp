@@ -41,13 +41,13 @@ bool BattleManager::Battle(Monster* SelectedMonster, Player* Player)
         }
         else
         {
-            LogManager::Get() << SelectedMonster->GetName() << "\n 가 죽었습니다!\n";
+            LogManager::Get() << SelectedMonster->GetName() << "가 죽었습니다!\n";
             // 몬스터에서 부스트 드랍되면 바로 사용되도록
             Gold = 10 * SelectedMonster->GetDifficulty();
             Exp = Exp * SelectedMonster->GetDifficulty() * 0.5;
 
             // 몬스터 난이도에 따라 다른 획득 보상
-            Player->SetGold(Gold);
+            Player->SetGold(Player->GetGold() + Gold);
 
             Player->UpdateExp(Exp);
             if (ItemDropProb >= RandRange(0, 100)) // Drop Item
