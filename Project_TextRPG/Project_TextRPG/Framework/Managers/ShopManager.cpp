@@ -7,9 +7,6 @@
 
 void ShopManager::PrintShopMenu()
 {
-	LogManager::Get().Clear();
-	LogManager::Get().Draw(EDraw::Shop);
-
 	std::string InputVal;
 	bool bIsRunning = true;
 	
@@ -17,6 +14,10 @@ void ShopManager::PrintShopMenu()
 	{
 		// 로그 초기화
 		LogManager::Get().GetLayout(ELayout::Log).Clear(true);
+
+		// 상점 그리기
+		LogManager::Get().Clear();
+		LogManager::Get().Draw(EDraw::Shop);
 
 		LogManager::Get() << "상점입니다." << "\n";
 		LogManager::Get() << "구매: 1 판매: 2 나가기: 0" << "\n";
@@ -79,6 +80,10 @@ void ShopManager::PrintShopBuy()
 		// 로그 초기화
 		LogManager::Get().GetLayout(ELayout::Log).Clear(true);
 
+		// 상점 그리기
+		LogManager::Get().Clear();
+		LogManager::Get().Draw(EDraw::Shop);
+
 		for (int i = 0; i < Items.size(); ++i)
 		{
 			// 비어있을경우 넘어감
@@ -110,6 +115,8 @@ void ShopManager::PrintShopBuy()
 			{
 				// 로그 초기화
 				LogManager::Get().GetLayout(ELayout::Log).Clear(true);
+
+				LogManager::Get().Draw(Items[ItemsIndex - 1]->GetDrawImage(), 5, 4);
 
 				LogManager::Get() << Items[ItemsIndex - 1]->GetName() << "의 구매를 취소하려면 0을 입력해주세요." << "\n";
 				LogManager::Get() << "구매하려는 아이템의 개수를 적어주세요." << "\n";
@@ -186,6 +193,10 @@ void ShopManager::PrintShopSell()
 		// 로그 초기화
 		LogManager::Get().GetLayout(ELayout::Log).Clear(true);
 
+		// 상점 그리기
+		LogManager::Get().Clear();
+		LogManager::Get().Draw(EDraw::Shop);
+
 		// 인벤토리에 있는 아이템들의 이름 임시 저장
 		std::vector<std::string> InvItems;
 
@@ -232,6 +243,8 @@ void ShopManager::PrintShopSell()
 			// 아이템 목록에서 한가지 구매
 			else if (ItemsIndex <= InvItems.size())
 			{
+				LogManager::Get().Draw(Items[ItemsIndex - 1]->GetDrawImage(), 5, 4);
+
 				LogManager::Get() << InvItems[ItemsIndex - 1] << "의 판매를 취소하려면 0을 입력해주세요." << "\n";
 				LogManager::Get() << "판매하려는 아이템의 개수를 적어주세요." << "\n";
 
