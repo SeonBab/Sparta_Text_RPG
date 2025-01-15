@@ -7,7 +7,9 @@ enum class EDraw
 {
 	Player,
 	Shop,
-	Fight,
+	Stage,
+	Potion,
+	AttackBoost
 };
 
 enum class ELayout
@@ -25,23 +27,23 @@ enum class ELayout
 class Layout
 {
 public:
-	struct Rect
+	struct FRect
 	{
 		int left, up;
 		int width, height;
 
 	public:
-		Rect(int Left, int Up, int Width, int Height) 
+		FRect(int Left, int Up, int Width, int Height) 
 			: left(Left), up(Up), width(Width), height(Height) {}
 	};
 
 public:
-	Rect rect;
+	FRect rect;
 	std::string text;
 	std::vector<std::string> outputTextVec;
 
 public:
-	Layout(Rect Rect) : rect(Rect) {}
+	Layout(FRect Rect) : rect(Rect) {}
 
 	void Clear(bool ClearBuffer = false);
 
@@ -56,8 +58,8 @@ private:
 class DrawLayout : public Layout
 {
 public:
-	DrawLayout(Layout::Rect Rect) : Layout(Rect) {};
-	void Draw(EDraw Draw);
+	DrawLayout(Layout::FRect Rect) : Layout(Rect) {};
+	void Draw(EDraw Draw, int x = 0, int y = 0);
 
 private:
 	void DrawBMP(const std::string& Filename);
@@ -67,7 +69,7 @@ private:
 class PlayerStatLayout : public Layout
 {
 public:
-	PlayerStatLayout(Layout::Rect Rect) : Layout(Rect) {};
+	PlayerStatLayout(Layout::FRect Rect) : Layout(Rect) {};
 	void Update();
 };
 
@@ -75,7 +77,7 @@ public:
 class LogLayout : public Layout
 {
 public:
-	LogLayout(Layout::Rect Rect) : Layout(Rect) {}
+	LogLayout(Layout::FRect Rect) : Layout(Rect) {}
 	void Append(const std::string& Str, float Delay = .0f);
 };
 
@@ -99,7 +101,7 @@ public:
 	void Append(char Ch);
 	void Append(const std::string& Str, float Delay = .0f);
 	void Delay(float Delay);
-	void Draw(EDraw Draw);
+	void Draw(EDraw Draw, int x = 0, int y = 0);
 	void Pause();
 	//전체 레이아웃의 buffer까지 전부 삭제함
 	void Clear();

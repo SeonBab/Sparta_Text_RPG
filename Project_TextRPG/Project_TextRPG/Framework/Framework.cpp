@@ -47,6 +47,8 @@ void MainGame::Tick()
 	LogManager::Get().Clear();
 	LogManager::Get().DrawOutline();
 
+	LogManager::Get().Draw(EDraw::Stage);
+
 	// 10레벨 달성시 보스 몬스터와 강제 전투이므로 DisplayChoices() 함수 앞에 와야함
 	if (MaxPlayerLevel == Player::GetInstance()->GetLevel())
 	{

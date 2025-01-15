@@ -7,6 +7,8 @@
 
 void ShopManager::PrintShopMenu()
 {
+	LogManager::Get().Draw(EDraw::Shop);
+
 	std::string InputVal;
 	bool bIsRunning = true;
 	

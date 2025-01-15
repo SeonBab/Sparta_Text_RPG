@@ -15,7 +15,7 @@ using namespace std;
 // 구조체 패딩 방지
 // 이거 안하면 BMP 헤더 사이즈 안맞아서 해줘야함
 #pragma pack(push, 1) 
-struct BMPHeader
+struct FBMPHeader
 {
 	USHORT fileType;    // 파일 타입 ("BM")
 	UINT fileSize;      // 전체 파일 크기
@@ -24,7 +24,7 @@ struct BMPHeader
 	UINT offsetData;	// 픽셀 데이터의 시작 위치
 };
 
-struct BMPInfoHeader
+struct FBMPInfoHeader
 {
 	UINT size;			//헤더 크기
 	int width;          // 이미지의 가로 픽셀 수
@@ -34,7 +34,7 @@ struct BMPInfoHeader
 };
 #pragma pack(pop)
 
-struct Rgb
+struct FRgb
 {
 	BYTE red;
 	BYTE green;
@@ -104,7 +104,7 @@ void Layout::SetOutputText()
 
 
 //자체적으로 그림
-void DrawLayout::Draw(EDraw Draw)
+void DrawLayout::Draw(EDraw Draw, int x, int y)
 {
 	//지움
 	for (int i = 0; i < rect.height; i++)
@@ -114,21 +114,30 @@ void DrawLayout::Draw(EDraw Draw)
 			cout << "■";
 	}
 
+	LogManager::Get().MoveCursor(rect.left + x, rect.up + y);
+
 	switch (Draw)
 	{
 	case EDraw::Player:
-		LogManager::Get().MoveCursor(rect.left, rect.up);
 		DrawBMP("Character.bmp");
 		break;
 
 	case EDraw::Shop:
-		LogManager::Get().MoveCursor(rect.left, rect.up);
+		DrawBMP("Shop.bmp");
+		break;
+
+	case EDraw::Stage:
+		DrawBMP("Stage.bmp");
+		break; 
+
+	case EDraw::Potion:
 		DrawBMP("health_potion_pixel.bmp");
 		break;
 
-	case EDraw::Fight:
+	case EDraw::AttackBoost:
+		DrawBMP("attack_boost_pixel.bmp");
+		break;
 
-		break; 
 	default:
 			break;
 	}
@@ -141,12 +150,12 @@ void DrawLayout::DrawBMP(const std::string& Filename)
 	ifstream file(Filename, ios::binary);
 	if (!file)
 	{
-		cerr << "Failed to open file: " << Filename << endl;
+		LogManager::Get() << "파일을 열지 못했습니다.\n경로 : " << Filename << "\n";
 		return;
 	}
 
-	BMPHeader header;
-	BMPInfoHeader infoHeader;
+	FBMPHeader header;
+	FBMPInfoHeader infoHeader;
 
 	// 헤더 읽기
 	file.read(reinterpret_cast<char*>(&header), sizeof(header));
@@ -154,7 +163,7 @@ void DrawLayout::DrawBMP(const std::string& Filename)
 
 	if (header.fileType != 0x4D42)
 	{
-		std::cerr << "Not a BMP file." << std::endl;
+		LogManager::Get() << "BMP 파일이 아닙니다.\n";
 		return;
 	}
 
@@ -164,7 +173,7 @@ void DrawLayout::DrawBMP(const std::string& Filename)
 	// 픽셀 데이터 출력 (단순화된 출력)
 	file.seekg(header.offsetData, ios::beg);
 
-	vector<Rgb> pixelVec(infoHeader.width * infoHeader.height);
+	vector<FRgb> pixelVec(infoHeader.width * infoHeader.height);
 	for (int y = infoHeader.height - 1; y >= 0; y--)
 	{
 		file.read(reinterpret_cast<char*>(row.data()), rowSize);
@@ -267,7 +276,7 @@ void LogManager::Initialize()
 		//스텟
 		PlayerStatLayout({ 105, 2, 50, 6 }),
 		//로그
-		LogLayout(Layout::Rect(105, 9, 50, 30)),
+		LogLayout(Layout::FRect(105, 9, 50, 30)),
 	};
 
 	width = 158;
@@ -362,9 +371,9 @@ void LogManager::Delay(float Delay)
 		Sleep(Delay * 1000);
 }
 
-void LogManager::Draw(EDraw Draw)
+void LogManager::Draw(EDraw Draw, int x, int y)
 {
-	static_cast<DrawLayout*>(&layouts[0])->Draw(Draw);
+	static_cast<DrawLayout*>(&layouts[0])->Draw(Draw, x, y);
 }
 
 void LogManager::Pause()
