@@ -6,14 +6,14 @@
 // 몬스터 정보를 담을 구조체
 struct FMonsterInfo {
     string MonsterName;
-    int MonsterHp;
+    int MonsterHP;
     int MonsterDamage;
 };
 
 class Monster : public Entity {
 public:
     // Entity의 생성자를 호출하는 Monster 생성자
-    Monster(string Name, int Hp, int Damage, int Difficulty);
+    Monster(string Name, int HP, int Damage, int Difficulty);
 
     // 몬스터 이름, HP, Damage 값을 생성하는 함수
     static FMonsterInfo CreateMonsterInfo(int PlayerLevel, int Difficulty);
