@@ -188,6 +188,15 @@ void ShopManager::PrintShopSell()
 
 		// 플레이어의 인벤토리에 있는 아이템 출력
 		unordered_map<string, int> CurInv = CurPlayer->GetInventory();
+
+		if (CurInv.empty() == true)
+		{
+			LogManager::Get() << "인벤토리에 아이템이 없습니다!" << "\n";
+
+			LogManager::Get().Pause();
+			break;
+		}
+
 		for (pair<string, int> e : CurInv)
 		{
 			if (0 == e.second) continue;
