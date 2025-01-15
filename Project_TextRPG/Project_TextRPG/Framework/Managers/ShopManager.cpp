@@ -269,11 +269,3 @@ void ShopManager::PrintShopSell()
 		}
 	}
 }
-
-void ShopManager::BuyItem(int ItemsIndex)
-{
-}
-
-void ShopManager::SellItem()
-{
-}
