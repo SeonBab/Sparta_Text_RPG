@@ -3,7 +3,6 @@
 #include "Framework/Framework.h"
 #include "iostream"
 #include "unordered_map"
-#include "mutex"
 #include <Framework/Managers/LogManager.h>
 
 class Player : public Entity
@@ -11,7 +10,6 @@ class Player : public Entity
 private:
 
     static Player* instance;
-    static std::mutex mtx;
     int Level;
     int Exp;
     int Gold;
@@ -30,10 +28,15 @@ public:
 
     static Player* GetInstance()
     {
-        return instance;
+        if (instance == nullptr)
+        {
+            string name = "";
+            instance = new Player(name);
+        }
+		return instance;
     }
 
-    void SetPlayer();
+    void SetPlayerName();
     
     void TakeDamage(int damage);
 

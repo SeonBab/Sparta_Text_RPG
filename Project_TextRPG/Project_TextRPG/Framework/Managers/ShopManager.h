@@ -9,9 +9,6 @@ private:
     static void PrintShopBuy();
     static void PrintShopSell();
 
-    static void BuyItem(int ItemsIndex);
-    static void SellItem();
-
     ShopManager();
 
     ShopManager(const ShopManager&) = delete;

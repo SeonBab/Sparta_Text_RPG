@@ -21,7 +21,7 @@ private:
 
     const int ItemUseProb = 30;
 
-    const int ItemDropProb = 10; 
+    const int ItemDropProb = 50; 
     
     const int RangeItemType = 1; // AttackBoost는 즉시 사용되도록
 

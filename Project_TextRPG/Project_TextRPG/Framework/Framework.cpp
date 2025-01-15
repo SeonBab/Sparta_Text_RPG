@@ -15,7 +15,7 @@ void MainGame::Init()
 	LogManager::Get().Initialize();
 	LogManager::Get().DrawOutline();
 
-	Player::GetInstance()->SetPlayer();
+	Player::GetInstance()->SetPlayerName();
 }
 
 void MainGame::Select()

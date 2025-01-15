@@ -28,21 +28,20 @@ bool BattleManager::Battle(Monster* SelectedMonster, Player* Player)
         int ItemType = RandRange(0, Items.size() - 1);
         Player->UseItem(Items[ItemType].get()->GetName());
     }
-    std::cout << "몬스터 " << SelectedMonster->GetName() << " 등장! 체력:" << SelectedMonster->GetHP() << ", 공격력: " << SelectedMonster->GetDamage() << '\n';
+    LogManager::Get() << "몬스터 " << SelectedMonster->GetName() << " 등장! 체력:" << SelectedMonster->GetHP() << ", 공격력: " << SelectedMonster->GetDamage() << '\n';
 
     while (true)
     {
         // 플레이어 선공
         SelectedMonster->TakeDamage(Player->GetDamage());
-        std::cout << "플레이어가 몬스터를 공격합니다! ";
+        LogManager::Get() << "플레이어가 몬스터를 공격합니다! ";
         if (SelectedMonster->GetHP() > 0)
         {
-            std::cout << SelectedMonster->GetName() << " 몬스터의 남은 체력: " << SelectedMonster->GetHP() << '\n';
+            LogManager::Get() << SelectedMonster->GetName() << " 몬스터의 남은 체력: " << SelectedMonster->GetHP() << '\n';
         }
         else
         {
-            std::cout << '\n';
-            std::cout << SelectedMonster->GetName() << " 가 죽었습니다!\n";
+            LogManager::Get() << SelectedMonster->GetName() << "\n 가 죽었습니다!\n";
             // 몬스터에서 부스트 드랍되면 바로 사용되도록
             Gold = 10 * SelectedMonster->GetDifficulty();
             Exp = Exp * SelectedMonster->GetDifficulty() * 0.5;
@@ -51,27 +50,25 @@ bool BattleManager::Battle(Monster* SelectedMonster, Player* Player)
             Player->SetGold(Gold);
 
             Player->UpdateExp(Exp);
-
             if (ItemDropProb >= RandRange(0, 100)) // Drop Item
             {
                 const int RandItemIdx = RandRange(0, Items.size() - 1);
-                std::cout << Items[RandItemIdx].get()->GetName() << " 아이템 획득!\n";
+                LogManager::Get() << Items[RandItemIdx].get()->GetName() << " 아이템 획득!\n";
                 Player->AddItem(Items[RandItemIdx].get()->GetName(), 1);
             }
-
-            std::cout << "플레이어가 " << Exp << " Exp와 " << Gold << " 골드를 획득했습니다. EXP : " << Player->GetExp() << " / 100" << ", 골드: " << Player->GetGold() << '\n';
+            LogManager::Get() << "플레이어가 " << Exp << " Exp와 " << Gold << " 골드를 획득했습니다. EXP : " << Player->GetExp() << " / 100" << ", 골드: " << Player->GetGold() << '\n';
             bIsPlayerWon = true;
             break;
         }
         Player->TakeDamage(SelectedMonster->GetDamage());
-        std::cout << "몬스터가 플레이어를 공격합니다. ";
+        LogManager::Get() << "몬스터가 플레이어를 공격합니다. ";
         if (Player->GetHP() > 0)
         {
-            std::cout << "플레이어의 남은 체력 : " << Player->GetHP() << '\n';
+            LogManager::Get() << "플레이어의 남은 체력 : " << Player->GetHP() << '\n';
         }
         else
         {
-            std::cout << "플레이어가 사망했습니다. \n";
+            LogManager::Get() << "플레이어가 사망했습니다. \n";
             bIsPlayerWon = false;
             break;
         }
