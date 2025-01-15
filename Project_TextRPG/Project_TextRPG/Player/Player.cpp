@@ -1,8 +1,8 @@
 ﻿#include "Player.h"
 #include "Item.h"
+#include "Framework/Managers/LogManager.h"
 
 Player* Player::instance;
-std::mutex Player::mtx;
 
 Player::Player(string name) : Entity(name, 200, 30)
 {
@@ -13,12 +13,12 @@ Player::Player(string name) : Entity(name, 200, 30)
 	Gold = 0;
 }
 
-void Player::SetPlayer()
+void Player::SetPlayerName()
 {
 	string name;
-	LogManager::Get().Append("이름을 입력하세요: \n");
+	LogManager::Get().Append("이름을 입력하세요: ");
 	cin >> name;
-	instance = new Player(name);
+	Name = name;
 }
 
 void Player::TakeDamage(int damage)
@@ -36,8 +36,11 @@ void Player::UpdateExp(int expAmount)
 void Player::LevelUp()
 { 
     Level++;
+
+	MaxHP += Level * 10;
     HP = MaxHP;
-    std::cout << "플레이어 레벨업! 현재 레벨: " << Level << '\n';
+	Damage += Level * 5;
+	LogManager::Get().Append("플레이어 레벨업! 현재 레벨: " + std::to_string(Level) + "\n");
     Exp -= 100;
 }
 
@@ -47,12 +50,12 @@ void Player::BuyItem(string itemName, int itemPrice, int count)
 	if (Gold >= totalPrice)
 	{
 		Gold -= totalPrice;
-		cout << itemName << "을(를) " << count << "개 구매했습니다." << endl;
+		LogManager::Get().Append(itemName + "을(를) " + std::to_string(count) + "개 구매했습니다.\n");
 		Player::AddItem(itemName, count);
 	}
 	else
 	{
-		cout << "골드가 부족합니다." << endl;
+		LogManager::Get().Append("골드가 부족합니다.\n");
 	}
 }
 
@@ -63,10 +66,10 @@ void Player::SellItem(string itemName, int itemPrice, int count)
 		int totalPrice = itemPrice * count;
 		Inventory[itemName] -= count;
 		Gold += totalPrice;
-		cout << itemName << "을(를) " << count << "개 판매했습니다." << endl;
+		LogManager::Get().Append(itemName + "을(를) " + std::to_string(count) + "개 판매했습니다.\n");
 	}
 	else {
-		cout << "아이템이 부족합니다." << endl;
+		LogManager::Get().Append("아이템이 부족합니다.\n");
 	}
 }
 
@@ -84,7 +87,7 @@ void Player::UseItem(string itemName)
 			Inventory[itemName]--;
 		}
 		else
-			cout << "잘못된 아이템 접근입니다" << endl;
+			LogManager::Get().Append("잘못된 아이템 접근입니다\n");
 	}
 }
 
@@ -107,7 +110,7 @@ void Player::AddItem(string itemName, int count)
 		}
 	}
 	else
-		cout << "잘못된 아이템 접근입니다" << endl;
+		LogManager::Get().Append("잘못된 아이템 접근입니다\n");
 }
 
 int Player::GetGold()
