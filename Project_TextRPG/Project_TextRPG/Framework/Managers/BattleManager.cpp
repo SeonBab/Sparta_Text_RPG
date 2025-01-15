@@ -41,7 +41,7 @@ bool BattleManager::Battle(Monster* SelectedMonster, Player* Player)
         }
         else
         {
-            LogManager::Get() << SelectedMonster->GetName() << "\n 가 죽었습니다!\n";
+            LogManager::Get() << SelectedMonster->GetName() << "가 죽었습니다!\n";
             // 몬스터에서 부스트 드랍되면 바로 사용되도록
             Gold = 10 * SelectedMonster->GetDifficulty();
             Exp = Exp * SelectedMonster->GetDifficulty() * 0.5;
