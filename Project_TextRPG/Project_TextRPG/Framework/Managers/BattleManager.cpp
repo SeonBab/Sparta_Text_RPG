@@ -47,7 +47,7 @@ bool BattleManager::Battle(Monster* SelectedMonster, Player* Player)
             Exp = Exp * SelectedMonster->GetDifficulty() * 0.5;
 
             // 몬스터 난이도에 따라 다른 획득 보상
-            Player->SetGold(Gold);
+            Player->SetGold(Player->GetGold() + Gold);
 
             Player->UpdateExp(Exp);
             if (ItemDropProb >= RandRange(0, 100)) // Drop Item
