@@ -21,12 +21,16 @@ bool BattleManager::Battle(Monster* SelectedMonster, Player* Player)
     {
     case EDraw::Slime: pos = { 31, 23 }; break;
     case EDraw::Oak: pos = { 14, 8 }; break;
+    case EDraw::Goblin: pos = { 29, 13 }; break;
+    case EDraw::Boss: pos = { 2, 1 }; break;
     default:
         break;
     }
 
     LogManager::Get().Draw(SelectedMonster->GetDraw(), pos.first, pos.second);
     LogManager::Get().Draw(EDraw::Player, 0, 16);
+
+    LogManager::Get() << "\n";
 
     // true - 플레이어 승리, false - 몬스터 승리
     bool bIsPlayerWon = false;
@@ -91,7 +95,7 @@ bool BattleManager::Battle(Monster* SelectedMonster, Player* Player)
         }
         else
         {
-            LogManager::Get() << "플레이어가 사망했습니다. \n";
+            LogManager::Get() << "\n플레이어가 사망했습니다. \n";
             LogManager::Get().Delay(DelayTime);
             bIsPlayerWon = false;
             break;
