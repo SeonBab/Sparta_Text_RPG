@@ -29,19 +29,22 @@ bool BattleManager::Battle(Monster* SelectedMonster, Player* Player)
         Player->UseItem(Items[ItemType].get()->GetName());
     }
     LogManager::Get() << "몬스터 " << SelectedMonster->GetName() << " 등장! 체력:" << SelectedMonster->GetHP() << ", 공격력: " << SelectedMonster->GetDamage() << '\n';
-
+    LogManager::Get().Delay(DelayTime);
     while (true)
     {
         // 플레이어 선공
         SelectedMonster->TakeDamage(Player->GetDamage());
         LogManager::Get() << "플레이어가 몬스터를 공격합니다! ";
+        LogManager::Get().Delay(DelayTime);
         if (SelectedMonster->GetHP() > 0)
         {
-            LogManager::Get() << SelectedMonster->GetName() << " 몬스터의 남은 체력: " << SelectedMonster->GetHP() << '\n';
+            LogManager::Get() << '\n' << SelectedMonster->GetName() << "의 남은 체력: " << SelectedMonster->GetHP() << '\n';
+            LogManager::Get().Delay(DelayTime);
         }
         else
         {
-            LogManager::Get() << SelectedMonster->GetName() << "가 죽었습니다!\n";
+            LogManager::Get() << '\n' << SelectedMonster->GetName() << "가 죽었습니다!\n";
+            LogManager::Get().Delay(DelayTime);
             // 몬스터에서 부스트 드랍되면 바로 사용되도록
             Gold = 10 * SelectedMonster->GetDifficulty();
             Exp = Exp * SelectedMonster->GetDifficulty() * 0.5;
@@ -54,9 +57,11 @@ bool BattleManager::Battle(Monster* SelectedMonster, Player* Player)
             {
                 const int RandItemIdx = RandRange(0, Items.size() - 1);
                 LogManager::Get() << Items[RandItemIdx].get()->GetName() << " 아이템 획득!\n";
+                LogManager::Get().Delay(DelayTime);
                 Player->AddItem(Items[RandItemIdx].get()->GetName(), 1);
             }
-            LogManager::Get() << "플레이어가 " << Exp << " Exp와 " << Gold << " 골드를 획득했습니다. EXP : " << Player->GetExp() << " / 100" << ", 골드: " << Player->GetGold() << '\n';
+            LogManager::Get() << "플레이어가 " << Exp << " Exp와 " << Gold << " 골드를 획득했습니다. \nEXP : " << Player->GetExp() << " / 100" << ", 골드: " << Player->GetGold() << '\n';
+            LogManager::Get().Delay(DelayTime);
             bIsPlayerWon = true;
             break;
         }
@@ -64,11 +69,14 @@ bool BattleManager::Battle(Monster* SelectedMonster, Player* Player)
         LogManager::Get() << "몬스터가 플레이어를 공격합니다. ";
         if (Player->GetHP() > 0)
         {
-            LogManager::Get() << "플레이어의 남은 체력 : " << Player->GetHP() << '\n';
+            LogManager::Get() << "\n플레이어의 남은 체력 : " << Player->GetHP() << '\n';
+            LogManager::Get().Delay(DelayTime);
+
         }
         else
         {
             LogManager::Get() << "플레이어가 사망했습니다. \n";
+            LogManager::Get().Delay(DelayTime);
             bIsPlayerWon = false;
             break;
         }
