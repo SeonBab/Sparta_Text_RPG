@@ -292,7 +292,40 @@ DrawLayout의 크기가 50x39가 최대라서 그 안에 맞추는 게 힘들었
 ![Boss](https://github.com/user-attachments/assets/667b2114-e9dc-4a26-8a69-d99408925128)
 
 ### 엄지훈님 - Player
+`Player` 클래스의 독립 변수 및 함수를 전반적으로 담당하였습니다.   
+[Player.h](https://github.com/SeonBab/Sparta_Text_RPG/blob/main/Project_TextRPG/Project_TextRPG/Player/Player.h)   
+[Player.cpp](https://github.com/SeonBab/Sparta_Text_RPG/blob/main/Project_TextRPG/Project_TextRPG/Player/Player.cpp)   
+`Player`는 `Monster`와 같은 부모로 `Entity` 클래스를 두고 있어 이름(`Name`), 최대 체력(`MaxHP`), 현재 쳬력(`HP`), 데미지(`Damage`), 총 4가지의 독립 변수를 공통으로 가지고 있고 추상 함수 `TakeDamage(int Damage)`를 사용합니다.   
+`Player`는 추가로 현재 레벨(`Level`), 현재 경험치(`Exp`), 현재 골드(`Gold`), 인벤토리(`Inventory`)를 독립변수로 가집니다. `Inventory`는 unordered_map<string, int> 타입이며 아이템의 이름을 key, 개수를 value로 가집니다.
+#### Player 객체 생성(***필수 기능 1***)
+해당 게임은 싱글 플레이로 진행되기 때문에 `Player`의 인스턴스를 하나만 생성하기 위해 **싱글톤 패턴**으로 구현하였습니다.   
+`Player`는 게임 시작 전에 아래와 같이 초기화 됩니다.   
+- `Name`: ""
+- `MaxHP`: 200
+- `HP`: 200
+- `Damage`: 30
+- `Level`: 1
+- `Exp`: 0
+- `Gold`: 0   
 
+게임이 시작되고 플레이어 이름을 설정하기 위해 `SetPlayerName(string Name)` 함수를 통해 `cin`으로 입력 받게 하였습니다.   
+#### 경험치 및 레벨 처리(***필수 기능 2***)
+`Player`는 몬스터를 잡게되면 경험치를 일정량 받게됩니다. `Player`의 `UpdateExp(int ExpAmount)` 함수에서 전투에서 `Player`가 획득한 경험치만큼 `Exp`를 증가시키고 만약 `Exp`가 100이상이 된다면 `LevelUP()`함수를 호출합니다. 만약 플레이어가 이미 10레벨인 경우 더 이상 경험치를 받지 않도록 하였습니다.  
+`LevelUp()`함수는 `Player`의 `Level`을 1 상승시키고 `Exp`를 100 감소시킵니다. 레벨이 오르는 경우 `Level`x20만큼 `MaxHP`가 오르고 `Level`x5만큼 `Damage`가 오르게 됩니다. 만약 `Player`의 `Level`이 10이 되면 `Exp`를 0으로 초기화합니다.   
+
+#### 아이템 구매/판매(상점)(***도전 기능 2***)
+`Player`가 상점에서 아이템을 구매하는 `BuyItem(string ItemName, int ItemPrice, int Count)`, 아이템을 판매하는 `SellItem(string ItemName, int ItemPrice, int Count)` 함수를 구현하였습니다.   
+`BuyItem(string ItemName, int ItemPrice, int Count)` 함수는 `ItemName` 이름을 가지는 아이템을 `Item` 클래스의 함수를 통해 조회한 뒤 `ItemPrice`x`Count` 보다 `Player`의 `Gold`가 많을 경우 `ItemPrice`x`Count`만큼 골드를 차감하여 구매에 성공하고 `AddItem(String ItemName, int Count)` 함수를 호출합니다.   
+`SellItem(string ItemName, int ItemPrice, int Count)` 함수는 `Inventory`에서 `ItemName`의 개수를 조사한 뒤 `Count`보다 많다면 `Inventory`에서 해당 `Count`만큼 `ItemName`의 개수를 줄이고고 `ItemPrice`x`Count` 만큼 
+#### 아이템 추가
+아이템을 구매하거나(`Player::BuyItem`) 전투 후 획득했을 때(`BattleManager`의 로직) `AddItem(string ItemName, int Count)` 함수를 통해 아이템을 처리합니다.   
+`Item`은 2가지 사용 타입(`EItemUsageType`)을 가집니다.   
+`EItemUsageType`이 `Battle`인 경우 `Count`만큼 인벤토리에 아이템을 추가합니다.
+`EItemUsageType`이 `Immediately`인 경우 해당 아이템은 즉시 `Count`만큼 반복하여 사용됩니다.
+#### 랜덤 아이템 사용(***필수 기능 5***)
+아이템 사용을 랜덤화하여 게임 플레이에 재미를 더해보았습니다.   
+아이템은 전투 중에 매 턴이 끝날때 마다 30퍼센트의 확률로 `UseRandomItem()`을 호출합니다(`BattleManger`에 로직으로 구현).   
+`UseRandomItem()`은 `Inventory`에 개수가 0보다 많은 아이템에 대해 `Vector`를 만들고 해당 아이템 중 랜덤하게 하나를 사용하도록 구현하였습니다.
 
 
 ### 이재명님 - Framwork

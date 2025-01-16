@@ -26,9 +26,12 @@ void Player::TakeDamage(int Damage)
 
 void Player::UpdateExp(int ExpAmount)
 {
-	Exp += ExpAmount;
-	if (Exp >= 100)
-		LevelUp();
+	if (Level < 10) 
+	{
+		Exp += ExpAmount;
+		if (Exp >= 100)
+			LevelUp();
+	}
 }
 
 void Player::LevelUp()
@@ -41,6 +44,10 @@ void Player::LevelUp()
 	LogManager::Get().Draw(EDraw::LevelUp, 3, 3);
 	LogManager::Get().Append("플레이어 레벨업! 현재 레벨: " + std::to_string(Level) + "\n");
     Exp -= 100;
+	if (Level < 10)
+	{
+		Exp = 0;
+	}
 }
 
 void Player::BuyItem(string ItemName, int ItemPrice, int Count)
