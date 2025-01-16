@@ -147,11 +147,13 @@ void MainGame::OnGameEnded()
 {
     if(EndType == EEndType::Lose)
     {
-		LogManager::Get() << "You Lose..." << "\n";
+		LogManager::Get().Draw(EDraw::Lose, 0, 2);
+		LogManager::Get() << "\nYou Lose..." << "\n";
     }
     else if(EndType == EEndType::Win)
     {
-		LogManager::Get() << "You Win!!!" << "\n";
+		LogManager::Get().Draw(EDraw::Win, 0, 5);
+		LogManager::Get() << "\nYou Win!!!" << "\n";
     }
 
 	// 승패에 관계없이 무조건 게임 종료
