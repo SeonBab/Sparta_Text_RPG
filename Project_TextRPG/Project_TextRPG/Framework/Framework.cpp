@@ -57,19 +57,22 @@ void MainGame::Tick()
 		// 보스 몬스터에게 이기거나 플레이어가 죽은 경우 이후 게임 로직을 더이상 처리하지 않고 게임을 종료
 		if (BattleManager::Get().Battle(BossMonster.get(), Player::GetInstance()))
 		{
+			LogManager::Get().Draw(EDraw::Win, 0, 5);
 			LogManager::Get() << "\n축하합니다! 보스를 처치하고 게임 엔딩을 보셨습니다!" << "\n";
-			
+
 			//EndType = EEndType::Win;
 			//OnGameEnded();
 		}
 		else
 		{
+			LogManager::Get().Draw(EDraw::Lose, 0, 2);
 			LogManager::Get() << "\n아쉽게도 보스한테 패배하셨습니다." << "\n";
 
 			//EndType = EEndType::Lose;
 			//OnGameEnded();
 		}
 
+		LogManager::Get().MoveCursor(0, 39);
 		// 밑에 로직 실행하지 않고 프로그램 강제 종료
 		exit(0);
 	}

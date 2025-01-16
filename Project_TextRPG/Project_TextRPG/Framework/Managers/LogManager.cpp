@@ -106,6 +106,7 @@ void Layout::SetOutputText()
 //자체적으로 그림
 void DrawLayout::Draw(EDraw Draw, int x, int y)
 {
+	auto prePos = LogManager::Get().GetCursorPosition();
 	//x만 2자리 먹어서 x2 해줌
 	LogManager::Get().MoveCursor(rect.left + x * 2, rect.up + y);
 
@@ -124,14 +125,30 @@ void DrawLayout::Draw(EDraw Draw, int x, int y)
 	case EDraw::HealthBoost:	DrawBMP("health_boost_pixel.bmp"); break;
 	case EDraw::HelthElixir:	DrawBMP("helth_elixir_pixel.bmp"); break;
 	case EDraw::MoneyBag:		DrawBMP("moneybag_pixel.bmp"); break;
+	case EDraw::LevelUp:		DrawBMP("LevelUp.bmp"); break;
+	case EDraw::Win:	DrawBMP("Win.bmp"); break;
+	case EDraw::Lose:	DrawBMP("Lose.bmp"); break;
 
 	default:
 		break;
 	}
+
+	LogManager::Get().MoveCursor(prePos.first, prePos.second);
+
+
+	//폰트 변경
+	CONSOLE_FONT_INFOEX cfi;
+	cfi.cbSize = sizeof(CONSOLE_FONT_INFOEX);
+	GetCurrentConsoleFontEx(GetStdHandle(STD_OUTPUT_HANDLE), FALSE, &cfi);
+
+
+
+	//LogManager::Get() << ;
 }
 
 void DrawLayout::Clear(bool ClearBuffer)
 {
+
 	//지움
 	for (int i = 0; i < rect.height; i++)
 	{
@@ -300,8 +317,12 @@ void LogManager::Initialize()
 	SetConsoleWindowInfo(handle, TRUE, &windowSize);
 
 	//폰트 변경
+	CONSOLE_FONT_INFOEX cfi;
+	cfi.cbSize = sizeof(CONSOLE_FONT_INFOEX);
+	GetCurrentConsoleFontEx(handle, FALSE, &cfi);
 
-
+	
+	//cfi.FaceName = L"";
 
 	//외곽선 세팅
 	{
