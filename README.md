@@ -223,7 +223,7 @@ Project_TextRPG
 
 ### 김승길님 - Monster Class
 
-몬스터를 담당해서 구현하셨습니다.
+몬스터를 담당해서 구현하였습니다. 쉬움, 보통, 어려움에 해당하는 난이도의 몬스터를 생성할 수 있고 각 몬스터의 죽은 횟수도 확인할 수 있습니다.
 
 - struct FMonsterInfo; : 몬스터 정보를 담아서 생성자로 넘겨주기 위한 구조체
 - static unordered_map<string, int> DeathCountMap; : 몬스터 이름별로 죽은 횟수를 저장 후 이를 출력하기 위한 맵 변수
