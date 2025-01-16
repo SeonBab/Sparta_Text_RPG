@@ -227,21 +227,21 @@ Project_TextRPG
 
 ### FMonsterInfo CreateMonsterInfo 함수
 
-플레이어 레벨 및 선택 난이도에 맞는 몬스터의 이름, 체력, 공격력 정보를 생성할 수 있는 함수입니다. 
+플레이어 레벨 및 선택 난이도에 맞는 몬스터의 이름, 체력, 공격력 정보를 생성할 수 있는 함수입니다.  
 Monster 생성자에 이름, 체력, 공격력을 넘겨주기 위해서 FMonsterInfo 라는 구조체 값을 리턴하도록 구현하였습니다.
 
 ![image](https://github.com/user-attachments/assets/bfd568ec-63ca-4135-b252-de5cfaadbfc3)
 
 ### Monster 생성자
 
-상속받은 Entity 클래스에 있는 이름, 체력, 공격력 변수에 그대로 값을 넣기위하여 해당 값을 받는 형태로 구현하였습니다.
+상속받은 Entity 클래스에 있는 이름, 체력, 공격력 변수에 그대로 값을 넣기위하여 해당 값을 받는 형태로 구현하였습니다.  
 Difficulty와 Draw는 각각 해당 몬스터의 난이도 및 그림을 위한 데이터입니다.
 
 ![image](https://github.com/user-attachments/assets/2cbee39b-ff1b-4dca-9783-f41535237e51)
 
 ### void TakeDamage 함수
 
-몬스터가 피해를 입을때마다 해당 값을 계산하고 몬스터가 죽으면 해당 몬스터의 죽은 횟수를 저장하기 위하여
+몬스터가 피해를 입을때마다 해당 값을 계산하고 몬스터가 죽으면 해당 몬스터의 죽은 횟수를 저장하기 위하여  
 unordered_map<string, int> DeathCountMap 변수를 사용하여 저장합니다.
 
 ![image](https://github.com/user-attachments/assets/2ab8335b-51aa-42b9-b507-3c19690ab66b)
