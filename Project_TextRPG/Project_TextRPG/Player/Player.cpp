@@ -38,6 +38,7 @@ void Player::LevelUp()
 	MaxHP += Level * 10;
     HP = MaxHP;
 	Damage += Level * 5;
+	LogManager::Get().Draw(EDraw::LevelUp, 3, 3);
 	LogManager::Get().Append("플레이어 레벨업! 현재 레벨: " + std::to_string(Level) + "\n");
     Exp -= 100;
 }

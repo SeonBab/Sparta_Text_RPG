@@ -19,6 +19,9 @@ enum class EDraw
 	HealthBoost,
 	HelthElixir,
 	MoneyBag,
+	LevelUp,
+	Win,
+	Lose
 };
 
 enum class ELayout
