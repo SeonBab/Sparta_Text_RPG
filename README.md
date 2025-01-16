@@ -241,8 +241,8 @@ Difficulty와 Draw는 각각 해당 몬스터의 난이도 및 그림을 위한 
 
 ### void TakeDamage 함수
 
-몬스터가 피해를 입을때마다 해당 값을 계산하고 몬스터가 죽으면 해당 몬스터의 죽은 횟수를 저장하기 위하여  
-unordered_map<string, int> DeathCountMap 변수를 사용하여 저장합니다.
+몬스터가 피해를 입을때마다 해당 값을 계산하고 몬스터가 죽으면 배틀 종료 이후에 모든 몬스터의 죽은 횟수를 출력하기 위하여  
+unordered_map<string, int> DeathCountMap 변수를 사용하여 각 몬스터의 죽은 횟수를 저장합니다.
 
 ![image](https://github.com/user-attachments/assets/2ab8335b-51aa-42b9-b507-3c19690ab66b)
 
