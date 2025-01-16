@@ -40,6 +40,8 @@ public:
         this->HP = MaxHP; // 태어날 땐 최대 체력이 현재 체력과 같음
         this->Damage = Damage;
     }
+
+	virtual void TakeDamage(int Damage) = 0;
     
 protected:
     
