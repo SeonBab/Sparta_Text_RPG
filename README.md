@@ -181,12 +181,13 @@ Project_TextRPG
 
 몬스터를 담당해서 구현하셨습니다.
 
-+ struct FMonsterInfo; : 몬스터 정보를 담은 구조체
-+ int Difficulty; : 몬스터 난이도 선언 변수
-+ Monster(string Name, int Hp, int Damage, int Difficulty); : 몬스터 정보 및 난이도에 맞는 몬스터 생성자
-+ static FMonsterInfo CreateMonsterInfo(int PlayerLevel, int Difficulty); : 플레이어 레벨 및 선택 난이도에 맞는 몬스터의 이름, 체력, 공격력 정보 생성
-+ void TakeDamage(int Damage); : 입력값만큼 해당 몬스터 HP 차감
-+ int GetDifficulty(); : 해당 몬스터의 난이도 값을 반환하는 Getter 함수
+- struct FMonsterInfo; : 몬스터 정보를 담은 구조체
+- static unordered_map<string, int> DeathCountMap; : 몬스터 이름별로 죽은 횟수 저장 맵
+- int Difficulty; : 몬스터 난이도 저장 변수
+- Monster(string Name, int Hp, int Damage, int Difficulty); : 몬스터 정보 및 난이도에 맞는 몬스터 생성자
+- static FMonsterInfo CreateMonsterInfo(int PlayerLevel, int Difficulty); : 플레이어 레벨 및 선택 난이도에 맞는 몬스터의 이름, 체력, 공격력 정보 생성 함수
+- void TakeDamage(int Damage); : 입력값만큼 해당 몬스터 HP 차감 함수
+- static void PrintAllDeathCounts(); : 모든 몬스터의 죽은 횟수 출력 함수
 
 `Entity` 클래스를 상속받아서 `Entity` 생성자의 `Name`, `HP`, `Damage` 부분을 사용해서 몬스터 생성자 구현
 
