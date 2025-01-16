@@ -225,6 +225,27 @@ Project_TextRPG
 
 몬스터를 담당해서 구현하였습니다. 쉬움, 보통, 어려움에 해당하는 난이도의 몬스터를 생성할 수 있고 각 몬스터의 죽은 횟수도 확인할 수 있습니다.
 
+### FMonsterInfo CreateMonsterInfo 함수
+
+플레이어 레벨 및 선택 난이도에 맞는 몬스터의 이름, 체력, 공격력 정보를 생성할 수 있는 함수입니다. 
+Monster 생성자에 이름, 체력, 공격력을 넘겨주기 위해서 FMonsterInfo 라는 구조체 값을 리턴하도록 구현하였습니다.
+
+![image](https://github.com/user-attachments/assets/bfd568ec-63ca-4135-b252-de5cfaadbfc3)
+
+### Monster 생성자
+
+상속받은 Entity 클래스에 있는 이름, 체력, 공격력 변수에 그대로 값을 넣기위하여 해당 값을 받는 형태로 구현하였습니다.
+Difficulty와 Draw는 각각 해당 몬스터의 난이도 및 그림을 위한 데이터입니다.
+
+![image](https://github.com/user-attachments/assets/2cbee39b-ff1b-4dca-9783-f41535237e51)
+
+### void TakeDamage 함수
+
+몬스터가 피해를 입을때마다 해당 값을 계산하고 몬스터가 죽으면 해당 몬스터의 죽은 횟수를 저장하기 위하여
+unordered_map<string, int> DeathCountMap 변수를 사용하여 저장합니다.
+
+![image](https://github.com/user-attachments/assets/2ab8335b-51aa-42b9-b507-3c19690ab66b)
+
 - struct FMonsterInfo; : 몬스터 정보를 담아서 생성자로 넘겨주기 위한 구조체
 - static unordered_map<string, int> DeathCountMap; : 몬스터 이름별로 죽은 횟수를 저장 후 이를 출력하기 위한 맵 변수
 - int Difficulty; : 몬스터 난이도 저장 변수
@@ -232,13 +253,6 @@ Project_TextRPG
 - static FMonsterInfo CreateMonsterInfo(int PlayerLevel, int Difficulty); : 플레이어 레벨 및 선택 난이도에 맞는 몬스터의 이름, 체력, 공격력 정보 생성 함수
 - void TakeDamage(int Damage); : 입력값만큼 해당 몬스터 HP 차감을 위한 함수
 - static void PrintAllDeathCounts(); : 모든 몬스터의 죽은 횟수를 출력하는 함수
-
-`Entity` 클래스를 상속받아서 `Entity` 생성자의 `Name`, `HP`, `Damage` 부분을 사용해서 몬스터 생성자 구현
-
-랜덤으로 몬스터 생성 및 몬스터의 공격 및 피격 결과 확인, 보스 몬스터 소환 기능 구현  
-이때 몬스터의 스펙이 캐릭터 레벨에 비례해 랜덤하게 생성되도록 구현
-
-각 몬스터의 죽은 횟수를 저장하고 이를 사용하기 위하여 `unordered_map` STL을 사용하여 구현
 
 ### 김영웅님 - LogManager Class
 
