@@ -110,6 +110,11 @@ bool BattleManager::Battle(Monster* SelectedMonster, Player* Player)
             break;
         }
     }
+
+    // 배틀 종료 이후 죽은 몬스터의 전체 횟수 출력
+    Monster::PrintAllDeathCounts();
+    LogManager::Get().Delay(DelayTime);
+
     return bIsPlayerWon;
 }
 

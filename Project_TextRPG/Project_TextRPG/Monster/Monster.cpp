@@ -1,6 +1,10 @@
 ﻿// Monster.cpp
 #include "Monster.h"
 #include <iostream>
+#include <unordered_map>
+
+// 정적 변수 초기화
+unordered_map<string, int> Monster::DeathCountMap;
 
 // Entity의 생성자를 호출하는 Monster 생성자
 Monster::Monster(string Name, int Hp, int Damage, int Difficulty, EDraw Draw)
@@ -44,4 +48,16 @@ FMonsterInfo Monster::CreateMonsterInfo(int PlayerLevel, int Difficulty) {
 // 몬스터 데미지 처리 함수
 void Monster::TakeDamage(int Damage) {
     HP -= Damage;  // 입력값 만큼 체력 차감
+
+    if (HP <= 0) {
+        // 몬스터 이름을 키로 사용하여 죽은 횟수 추가
+        DeathCountMap[Name]++;
+    }
+}
+
+// 모든 몬스터의 죽은 횟수를 출력하는 함수
+void Monster::PrintAllDeathCounts() {
+    for (const auto& Entry : DeathCountMap) {
+        LogManager::Get() << Entry.first << " 죽은 횟수 : " << Entry.second << "\n";
+    }
 }
