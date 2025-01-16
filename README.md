@@ -245,25 +245,51 @@ Project_TextRPG
 `LogManager`에서 화면을 구성할 때 `Layout`으로 구분해 `LogManager`에서 관리하게 만들었습니다.  
 `Layout`을 상속 받아 `DrawLayout`, `PlayerStatLayout`, `LogLayout`를 구현했고 각자 역할에 따라 추가적인 함수를 구현했습니다.
 
-`STL`은 `vector`를 수시로 많이 썼습니다.  
-특히 `DrawBPM()` 함수에서 `vector`를 많이 썼습니다.
+![Layout 구분](https://github.com/user-attachments/assets/4b7ae973-f9d6-4269-a0eb-c7a7d41e5df1)
 
+Append(string, float)로 LogLayout에 로그를 추가할 수 있습니다만, cout처럼 사용하기 편하게 하기 위해 operator<<를 추가해 LogManager::Get() << "텍스트"; 형식으로 간단하게 사용할 수 있게 만들었습니다.
+Clear()로 모든 Layout의 출력을 없앨 수 있습니다.
+
+### DrawLayout
+
+왼쪽에 있는 그림을 출력해 주는 구역입니다.
+Draw(EDraw, int, int)로 출력할 수 있으며, 기본적으로는 LogManager에서 같은 이름의 Draw(EDraw, int, int)로 연결되어 호출됩니다.
+
+내부적으로 ReadBMP(string) 함수를 호출해 경로에 있는 .bmp 파일을 가져와 출력해 줍니다.
+다른 Layout은 보통 Layout에 있는 Output() 함수로 출력을 하지만 DrawLayout은 자체 적으로 출력합니다.
+
+Layout의 Clear(bool) 함수를 상속받아 다른 Layout은 비워주는 것과 다르게 DrawLayout은 화면을 하얀색으로 초기화해준다.
+
+### PlayerStatLayout
+
+오른쪽 위에 있는 플레이어의 정보를 출력해 주는 구역입니다.
+LogManager에서 Append(string, float)를 호출할 시 Update() 함수가 실행되어 플레이어의 정보가 갱신되게 됩니다.
+
+### Log Layout
+
+오른쪽 아래에 있는 다른 모든 Log들을 출력해 주는 구역입니다.
+Append(string, float)로 Log를 추가할 수 있으며, LogManager의 같은 이름의 함수로 연결되어 있습니다.
+
+만약 로그가 지정된 범위를 넘어갈 정도로 길거나 줄바꿈이 되어있지 않아 범위를 넘어가게 된다면 자동으로 줄바꿈 및 잘라서 출력해 줍니다.
+
+
+### 테스트 케이스
 |테스트 제목|테스트 절차|케이스 분류|
 |---|---|---|
 |캐릭터 생성 시, 스탯 동기화 테스트|캐릭터 생성 때 스탯을 얻어와지는지|Abnormal|
 |스탯 동기화 테스트|로그 추가, 스탯 동기화가 잘 작동하는지 확인|Normal|
 |이미지 로딩|DrawLayout의 ReadBMP로 .bmp 이미지를 로딩, DrawLayout에 잘 출력되는지 확인|Normal|
-|이미지 로딩 실패|ReadBMP의 파일 이름을 이상한걸로 넣음|로딩에 실패했다고 로그가 뜸|Abnormal|
+|이미지 로딩 실패|ReadBMP의 파일 이름을 이상한걸로 넣음. 로딩에 실패했다고 로그가 뜸|Abnormal|
 
-필수
-1. 화면을 분할 해 각자 구역에 출력되게 만들기
-완
+### 도트
 
-2. Player의 Status를 실시간 갱신하기
-완
+기존에 가지고 있던 에셋 및 직접 찍어서 상황에 맞는 도트를 제작했습니다.
+DrawLayout의 크기가 50x39가 최대라서 그 안에 맞추는 게 힘들었습니다.
 
-3. 상황에 따라 도트 띄어주기
-완
+![Stage](https://github.com/user-attachments/assets/26156f47-06c7-45cb-b421-9f69bf615969)
+![Slime](https://github.com/user-attachments/assets/ad4b70e2-c021-4509-b82c-2c557a17b813)
+![Oak](https://github.com/user-attachments/assets/6306f7dd-c9cb-4990-814d-8d5684062362)
+![Boss](https://github.com/user-attachments/assets/667b2114-e9dc-4a26-8a69-d99408925128)
 
 ### 엄지훈님 - Player
 
