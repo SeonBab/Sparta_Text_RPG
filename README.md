@@ -195,7 +195,7 @@ Project_TextRPG
 
 보스 몬스터까지 구현
 
-### 김영웅님 - LogManager
+### 김영웅님 - LogManager Class
 
 `LogManager`에서 화면을 구성할 때 `Layout`으로 구분해 `LogManager`에서 관리하게 만들었습니다.  
 `Layout`을 상속 받아 `DrawLayout`, `PlayerStatLayout`, `LogLayout`를 구현했고 각자 역할에 따라 추가적인 함수를 구현했습니다.
