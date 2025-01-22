@@ -213,7 +213,7 @@ Project_TextRPG
 
 + 멤버변수를 가지지 않습니다.
 + 모든 멤버 함수를 `static`으로 가집니다.
-+ 싱글톤 디자인패턴을 활용한 정적 클래스를 구현했습니다.
++ 정적 메서드를 구현해 사용했습니다.
 
 ![Shop_Class](https://github.com/user-attachments/assets/d82a5ada-3e5f-4c01-9d33-8dbbe78b68f3)
 
